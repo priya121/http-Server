@@ -6,6 +6,7 @@ import main.socket.SocketConnection;
 public class ServerSocketSpy implements ServerSocketConnection {
     private final SocketConnection socket;
     public boolean connectionMade = false;
+    public int numberOfConnections = 0;
 
     public ServerSocketSpy(SocketConnection socket) {
         this.socket = socket;
@@ -14,6 +15,7 @@ public class ServerSocketSpy implements ServerSocketConnection {
     @Override
     public SocketConnection accept() {
         connectionMade = true;
+        numberOfConnections ++;
         return socket;
     }
 
