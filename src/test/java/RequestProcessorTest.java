@@ -34,13 +34,13 @@ public class RequestProcessorTest {
     @Test
     public void storesWholeRequest() {
         RequestProcessor processor = new RequestProcessor(reader);
-        assertFalse(processor.requestHeaderFields().isEmpty());
+        assertFalse(processor.requestFields().isEmpty());
     }
 
     @Test
     public void storesRequestLine() {
         RequestProcessor processor = new RequestProcessor(reader);
-        assertThat(processor.requestHeaderFields().get("RequestLine"), is("GET / HTTP/1.1"));
+        assertThat(processor.requestFields().get("RequestLine"), is("GET / HTTP/1.1"));
     }
 
     @Test

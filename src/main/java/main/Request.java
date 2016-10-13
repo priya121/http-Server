@@ -16,7 +16,7 @@ public class Request {
     }
 
     public String getRequestLine() {
-        return processor.requestHeaderFields().get("RequestLine");
+        return processor.requestFields().get("RequestLine");
     }
 
     public String getMethod() {
@@ -24,11 +24,11 @@ public class Request {
     }
 
     public String getHost() {
-        return processor.requestHeaderFields().get("Host");
+        return processor.requestFields().get("Host");
     }
 
     public String getConnection() {
-        return processor.requestHeaderFields().get("Connection");
+        return processor.requestFields().get("Connection");
     }
 
     public String getPath() {

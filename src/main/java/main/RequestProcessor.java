@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
+import java.util.Set;
 
 public class RequestProcessor {
     private final BufferedReader reader;
-    private final HashMap<String, String> requestHeaderFields = new HashMap<>();
+    private final HashMap<String, String> requestFields = new HashMap<>();
     private final String[] headerFieldNames = {"Host", "Connection", "User-Agent", "Accept-Encoding"};
 
     public RequestProcessor(BufferedReader reader) {
@@ -16,23 +17,23 @@ public class RequestProcessor {
         setRequestHeaderFields();
     }
 
-    public HashMap<String, String> requestHeaderFields() {
-        return requestHeaderFields;
+    public HashMap<String, String> requestFields() {
+        return requestFields;
     }
 
     public boolean requestLineHasPath() {
-        String[] req = requestHeaderFields.get("RequestLine").split(" ");
+        String[] req = requestFields.get("RequestLine").split(" ");
         return req[1].length() > 1;
     }
 
     public String getRequestMethod() {
-        String[] split = requestHeaderFields.get("RequestLine").split(" ");
+        String[] split = requestFields.get("RequestLine").split(" ");
         return split[0];
     }
 
     public String getPath() {
         if (requestLineHasPath()) {
-            String[] req = requestHeaderFields.get("RequestLine").split(" ");
+            String[] req = requestFields.get("RequestLine").split(" ");
             return req[1];
         }
         return "No path";
@@ -53,7 +54,7 @@ public class RequestProcessor {
     private void setRequestLine() {
         try {
             String requestLine = reader.readLine();
-            requestHeaderFields.put("RequestLine", requestLine);
+            requestFields.put("RequestLine", requestLine);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -70,10 +71,20 @@ public class RequestProcessor {
         }
     }
 
+    public String getHeaderFields() {
+        String content = "";
+        Set<String> headerFields = requestFields().keySet();
+        headerFields.remove("RequestLine");
+        for (String entry: headerFields) {
+            content += entry += ": " + requestFields().get(entry) + "\n";
+        }
+        return content;
+    }
+
     private void formatField(String headerFieldName, String line) {
         int patternLimit = 2;
         String[] headerFieldSplit = line.split(":", patternLimit);
-        requestHeaderFields.put(headerFieldName, headerFieldSplit[1].trim());
+        requestFields.put(headerFieldName, headerFieldSplit[1].trim());
     }
 
 }
