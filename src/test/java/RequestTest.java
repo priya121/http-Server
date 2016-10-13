@@ -10,17 +10,18 @@ import java.io.InputStreamReader;
 import static org.junit.Assert.assertEquals;
 
 public class RequestTest {
-    private String fooGetRequest;
+    private String getRequest;
     private BufferedReader reader;
+    private String getFooRequest;
 
     @Before
     public void setUp() {
-        fooGetRequest = "GET / HTTP/1.1\n" +
+        getRequest = "GET / HTTP/1.1\n" +
                            "Host: localhost:5000\n" +
                            "Connection: Keep-Alive\n" +
                            "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
                            "Accept-Encoding: gzip,deflate";
-        reader = createBufferedReader(fooGetRequest);
+        reader = createBufferedReader(getRequest);
     }
 
     @Test
@@ -43,19 +44,19 @@ public class RequestTest {
 
     @Test
     public void noPathFound() {
-        reader = createBufferedReader(fooGetRequest);
+        reader = createBufferedReader(getRequest);
         Request request = new Request(reader);
         assertEquals("No path" , request.getPath());
     }
 
     @Test
     public void getsPathIfPresent() {
-        fooGetRequest = "GET /foobar HTTP/1.1\n" +
+        getFooRequest = "GET /foobar HTTP/1.1\n" +
                         "Host: localhost:5000\n" +
                         "Connection: Keep-Alive\n" +
                         "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
                         "Accept-Encoding: gzip,deflate";
-        reader = createBufferedReader(fooGetRequest);
+        reader = createBufferedReader(getFooRequest);
         Request request = new Request(reader);
         assertEquals("/foobar" , request.getPath());
     }

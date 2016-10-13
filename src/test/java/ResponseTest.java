@@ -128,7 +128,7 @@ public class ResponseTest {
         reader = createBufferedReader(getCoffee);
         Request request = new Request(reader);
         String wholeResponse = response.get(request);
-        assertEquals("HTTP/1.1 418 I'm a teapot\n",  wholeResponse);
+        assertEquals("HTTP/1.1 418 I'm a teapot\n\n<h1> I'm a teapot</h1>\n",  wholeResponse);
 
     }
 

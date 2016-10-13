@@ -20,8 +20,7 @@ public class Request {
     }
 
     public String getMethod() {
-        String[] split = getRequestLine().split(" ");
-        return split[0];
+        return processor.getRequestMethod();
     }
 
     public String getHost() {

@@ -16,33 +16,6 @@ public class RequestProcessor {
         setRequestHeaderFields();
     }
 
-    private void setRequestLine() {
-        try {
-            String requestLine = reader.readLine();
-            requestHeaderFields.put("RequestLine", requestLine);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void setRequestHeaderFields() {
-        try {
-            for (int i = 0; i < headerFieldNames.length; i++) {
-                String line = reader.readLine();
-                setRequestLine(headerFieldNames[i], line);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void setRequestLine(String headerFieldName, String line) {
-        int patternLimit = 2;
-        String[] headerFieldSplit = line.split(":", patternLimit);
-        requestHeaderFields.put(headerFieldName, headerFieldSplit[1].trim());
-
-    }
-
     public HashMap<String, String> requestHeaderFields() {
         return requestHeaderFields;
     }
@@ -50,6 +23,11 @@ public class RequestProcessor {
     public boolean requestLineHasPath() {
         String[] req = requestHeaderFields.get("RequestLine").split(" ");
         return req[1].length() > 1;
+    }
+
+    public String getRequestMethod() {
+        String[] split = requestHeaderFields.get("RequestLine").split(" ");
+        return split[0];
     }
 
     public String getPath() {
@@ -71,4 +49,31 @@ public class RequestProcessor {
     public boolean coffee() {
         return getPath().equals("/coffee");
     }
+
+    private void setRequestLine() {
+        try {
+            String requestLine = reader.readLine();
+            requestHeaderFields.put("RequestLine", requestLine);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void setRequestHeaderFields() {
+        try {
+            for (String headerFieldName : headerFieldNames) {
+                String line = reader.readLine();
+                formatField(headerFieldName, line);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void formatField(String headerFieldName, String line) {
+        int patternLimit = 2;
+        String[] headerFieldSplit = line.split(":", patternLimit);
+        requestHeaderFields.put(headerFieldName, headerFieldSplit[1].trim());
+    }
+
 }

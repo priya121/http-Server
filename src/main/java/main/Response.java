@@ -18,7 +18,7 @@ public class Response {
     }
 
     public String determineStatusLine(Request request) {
-        if (request.validRequestMethod() && !request.getPath().equals("/foobar") &&!request.getPath().equals("/coffee")) {
+        if (request.validRequestMethod() && !request.getPath().equals("/foobar") && !request.getPath().equals("/coffee")) {
             return status200;
         } else if (request.getPath().equals("/coffee")) {
             return status418;
