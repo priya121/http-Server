@@ -10,8 +10,8 @@ public enum Method {
 
     private String method;
 
-    Method (String symbol) {
-        this.method = symbol;
+    Method (String method) {
+        this.method = method;
     }
 
     public String get() {

@@ -3,11 +3,14 @@ package main;
 import java.util.List;
 
 public class Response {
-    private final String status200;
-    private final String status404;
-    private final String status418;
-    private final String allowHeaderForMethodOptions;
-    private final String allowHeaderForMethodOptions2;
+    private String status200;
+    private String status404;
+    private String status418;
+    private String allowHeaderForMethodOptions;
+    private String allowHeaderForMethodOptions2;
+    private String statusLine;
+    private String headers;
+    private String body;
     private String status405;
     private List<String> content;
     private String status302;
@@ -23,6 +26,16 @@ public class Response {
         this.allowHeaderForMethodOptions2 = "Allow: GET,OPTIONS\n";
     }
 
+    public Response(String statusLine, String headers, String body) {
+        this.statusLine = statusLine;
+        this.headers = headers;
+        this.body = body;
+    }
+
+    public String getResponse(Request request) {
+        return statusLine +"\n" + headers + "\n" + body + "\n";
+    }
+
     public String determineStatusLine(Request request) {
         if (!request.validRequestMethod() || request.getRequestMethod().contains("PUT") && request.getPath().contains("/file1")) {
             return status405;
@@ -30,10 +43,10 @@ public class Response {
             return status405;
         } else if (request.getRequestMethod().equals("GET") && request.getPath().equals("/redirect")) {
             return status302;
-        } else if (request.validRequestMethod() && !request.getPath().equals("/foobar") && !request.getPath().equals("/coffee")) {
-            return status200;
         } else if (request.getPath().equals("/coffee")) {
             return status418;
+        } else if (request.validRequestMethod() && !request.getPath().equals("/foobar")) {
+            return status200;
         }
         else return status404;
     }

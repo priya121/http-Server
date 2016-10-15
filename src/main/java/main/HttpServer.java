@@ -1,5 +1,6 @@
 package main;
 
+import main.responses.EmptyPathResponse;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 import main.streams.RealOutputStreamWriter;
@@ -43,10 +44,17 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
-        Response response = new Response(content);
-        String respond = response.get(request);
-        stream.write(respond.getBytes());
-        stream.close();
+        if (request.getPath().equals("/") && request.getRequestMethod().equals("GET")) {
+            EmptyPathResponse emptyPath = new EmptyPathResponse(content);
+            String response = emptyPath.get(request);
+            stream.write(response.getBytes());
+            stream.close();
+        } else {
+            Response response = new Response(content);
+            String respond = response.get(request);
+            stream.write(respond.getBytes());
+            stream.close();
+        }
     }
 
     private void executeTask(Runnable runnable) {
