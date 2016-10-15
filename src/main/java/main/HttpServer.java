@@ -1,6 +1,8 @@
 package main;
 
 import main.responses.EmptyPathResponse;
+import main.responses.MethodOptions2Response;
+import main.responses.MethodOptionsResponse;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 import main.streams.RealOutputStreamWriter;
@@ -47,6 +49,16 @@ public class HttpServer {
         if (request.getPath().equals("/") && request.getRequestMethod().equals("GET")) {
             EmptyPathResponse emptyPath = new EmptyPathResponse(content);
             String response = emptyPath.get(request);
+            stream.write(response.getBytes());
+            stream.close();
+        } else if (request.getPath().equals("/method_options") && request.getRequestMethod().equals("OPTIONS")) {
+            MethodOptionsResponse methodOptions = new MethodOptionsResponse(content);
+            String response = methodOptions.options(request);
+            stream.write(response.getBytes());
+            stream.close();
+        } else if (request.getPath().equals("/method_options2") && request.getRequestMethod().equals("OPTIONS")) {
+            MethodOptions2Response methodOptions2 = new MethodOptions2Response(content);
+            String response = methodOptions2.options(request);
             stream.write(response.getBytes());
             stream.close();
         } else {

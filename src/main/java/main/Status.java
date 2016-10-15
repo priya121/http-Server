@@ -14,7 +14,7 @@ public enum Status {
     }
 
     public String get() {
-        return "HTTP 1.1 " + status;
+        return "HTTP/1.1 " + status;
     }
 }
 
