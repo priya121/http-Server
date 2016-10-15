@@ -1,28 +1,25 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-
 public class RequestLine {
     private final String method;
     private final String path;
-    private final ArrayList validMethods;
+    private final Protocol protocol;
 
-    public RequestLine(String method, String path) {
+    public RequestLine(String method, String path, Protocol protocol) {
         this.method = method;
         this.path = path;
-        this.validMethods = new ArrayList<>(Arrays.asList(Method.GET.get(), Method.PUT.get(), Method.POST.get(), Method.HEAD.get(), Method.OPTIONS.get()));
+        this.protocol = protocol;
     }
 
-    public Optional getMethodType() {
-        Optional methods = validMethods.stream()
-               .filter(validMethod -> validMethod.equals(method))
-               .findAny();
-        return methods;
+    public String getMethodType() {
+        return method;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getProtocol() {
+        return protocol.get();
     }
 }

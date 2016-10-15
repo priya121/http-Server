@@ -2,18 +2,24 @@ package main;
 
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
-import main.streams.*;
+import main.streams.RealOutputStreamWriter;
+import main.streams.StreamWriter;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpServer {
     private static final boolean SERVER_LISTENING = true;
     private final ServerSocketConnection serverSocket;
+    private final ArrayList content;
 
     public HttpServer(ServerSocketConnection serverSocket) {
         this.serverSocket = serverSocket;
+        this.content = new ArrayList();
     }
 
     public void start() throws IOException {
@@ -37,7 +43,7 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
-        Response response = new Response();
+        Response response = new Response(content);
         String respond = response.get(request);
         stream.write(respond.getBytes());
         stream.close();

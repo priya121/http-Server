@@ -4,61 +4,144 @@ import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static junit.framework.TestCase.assertFalse;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public class RequestTest {
-    private String getRequest;
     private BufferedReader reader;
-    private String getFooRequest;
+    private String getRequestWithMethodOptionsPath;
+    private String simpleGetRequest;
+    private String getRequestWithFile1Path;
+    private String getRequestWithFoobarPath;
+    private String getRequestWithMethodOptions2Path;
 
     @Before
     public void setUp() {
-        getRequest = "GET / HTTP/1.1\n" +
-                           "Host: localhost:5000\n" +
-                           "Connection: Keep-Alive\n" +
-                           "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                           "Accept-Encoding: gzip,deflate";
-        reader = createBufferedReader(getRequest);
+        simpleGetRequest = createRequestString("/");
+        getRequestWithMethodOptionsPath = createRequestString("/method_options");
+        getRequestWithMethodOptions2Path = createRequestString("/method_options2");
+        getRequestWithFile1Path = createRequestString("/file1");
+        getRequestWithFoobarPath = createRequestString("/foobar");
     }
 
     @Test
-    public void findsRequestLine() throws IOException {
+    public void storesRequestLine() {
+        reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
-        assertEquals("GET / HTTP/1.1", request.getRequestLine());
+        assertThat(request.getRequestLine(), is("GET / HTTP/1.1"));
     }
 
     @Test
-    public void getsHost() throws IOException {
+    public void requestLineHasPathFoobar() {
+        reader = createBufferedReader(getRequestWithFoobarPath);
         Request request = new Request(reader);
-        assertEquals("localhost:5000" , request.getHost());
+        assertTrue(request.requestLineHasPath());
     }
 
     @Test
-    public void getsConnection() throws IOException {
+    public void requestLineHasPathFile1() {
+        reader = createBufferedReader(getRequestWithFile1Path);
         Request request = new Request(reader);
-        assertEquals("Keep-Alive" , request.getConnection());
+        assertTrue(request.requestLineHasPath());
     }
 
     @Test
-    public void noPathFound() {
-        reader = createBufferedReader(getRequest);
+    public void pathForFoobar() {
+        reader = createBufferedReader(getRequestWithFoobarPath);
         Request request = new Request(reader);
-        assertEquals("No path" , request.getPath());
+        assertEquals("/foobar", request.getPath());
     }
 
     @Test
-    public void getsPathIfPresent() {
-        getFooRequest = "GET /foobar HTTP/1.1\n" +
-                        "Host: localhost:5000\n" +
-                        "Connection: Keep-Alive\n" +
-                        "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                        "Accept-Encoding: gzip,deflate";
-        reader = createBufferedReader(getFooRequest);
+    public void pathForFile1() {
+        reader = createBufferedReader(getRequestWithFile1Path);
         Request request = new Request(reader);
-        assertEquals("/foobar" , request.getPath());
+        assertEquals("/file1", request.getPath());
+    }
+
+    @Test
+    public void noFilePathForEmpty() {
+        reader = createBufferedReader(simpleGetRequest);
+        Request request = new Request(reader);
+        assertEquals("No path", request.getPath());
+    }
+
+    @Test
+    public void methodOptions() {
+        reader = createBufferedReader(getRequestWithMethodOptionsPath);
+        Request request = new Request(reader);
+        assertTrue(request.methodOptions());
+    }
+
+    @Test
+    public void methodOptions2() {
+        reader = createBufferedReader(getRequestWithMethodOptions2Path);
+        Request request = new Request(reader);
+        assertTrue(request.methodOptions2());
+    }
+
+    @Test
+    public void noMethodOptions2() {
+        reader = createBufferedReader(getRequestWithMethodOptionsPath);
+        Request request = new Request(reader);
+        assertFalse(request.methodOptions2());
+    }
+
+    @Test
+    public void noMethodOptions() {
+        reader = createBufferedReader(simpleGetRequest);
+        Request request = new Request(reader);
+        assertFalse(request.methodOptions());
+    }
+
+    @Test
+    public void requestLineHasNoPath() {
+        reader = createBufferedReader(simpleGetRequest);
+        Request request = new Request(reader);
+        assertFalse(request.requestLineHasPath());
+    }
+
+    @Test
+    public void getsHeaderFields() {
+        reader = createBufferedReader(simpleGetRequest);
+        Request request = new Request(reader);
+        assertEquals("Connection: Keep-Alive\n" +
+                     "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                     "Host: localhost:5000\n" +
+                     "Accept-Encoding: gzip,deflate\n", request.getHeaderFields());
+    }
+
+    @Test
+    public void getsDifferentHeaderFields() {
+        String differentGetRequest = requestWithDifferentUserAgent("/");
+        BufferedReader reader = createBufferedReader(differentGetRequest);
+        Request request = new Request(reader);
+        assertEquals("Connection: Keep-Alive\n" +
+                     "User-Agent: Apache-HttpClient/4.3.5 (Win32)\n" +
+                     "Host: localhost:5000\n" +
+                     "Accept-Encoding: gzip,deflate\n", request.getHeaderFields());
+    }
+
+    private String createRequestString(String path) {
+        return  "GET "+ path + " HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Connection: Keep-Alive\n" +
+                "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                "Accept-Encoding: gzip,deflate";
+    }
+
+    private String requestWithDifferentUserAgent(String path) {
+        return "GET " + path + " HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Connection: Keep-Alive\n" +
+                "User-Agent: Apache-HttpClient/4.3.5 (Win32)\n" +
+                "Accept-Encoding: gzip,deflate\n";
     }
 
     private BufferedReader createBufferedReader(String request) {

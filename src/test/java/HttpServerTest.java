@@ -25,6 +25,7 @@ public class HttpServerTest {
     private SocketMock socketMock;
     private RealSocketConnection socket;
     private String getRequest;
+    private String bogusRequest;
 
     @Before
     public void setUp() throws IOException {
@@ -37,6 +38,11 @@ public class HttpServerTest {
                      "Connection: Keep-Alive\n" +
                      "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
                      "Accept-Encoding: gzip,deflate";
+        bogusRequest = "BOGUS / HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Connection: Keep-Alive\n" +
+                "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                "Accept-Encoding: gzip,deflate";
     }
 
     @After
@@ -65,6 +71,18 @@ public class HttpServerTest {
         server.sendResponse(stream, request);
 
         assertThat(stream.response, containsString("HTTP/1.1 200 OK"));
+    }
+
+    @Test
+    public void writesDifferentContentToClient() throws IOException {
+        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        FakeOutputStream stream = new FakeOutputStream();
+        BufferedReader reader = createBufferedReader(bogusRequest);
+        Request request = new Request(reader);
+
+        server.sendResponse(stream, request);
+
+        assertThat(stream.response, containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test

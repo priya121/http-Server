@@ -1,23 +1,39 @@
+import main.Protocol;
 import main.RequestLine;
 import org.junit.Test;
-
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
 public class RequestLineTest {
+    Protocol protocol = new Protocol("HTTP 1.1");
 
     @Test
     public void hasAMethodType() {
-        RequestLine requestLine = new RequestLine("GET", "/foobar");
-        assertEquals(Optional.of("GET"), requestLine.getMethodType());
-        assertEquals("/foobar", requestLine.getPath());
+        RequestLine requestLine = new RequestLine("GET", "/foobar", protocol);
+        assertEquals("GET", requestLine.getMethodType());
     }
 
     @Test
-    public void determinesIfThereIsAPath() {
-        RequestLine requestLine = new RequestLine("PUT", "/file1");
-        assertEquals(Optional.of("PUT"), requestLine.getMethodType());
+    public void hasADifferentMethodType() {
+        RequestLine requestLine = new RequestLine("PUT", "/form", protocol);
+        assertEquals("PUT", requestLine.getMethodType());
+    }
+
+    @Test
+    public void getsPath() {
+        RequestLine requestLine = new RequestLine("PUT", "/file1", protocol);
         assertEquals("/file1", requestLine.getPath());
+    }
+
+    @Test
+    public void getsAnotherPath() {
+        RequestLine requestLine = new RequestLine("PUT", "/text-file.txt", protocol);
+        assertEquals("/text-file.txt", requestLine.getPath());
+    }
+
+    @Test
+    public void getsProtocol() {
+        RequestLine requestLine = new RequestLine("GET", "/", protocol);
+        assertEquals("HTTP 1.1", requestLine.getProtocol());
     }
 }
