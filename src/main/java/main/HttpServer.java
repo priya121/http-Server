@@ -49,18 +49,6 @@ public class HttpServer {
             EmptyPathResponse emptyPath = new EmptyPathResponse(content);
             String response = emptyPath.get(request);
             writeToClient(stream, response);
-        } else if (request.getPath().equals("/") && request.getRequestMethod().equals("HEAD")) {
-            EmptyPathResponse emptyPath = new EmptyPathResponse(content);
-            String response = emptyPath.head(request);
-            writeToClient(stream, response);
-        } else if (request.getPath().equals("/redirect") && request.getRequestMethod().equals("GET")) {
-            RedirectResponse redirect = new RedirectResponse(content);
-            String response = redirect.get(request);
-            writeToClient(stream, response);
-        } else if (!request.validRequestMethod()) {
-            DefaultResponse defaultResponse = new DefaultResponse(content);
-            String response = defaultResponse.get(request);
-            writeToClient(stream, response);
         } else if (!fileList.validFilePath(request.getPath())) {
             NoResourceResponse noResource = new NoResourceResponse(content);
             String response = noResource.head(request);
