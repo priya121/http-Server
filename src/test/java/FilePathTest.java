@@ -35,6 +35,6 @@ public class FilePathTest {
 
     @Test
     public void storesAllValidFilePaths() {
-        assertEquals(4, list.getFiles().size());
+        assertEquals(6, list.getFiles().size());
     }
 }
