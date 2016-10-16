@@ -1,18 +1,27 @@
 package main;
 
+import main.responses.*;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class ResponseFactory {
+    private HashMap<String, DefaultResponse> responses;
 
-    private final HashMap<String, ResponseType> responses;
-
-    public ResponseFactory() {
-        responses = new HashMap<>();
+    public ResponseFactory(List content) {
+        this.responses = new HashMap<>();
+        responses.put("/", new EmptyPathResponse(content));
+        responses.put("/form", new FormResponse(content));
+        responses.put("/method_options", new MethodOptionsResponse(content));
+        responses.put("/method_options2", new MethodOptions2Response(content));
+        responses.put("/coffee", new CoffeeResponse(content));
+        responses.put("/tea", new TeaResponse(content));
+        responses.put("/redirect", new RedirectResponse(content));
+        responses.put("default", new DefaultResponse(content));
     }
 
-    public HashMap addResponses(String path, ResponseType response) {
-        responses.put(path, response);
-        return responses;
+    public DefaultResponse findRelevantResponse(Request request) {
+        return responses.get(request.getPath());
     }
 
 }
