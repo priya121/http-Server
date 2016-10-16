@@ -1,8 +1,6 @@
 package main;
 
-import main.responses.EmptyPathResponse;
-import main.responses.MethodOptions2Response;
-import main.responses.MethodOptionsResponse;
+import main.responses.*;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 import main.streams.RealOutputStreamWriter;
@@ -46,27 +44,38 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
+        FilePathList fileList = new FilePathList();
         if (request.getPath().equals("/") && request.getRequestMethod().equals("GET")) {
             EmptyPathResponse emptyPath = new EmptyPathResponse(content);
             String response = emptyPath.get(request);
-            stream.write(response.getBytes());
-            stream.close();
-        } else if (request.getPath().equals("/method_options") && request.getRequestMethod().equals("OPTIONS")) {
-            MethodOptionsResponse methodOptions = new MethodOptionsResponse(content);
-            String response = methodOptions.options(request);
-            stream.write(response.getBytes());
-            stream.close();
-        } else if (request.getPath().equals("/method_options2") && request.getRequestMethod().equals("OPTIONS")) {
-            MethodOptions2Response methodOptions2 = new MethodOptions2Response(content);
-            String response = methodOptions2.options(request);
-            stream.write(response.getBytes());
-            stream.close();
+            writeToClient(stream, response);
+        } else if (request.getPath().equals("/") && request.getRequestMethod().equals("HEAD")) {
+            EmptyPathResponse emptyPath = new EmptyPathResponse(content);
+            String response = emptyPath.head(request);
+            writeToClient(stream, response);
+        } else if (request.getPath().equals("/redirect") && request.getRequestMethod().equals("GET")) {
+            RedirectResponse redirect = new RedirectResponse(content);
+            String response = redirect.get(request);
+            writeToClient(stream, response);
+        } else if (!request.validRequestMethod()) {
+            DefaultResponse defaultResponse = new DefaultResponse(content);
+            String response = defaultResponse.get(request);
+            writeToClient(stream, response);
+        } else if (!fileList.validFilePath(request.getPath())) {
+            NoResourceResponse noResource = new NoResourceResponse(content);
+            String response = noResource.head(request);
+            writeToClient(stream, response);
         } else {
             Response response = new Response(content);
             String respond = response.get(request);
             stream.write(respond.getBytes());
             stream.close();
         }
+    }
+
+    private void writeToClient(StreamWriter stream, String response) {
+        stream.write(response.getBytes());
+        stream.close();
     }
 
     private void executeTask(Runnable runnable) {
