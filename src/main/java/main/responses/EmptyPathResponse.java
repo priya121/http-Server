@@ -2,15 +2,18 @@ package main.responses;
 
 import main.Request;
 import main.Response;
-import main.Status;
 
 import java.util.List;
 
-public class EmptyPathResponse {
+import static main.Status.METHOD_NOT_ALLOWED;
+import static main.Status.OK;
+
+public class EmptyPathResponse extends DefaultResponse {
     private final List<String> content;
     private final String headers;
 
     public EmptyPathResponse(List content) {
+        super(content);
         this.content = content;
         this.headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                        "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -22,39 +25,39 @@ public class EmptyPathResponse {
     }
 
     public String get(Request request) {
-        return new Response(ok200(), createHeaders(), getBody(content)).getResponse(request);
-    }
-
-    public String head(Request request) {
-        return new Response(ok200(), "" , "").getResponse(request);
+        return new Response(OK.get(),
+                            headers,
+                            getBody(content)).getResponse();
     }
 
     public String post(Request request) {
-        return new Response(methodNotAllowed(), createHeaders(), "").getResponse(request);
+        return new Response(METHOD_NOT_ALLOWED.get(),
+                headers,
+                "").getResponse();
     }
 
     public String put(Request request) {
-        return new Response(methodNotAllowed(), createHeaders(), "").getResponse(request);
+        return new Response(METHOD_NOT_ALLOWED.get(),
+                headers,
+                "").getResponse();
+    }
+
+    public String head(Request request) {
+        return new Response(OK.get(),
+                            headers ,
+                            "").getResponse();
     }
 
     public String options(Request request) {
-        return new Response(methodNotAllowed(), createHeaders(), "").getResponse(request);
+        return new Response(METHOD_NOT_ALLOWED.get(),
+                            headers,
+                            "").getResponse();
     }
 
     public String delete(Request request) {
-        return new Response(methodNotAllowed(), createHeaders(), "").getResponse(request);
-    }
-
-    public String ok200() {
-        return Status.OK.get();
-    }
-
-    public String methodNotAllowed() {
-        return "HTTP/1.1 405 Method Not Allowed\n";
-    }
-
-    public String createHeaders() {
-        return headers;
+        return new Response(METHOD_NOT_ALLOWED.get(),
+                            headers,
+                            "").getResponse();
     }
 
     public String getBody(List<String> content) {

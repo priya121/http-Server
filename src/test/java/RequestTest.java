@@ -66,10 +66,10 @@ public class RequestTest {
     }
 
     @Test
-    public void noFilePathForEmpty() {
+    public void emptyPath() {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
-        assertEquals("No path", request.getPath());
+        assertEquals("/", request.getPath());
     }
 
     @Test

@@ -32,7 +32,7 @@ public class Response {
         this.body = body;
     }
 
-    public String getResponse(Request request) {
+    public String getResponse() {
         return statusLine +"\n" + headers + "\n" + body + "\n";
     }
 
@@ -76,6 +76,7 @@ public class Response {
                determineBody(request) +
                getContent(request);
     }
+
 
     public void storeContent(Request request) {
         if (request.getRequestLine().contains("POST") && request.getPath().equals("/form")) {

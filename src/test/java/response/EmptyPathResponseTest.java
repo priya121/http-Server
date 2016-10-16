@@ -2,11 +2,9 @@ package response;
 
 import main.Request;
 import main.responses.EmptyPathResponse;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,69 +14,61 @@ import static org.junit.Assert.assertThat;
 
 public class EmptyPathResponseTest {
 
-    private BufferedReader reader;
-    List content = new ArrayList<>();
-    private Request simpleGetRequest = createRequest("GET / HTTP/1.1\n");
-    private Request simpleHeadRequest = createRequest("HEAD / HTTP/1.1\n");
-    private Request emptyPostRequest = createRequest("POST / HTTP/1.1\n");
-    private Request emptyPutRequest = createRequest("PUT / HTTP/1.1\n");
-    private Request emptyOptionsRequest = createRequest("OPTIONS / HTTP/1.1\n");
-    private Request emptyDeleteRequest = createRequest("DELETE / HTTP/1.1\n");
+    private EmptyPathResponse response;
+    private final List content = new ArrayList<>();
+    private final TestHelper helper = new TestHelper();
+    private final Request simpleGetRequest = helper.create("GET /");
+    private final Request simpleHeadRequest = helper.create("HEAD /");
+    private final Request emptyPostRequest = helper.create("POST /");
+    private final Request emptyPutRequest = helper.create("PUT /");
+    private final Request emptyOptionsRequest = helper.create("OPTIONS /");
+    private final Request emptyDeleteRequest = helper.create("DELETE /");
+
+    @Before
+    public void setUp() {
+        response = new EmptyPathResponse(content);
+    }
 
     @Test
     public void correctResponseForSimpleGet() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.get(simpleGetRequest);
         assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void correctResponseForSimpleHead() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.head(simpleHeadRequest);
-        assertEquals("HTTP/1.1 200 OK\n\n\n", createdResponse);
+        assertEquals("HTTP/1.1 200 OK\n" +
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                     "ETag: \n" +
+                     "Accept-Ranges: none\n" +
+                     "Content-Length: \n" +
+                     "Connection: close\n" +
+                     "Content-Type: text/plain\n\n\n", createdResponse);
     }
 
     @Test
     public void methodNotAllowedForEmptyPost() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.post(emptyPostRequest);
         assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyPut() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.put(emptyPutRequest);
         assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyOptions() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.options(emptyOptionsRequest);
         assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyDelete() {
-        EmptyPathResponse response = new EmptyPathResponse(content);
         String createdResponse = response.delete(emptyDeleteRequest);
         assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
-    }
-
-    private Request createRequest(String requestLine) {
-        String requestContent = requestLine +
-                "Host: localhost:5000\n" +
-                "Connection: Keep-Alive\n" +
-                "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                "Accept-Encoding: gzip,deflate";
-        reader = createBufferedReader(requestContent);
-        return new Request(reader);
-    }
-
-    private BufferedReader createBufferedReader(String request) {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getBytes());
-        return new BufferedReader(new InputStreamReader(inputStream));
     }
 }

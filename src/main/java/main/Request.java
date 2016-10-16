@@ -44,10 +44,7 @@ public class Request {
     }
 
     public String getPath() {
-        if (requestLineHasPath()) {
-            return requestLine.getPath();
-        }
-        return "No path";
+        return requestLine.getPath();
     }
 
     public boolean methodOptions() {
