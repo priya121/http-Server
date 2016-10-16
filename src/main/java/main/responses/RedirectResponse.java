@@ -24,6 +24,7 @@ public class RedirectResponse extends DefaultResponse {
                 "Content-Type: text/plain\n";
     }
 
+    @Override
     public String get(Request request) {
         return new Response(REDIRECT.get(),
                             headers,

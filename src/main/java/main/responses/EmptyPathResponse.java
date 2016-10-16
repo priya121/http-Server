@@ -24,47 +24,25 @@ public class EmptyPathResponse extends DefaultResponse {
                        "Content-Type: text/plain\n";
     }
 
+    @Override
     public String get(Request request) {
         return new Response(OK.get(),
                             headers,
                             getBody(content)).getResponse();
     }
 
+    @Override
     public String post(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                 headers,
                 "").getResponse();
     }
 
-    public String put(Request request) {
-        return new Response(METHOD_NOT_ALLOWED.get(),
-                headers,
-                "").getResponse();
-    }
-
+    @Override
     public String head(Request request) {
         return new Response(OK.get(),
                             headers ,
                             "").getResponse();
     }
 
-    public String options(Request request) {
-        return new Response(METHOD_NOT_ALLOWED.get(),
-                            headers,
-                            "").getResponse();
-    }
-
-    public String delete(Request request) {
-        return new Response(METHOD_NOT_ALLOWED.get(),
-                            headers,
-                            "").getResponse();
-    }
-
-    public String getBody(List<String> content) {
-        if (content.size() > 0) {
-            return content.get(0);
-        } else {
-            return "";
-        }
-    }
 }
