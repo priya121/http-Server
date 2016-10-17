@@ -6,11 +6,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 public class RequestTest {
@@ -38,20 +36,6 @@ public class RequestTest {
     }
 
     @Test
-    public void requestLineHasPathFoobar() {
-        reader = createBufferedReader(getRequestWithFoobarPath);
-        Request request = new Request(reader);
-        assertTrue(request.requestLineHasPath());
-    }
-
-    @Test
-    public void requestLineHasPathFile1() {
-        reader = createBufferedReader(getRequestWithFile1Path);
-        Request request = new Request(reader);
-        assertTrue(request.requestLineHasPath());
-    }
-
-    @Test
     public void pathForFoobar() {
         reader = createBufferedReader(getRequestWithFoobarPath);
         Request request = new Request(reader);
@@ -70,13 +54,6 @@ public class RequestTest {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
         assertEquals("/", request.getPath());
-    }
-
-    @Test
-    public void requestLineHasNoPath() {
-        reader = createBufferedReader(simpleGetRequest);
-        Request request = new Request(reader);
-        assertFalse(request.requestLineHasPath());
     }
 
     @Test
