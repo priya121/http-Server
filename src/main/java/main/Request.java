@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Request {
     private final BufferedReader reader;
-    private final ArrayList validMethods;
     private final RequestLine requestLine;
     private HashMap<String, String> headerFields = new HashMap<>();
 
@@ -15,12 +14,6 @@ public class Request {
         this.reader = reader;
         this.requestLine = setRequestLine();
         this.headerFields = setHeaderFields();
-        this.validMethods = new ArrayList<>(Arrays.asList(Method.GET.get(),
-                                                          Method.PUT.get(),
-                                                          Method.POST.get(),
-                                                          Method.HEAD.get(),
-                                                          Method.OPTIONS.get(),
-                                                          Method.DELETE.get()));
     }
 
     public String getRequestLine() {
@@ -29,20 +22,20 @@ public class Request {
                 " " + requestLine.getProtocol();
     }
 
-    public String getHeaderFields() {
-        String content = "";
-        for (Map.Entry<String, String> entry: headerFields.entrySet()) {
-            content += entry.getKey() + ": " + entry.getValue() + "\n";
-        }
-        return content;
-    }
-
     public String getRequestMethod() {
         return requestLine.getMethodType();
     }
 
     public String getPath() {
         return requestLine.getPath();
+    }
+
+    public String getHeaderFields() {
+        String content = "";
+        for (Map.Entry<String, String> entry: headerFields.entrySet()) {
+            content += entry.getKey() + ": " + entry.getValue() + "\n";
+        }
+        return content;
     }
 
     private RequestLine setRequestLine() {
