@@ -73,34 +73,6 @@ public class RequestTest {
     }
 
     @Test
-    public void methodOptions() {
-        reader = createBufferedReader(getRequestWithMethodOptionsPath);
-        Request request = new Request(reader);
-        assertTrue(request.methodOptions());
-    }
-
-    @Test
-    public void methodOptions2() {
-        reader = createBufferedReader(getRequestWithMethodOptions2Path);
-        Request request = new Request(reader);
-        assertTrue(request.methodOptions2());
-    }
-
-    @Test
-    public void noMethodOptions2() {
-        reader = createBufferedReader(getRequestWithMethodOptionsPath);
-        Request request = new Request(reader);
-        assertFalse(request.methodOptions2());
-    }
-
-    @Test
-    public void noMethodOptions() {
-        reader = createBufferedReader(simpleGetRequest);
-        Request request = new Request(reader);
-        assertFalse(request.methodOptions());
-    }
-
-    @Test
     public void requestLineHasNoPath() {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);

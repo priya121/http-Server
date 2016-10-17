@@ -24,7 +24,9 @@ public class Request {
     }
 
     public String getRequestLine() {
-        return requestLine.getMethodType() + " " + requestLine.getPath() + " " + requestLine.getProtocol();
+        return requestLine.getMethodType() +
+                " " + requestLine.getPath() +
+                " " + requestLine.getProtocol();
     }
 
     public String getHeaderFields() {
@@ -45,18 +47,6 @@ public class Request {
 
     public String getPath() {
         return requestLine.getPath();
-    }
-
-    public boolean methodOptions() {
-        return getPath().equals("/method_options");
-    }
-
-    public boolean methodOptions2() {
-        return getPath().equals("/method_options2");
-    }
-
-    public boolean coffee() {
-        return getPath().equals("/coffee");
     }
 
     private RequestLine setRequestLine() {
@@ -89,7 +79,6 @@ public class Request {
         String[] headerFieldSplit = line.split(":", patternLimit);
         headerFields.put(headerFieldName, headerFieldSplit[1].trim());
     }
-
 
     public boolean validRequestMethod() {
         return validMethods.stream()

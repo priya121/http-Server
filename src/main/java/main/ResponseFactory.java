@@ -6,7 +6,6 @@ import java.util.*;
 
 public class ResponseFactory {
     private HashMap<String, DefaultResponse> responses;
-    private List validPaths = new ArrayList(Arrays.asList());
 
     public ResponseFactory(List content) {
         this.responses = new HashMap<>();
