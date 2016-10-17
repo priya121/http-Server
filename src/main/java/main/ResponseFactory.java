@@ -18,7 +18,6 @@ public class ResponseFactory {
         responses.put("/tea", new TeaResponse(content));
         responses.put("/redirect", new RedirectResponse(content));
         responses.put("no resource", new NoResourceResponse(content));
-        responses.put("default", new DefaultResponse(content));
     }
 
     public DefaultResponse findRelevantResponse(Request request) {

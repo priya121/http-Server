@@ -85,9 +85,9 @@ public class ResponseFactoryTest {
     }
 
     @Test
-    public void returnsDefaultResponseIfNoMatchFound() {
+    public void returnsNoResourceResponseIfNoMatchFound() {
         ResponseFactory responses = new ResponseFactory(content);
         DefaultResponse response = responses.findRelevantResponse(getFoobar);
-        assertTrue(response instanceof DefaultResponse);
+        assertTrue(response instanceof NoResourceResponse);
     }
 }
