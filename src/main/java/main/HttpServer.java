@@ -44,7 +44,7 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
-        Action action = new Action();
+        ActionChooser action = new ActionChooser();
         ResponseFactory factory = new ResponseFactory(content);
         DefaultResponse relevantResponse = factory.findRelevantResponse(request);
         String response = action.determine(relevantResponse, request);

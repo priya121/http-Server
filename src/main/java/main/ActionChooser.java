@@ -10,31 +10,21 @@ import java.util.List;
 import static main.Method.*;
 import static main.Status.METHOD_NOT_ALLOWED;
 
-public class Action {
-    List<Action> responseMethods = new ArrayList<Action>() {{(
-            add(new Get());
-                                            new Post(),
-                                            new Put(),
-                                            new Head(),
-                                            new Options(),
-                                            new Delete(),
-                                            new BogusRequestMethod());
+public class ActionChooser {
+    List<Action> responseMethods = new ArrayList<>(Arrays.asList(new Get(GET.get()),
+                                                                 new Post(POST.get()),
+                                                                 new Put(PUT.get()),
+                                                                 new Head(HEAD.get()),
+                                                                 new Options(OPTIONS.get()),
+                                                                 new Delete(DELETE.get())));
 
 
     public String determine(DefaultResponse response, Request request) {
         String requestMethod = request.getRequestMethod();
-        if (requestMethod.equals(GET.get())) {
-            return response.get(request);
-        } else if (requestMethod.equals(POST.get())) {
-            return response.post(request);
-        } else if (requestMethod.equals(PUT.get())) {
-            return response.put(request);
-        } else if (requestMethod.equals(HEAD.get())) {
-            return response.head(request);
-        } else if (requestMethod.equals(DELETE.get())) {
-            return response.delete(request);
-        } else if (requestMethod.equals(OPTIONS.get())) {
-            return response.options(request);
+        for (Action action : responseMethods) {
+            if (action.getMethod().equals(requestMethod)) {
+                return action.getResponse(response, request);
+            }
         }
         return METHOD_NOT_ALLOWED.get() + "\n";
     }
