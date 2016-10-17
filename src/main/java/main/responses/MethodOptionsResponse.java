@@ -67,12 +67,4 @@ public class MethodOptionsResponse extends DefaultResponse{
                             defaultHeaders,
                             "").getResponse();
     }
-
-    public String getBody(List<String> content) {
-        if (content.size() > 0) {
-            return content.get(0);
-        } else {
-            return "";
-        }
-    }
 }
