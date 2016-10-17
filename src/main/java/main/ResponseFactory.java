@@ -5,7 +5,7 @@ import main.responses.*;
 import java.util.*;
 
 public class ResponseFactory {
-    private HashMap<String, DefaultResponse> responses;
+    private final HashMap<String, DefaultResponse> responses;
 
     public ResponseFactory(List content) {
         this.responses = new HashMap<>();

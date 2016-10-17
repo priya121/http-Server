@@ -75,11 +75,4 @@ public class Request {
         String[] headerFieldSplit = line.split(":", patternLimit);
         headerFields.put(headerFieldName, headerFieldSplit[1].trim());
     }
-
-    public boolean validRequestMethod() {
-        return validMethods.stream()
-                .filter(method -> method.equals(getRequestMethod()))
-                .findAny()
-                .isPresent();
-    }
 }

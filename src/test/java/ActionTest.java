@@ -1,4 +1,4 @@
-import main.Action;
+import main.ActionChooser;
 import main.Request;
 import main.responses.DefaultResponse;
 import main.responses.EmptyPathResponse;
@@ -31,7 +31,7 @@ public class ActionTest {
 
     @Test
     public void createsSimpleGetResponse() {
-        Action action = new Action();
+        ActionChooser action = new ActionChooser();
         DefaultResponse response = new EmptyPathResponse(content);
         String responseToSend = action.determine(response, emptyGetRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
@@ -46,7 +46,7 @@ public class ActionTest {
 
     @Test
     public void createsPutForm() {
-        Action action = new Action();
+        ActionChooser action = new ActionChooser();
         DefaultResponse response = new FormResponse(content);
         String responseToSend = action.determine(response, postFormRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
@@ -62,7 +62,7 @@ public class ActionTest {
 
     @Test
     public void correctResponseForBogusRequest() {
-        Action action = new Action();
+        ActionChooser action = new ActionChooser();
         DefaultResponse response = new EmptyPathResponse(content);
         String responseToSend = action.determine(response, bogusRequest);
         assertEquals("HTTP/1.1 405 Method Not Allowed\n", responseToSend);
@@ -70,7 +70,7 @@ public class ActionTest {
 
     @Test
     public void deleteFormRequestReturnsEmptyBody() {
-        Action action = new Action();
+        ActionChooser action = new ActionChooser();
         DefaultResponse defaultResponse = new FormResponse(content);
         action.determine(defaultResponse, postFormRequest);
         DefaultResponse response = new FormResponse(content);
