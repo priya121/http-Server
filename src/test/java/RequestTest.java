@@ -6,26 +6,20 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 public class RequestTest {
     private BufferedReader reader;
-    private String getRequestWithMethodOptionsPath;
     private String simpleGetRequest;
     private String getRequestWithFile1Path;
     private String getRequestWithFoobarPath;
-    private String getRequestWithMethodOptions2Path;
 
     @Before
     public void setUp() {
         simpleGetRequest = createRequestString("/");
-        getRequestWithMethodOptionsPath = createRequestString("/method_options");
-        getRequestWithMethodOptions2Path = createRequestString("/method_options2");
         getRequestWithFile1Path = createRequestString("/file1");
         getRequestWithFoobarPath = createRequestString("/foobar");
     }
@@ -35,20 +29,6 @@ public class RequestTest {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
         assertThat(request.getRequestLine(), is("GET / HTTP/1.1"));
-    }
-
-    @Test
-    public void requestLineHasPathFoobar() {
-        reader = createBufferedReader(getRequestWithFoobarPath);
-        Request request = new Request(reader);
-        assertTrue(request.requestLineHasPath());
-    }
-
-    @Test
-    public void requestLineHasPathFile1() {
-        reader = createBufferedReader(getRequestWithFile1Path);
-        Request request = new Request(reader);
-        assertTrue(request.requestLineHasPath());
     }
 
     @Test
@@ -70,13 +50,6 @@ public class RequestTest {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
         assertEquals("/", request.getPath());
-    }
-
-    @Test
-    public void requestLineHasNoPath() {
-        reader = createBufferedReader(simpleGetRequest);
-        Request request = new Request(reader);
-        assertFalse(request.requestLineHasPath());
     }
 
     @Test

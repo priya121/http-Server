@@ -37,10 +37,6 @@ public class Request {
         return content;
     }
 
-    public boolean requestLineHasPath() {
-        return requestLine.getPath().length() > 1;
-    }
-
     public String getRequestMethod() {
         return requestLine.getMethodType();
     }
