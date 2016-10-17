@@ -2,11 +2,11 @@ package main;
 
 import main.responses.*;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ResponseFactory {
     private HashMap<String, DefaultResponse> responses;
+    private List validPaths = new ArrayList(Arrays.asList());
 
     public ResponseFactory(List content) {
         this.responses = new HashMap<>();
@@ -17,11 +17,16 @@ public class ResponseFactory {
         responses.put("/coffee", new CoffeeResponse(content));
         responses.put("/tea", new TeaResponse(content));
         responses.put("/redirect", new RedirectResponse(content));
+        responses.put("no resource", new NoResourceResponse(content));
         responses.put("default", new DefaultResponse(content));
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
-        return responses.get(request.getPath());
+        for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
+            if (path.getKey().equals(request.getPath())) {
+               return path.getValue();
+            }
+        }
+        return responses.get("no resource");
     }
-
 }

@@ -22,8 +22,9 @@ public class CoffeeResponse extends DefaultResponse {
 
     @Override
     public String get(Request request) {
-        return new Response(Status.COFFEE.get(),
-                            defaultHeaders,
-                            "\n<h1> I'm a teapot</h1>").getResponse();
+        String response = new Response(Status.COFFEE.get(),
+                            "\n" + defaultHeaders,
+                            "\n\n<h1> I'm a teapot</h1>").getResponse();
+        return response;
     }
 }

@@ -3,8 +3,10 @@ package main;
 import main.responses.DefaultResponse;
 
 import static main.Method.*;
+import static main.Status.METHOD_NOT_ALLOWED;
 
 public class Action {
+
     public String determine(DefaultResponse response, Request request) {
         String requestMethod = request.getRequestMethod();
         if (requestMethod.equals(GET.get())) {
@@ -19,8 +21,7 @@ public class Action {
             return response.delete(request);
         } else if (requestMethod.equals(OPTIONS.get())) {
             return response.options(request);
-        } else {
-           return "";
         }
+        return METHOD_NOT_ALLOWED.get() + "\n";
     }
 }

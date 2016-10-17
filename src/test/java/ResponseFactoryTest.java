@@ -20,6 +20,7 @@ public class ResponseFactoryTest {
     private Request redirectRequest;
     private Request methodOptionsRequest;
     private Request methodOptions2Request;
+    private Request getFoobar;
 
     @Before
     public void setUp() {
@@ -31,6 +32,7 @@ public class ResponseFactoryTest {
         redirectRequest = helper.create("GET /redirect");
         methodOptionsRequest = helper.create("GET /method_options");
         methodOptions2Request = helper.create("GET /method_options2");
+        getFoobar = helper.create("GET /foobar");
     }
 
     @Test
@@ -80,5 +82,12 @@ public class ResponseFactoryTest {
         ResponseFactory responses = new ResponseFactory(content);
         DefaultResponse response = responses.findRelevantResponse(methodOptions2Request);
         assertTrue(response instanceof MethodOptions2Response);
+    }
+
+    @Test
+    public void returnsDefaultResponseIfNoMatchFound() {
+        ResponseFactory responses = new ResponseFactory(content);
+        DefaultResponse response = responses.findRelevantResponse(getFoobar);
+        assertTrue(response instanceof DefaultResponse);
     }
 }

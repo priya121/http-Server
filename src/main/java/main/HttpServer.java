@@ -44,21 +44,11 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
-        FilePathList fileList = new FilePathList();
-        if (request.getPath().equals("/") && request.getRequestMethod().equals("GET")) {
-            EmptyPathResponse emptyPath = new EmptyPathResponse(content);
-            String response = emptyPath.get(request);
-            writeToClient(stream, response);
-        } else if (!fileList.validFilePath(request.getPath())) {
-            NoResourceResponse noResource = new NoResourceResponse(content);
-            String response = noResource.head(request);
-            writeToClient(stream, response);
-        } else {
-            Response response = new Response(content);
-            String respond = response.get(request);
-            stream.write(respond.getBytes());
-            stream.close();
-        }
+        Action action = new Action();
+        ResponseFactory factory = new ResponseFactory(content);
+        DefaultResponse relevantResponse = factory.findRelevantResponse(request);
+        String response = action.determine(relevantResponse, request);
+        writeToClient(stream, response);
     }
 
     private void writeToClient(StreamWriter stream, String response) {
