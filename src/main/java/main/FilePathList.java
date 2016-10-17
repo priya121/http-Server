@@ -1,15 +1,20 @@
 package main;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FilePathList {
-    private final ArrayList files;
+    private List files;
 
     public FilePathList() {
-        this.files = new ArrayList(Arrays.asList(File.separator, "/form", "/coffee", "/redirect", "/text-file.txt", "/file1"));
+        this.files = Arrays.asList(File.separator,
+                                  "/form",
+                                  "/coffee",
+                                  "/tea",
+                                  "/redirect",
+                                  "/text-file.txt",
+                                  "/file1");
     }
 
     public boolean validFilePath(String path) {
