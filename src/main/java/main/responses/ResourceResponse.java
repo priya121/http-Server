@@ -14,7 +14,7 @@ import static main.Status.OK;
 
 public class ResourceResponse extends DefaultResponse {
     private final String publicDirectory;
-    private final String header;
+    private String header;
 
     public ResourceResponse(String publicDirectory, List content) {
         super(content);
@@ -25,12 +25,12 @@ public class ResourceResponse extends DefaultResponse {
                 "ETag: \n" +
                 "Accept-Ranges: none\n" +
                 "Content-Length: \n" +
-                "Connection: close\n" +
-                "Content-Type: text/plain\n";
+                "Connection: close\n";
     }
 
     @Override
     public Response get(Request request) {
+        header += "Content-Type: /image/gif\n";
         return new Response(OK.get(),
                             header,
                             requestBody(request));

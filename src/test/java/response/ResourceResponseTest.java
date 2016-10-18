@@ -69,4 +69,10 @@ public class ResourceResponseTest {
         assertTrue(response.getBody().length != 0);
     }
 
+    @Test
+    public void headerContainsMediaType() {
+        Response response = resourceResponse.get(getImageGif);
+        assertThat(response.getHeader(), containsString("Content-Type: /image/gif\n"));
+    }
+
 }
