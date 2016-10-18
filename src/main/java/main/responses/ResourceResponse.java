@@ -14,19 +14,26 @@ import static main.Status.OK;
 
 public class ResourceResponse extends DefaultResponse {
     private final String publicDirectory;
-    private String header;
+    private final String header;
 
     public ResourceResponse(String publicDirectory, List content) {
         super(content);
         this.publicDirectory = publicDirectory;
-        this.header = "";
+        this.header = "Location: http://localhost:5000/\n" +
+                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                "Server: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                "ETag: \n" +
+                "Accept-Ranges: none\n" +
+                "Content-Length: \n" +
+                "Connection: close\n" +
+                "Content-Type: text/plain\n";
     }
 
     @Override
     public Response get(Request request) {
         return new Response(OK.get(),
-                header,
-                requestBody(request));
+                            header,
+                            requestBody(request));
     }
 
     public byte[] requestBody(Request request) {

@@ -6,6 +6,8 @@ import main.responses.ResourceResponse;
 import java.io.File;
 import java.util.*;
 
+import static main.Method.GET;
+
 public class ResponseFactory {
     private final HashMap<String, DefaultResponse> responses;
     String publicDirectory = "/Users/priyapatil/cob_spec/public";
@@ -24,7 +26,7 @@ public class ResponseFactory {
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
-        if (exists(request.getPath()) && (request.getRequestMethod().equals("GET"))) {
+        if (requestPossible(request)) {
             return responses.get("resource");
         }
         for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
@@ -33,6 +35,10 @@ public class ResponseFactory {
             }
         }
         return responses.get("no resource");
+    }
+
+    private boolean requestPossible(Request request) {
+        return exists(request.getPath()) && (request.getRequestMethod().equals(GET.get()));
     }
 
     private boolean exists(String filePathToFind) {

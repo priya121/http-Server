@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class RequestLineTest {
-    Protocol protocol = new Protocol("HTTP 1.1");
+    private final Protocol protocol = new Protocol("HTTP 1.1");
 
     @Test
     public void hasAMethodType() {
