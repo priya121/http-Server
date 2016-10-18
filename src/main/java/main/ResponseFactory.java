@@ -26,15 +26,17 @@ public class ResponseFactory {
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
-        if (requestPossible(request)) {
-            return responses.get("resource");
-        }
+        if (resourceRequest(request)) return responses.get("resource");
         for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
             if (path.getKey().equals(request.getPath())) {
                return path.getValue();
             }
         }
         return responses.get("no resource");
+    }
+
+    private boolean resourceRequest(Request request) {
+        return (requestPossible(request));
     }
 
     private boolean requestPossible(Request request) {
