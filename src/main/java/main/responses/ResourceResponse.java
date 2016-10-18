@@ -30,14 +30,19 @@ public class ResourceResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        if (request.getPath().equals("/text-file.txt")) {
-            header += "Content-Type: text/plain\n";
-        } else {
-            header += "Content-Type: " + request.getPath().replace(".", "/").substring(1) + "\n";
-        }
         return new Response(OK.get(),
-                            header,
+                            header += findMediaType(request),
                             requestBody(request));
+    }
+
+    private String findMediaType(Request request) {
+        if (request.getPath().equals("/text-file.txt")) {
+            return "Content-Type: text/plain\n";
+        } else {
+            return "Content-Type: " + request.getPath()
+                                              .replace(".", "/")
+                                              .substring(1) + "\n";
+        }
     }
 
     public byte[] requestBody(Request request) {
