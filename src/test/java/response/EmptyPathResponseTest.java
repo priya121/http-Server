@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.EmptyPathResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,13 +32,13 @@ public class EmptyPathResponseTest {
 
     @Test
     public void correctResponseForSimpleGet() {
-        String createdResponse = response.get(simpleGetRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
+        Response createdResponse = response.get(simpleGetRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void correctResponseForSimpleHead() {
-        String createdResponse = response.head(simpleHeadRequest);
+        Response createdResponse = response.head(simpleHeadRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -45,30 +46,30 @@ public class EmptyPathResponseTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n\n", createdResponse);
+                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
     }
 
     @Test
     public void methodNotAllowedForEmptyPost() {
-        String createdResponse = response.post(emptyPostRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.post(emptyPostRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyPut() {
-        String createdResponse = response.put(emptyPutRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.put(emptyPutRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyOptions() {
-        String createdResponse = response.options(emptyOptionsRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.options(emptyOptionsRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void methodNotAllowedForEmptyDelete() {
-        String createdResponse = response.delete(emptyDeleteRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.delete(emptyDeleteRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 }

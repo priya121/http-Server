@@ -1,5 +1,6 @@
 import main.ActionChooser;
 import main.Request;
+import main.Response;
 import main.responses.DefaultResponse;
 import main.responses.EmptyPathResponse;
 import main.responses.FormResponse;
@@ -33,7 +34,7 @@ public class ActionTest {
     public void createsSimpleGetResponse() {
         ActionChooser action = new ActionChooser();
         DefaultResponse response = new EmptyPathResponse(content);
-        String responseToSend = action.determine(response, emptyGetRequest);
+        Response responseToSend = action.determine(response, emptyGetRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -41,14 +42,14 @@ public class ActionTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n\n", responseToSend);
+                     "Content-Type: text/plain\n\n", responseToSend.getHeader());
     }
 
     @Test
     public void createsPutForm() {
         ActionChooser action = new ActionChooser();
         DefaultResponse response = new FormResponse(content);
-        String responseToSend = action.determine(response, postFormRequest);
+        Response responseToSend = action.determine(response, postFormRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                 "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -57,15 +58,15 @@ public class ActionTest {
                 "Content-Length: \n" +
                 "Connection: close\n" +
                 "Content-Type: text/plain\n\n\n" +
-                "data=fatcat\n", responseToSend);
+                "data=fatcat", responseToSend.getHeader() + new String(responseToSend.getBody()));
     }
 
     @Test
     public void correctResponseForBogusRequest() {
         ActionChooser action = new ActionChooser();
         DefaultResponse response = new EmptyPathResponse(content);
-        String responseToSend = action.determine(response, bogusRequest);
-        assertEquals("HTTP/1.1 405 Method Not Allowed\n", responseToSend);
+        String responseToSend = action.determine(response, bogusRequest).getHeader();
+        assertEquals("HTTP/1.1 405 Method Not Allowed\n\n\n", responseToSend);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class ActionTest {
         DefaultResponse defaultResponse = new FormResponse(content);
         action.determine(defaultResponse, postFormRequest);
         DefaultResponse response = new FormResponse(content);
-        String responseToSend = action.determine(response, deleteFormRequest);
-        assertFalse(responseToSend.contains("data=fatcat"));
+        Response responseToSend = action.determine(response, deleteFormRequest);
+        assertFalse(new String(responseToSend.getBody()).contains("data=fatcat"));
     }
 }

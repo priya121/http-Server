@@ -25,9 +25,9 @@ public class RedirectResponse extends DefaultResponse {
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(REDIRECT.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 }

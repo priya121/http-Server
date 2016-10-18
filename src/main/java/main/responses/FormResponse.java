@@ -24,48 +24,40 @@ public class FormResponse extends DefaultResponse {
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(OK.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String post(Request request) {
+    public Response post(Request request) {
         content.add(0, "\ndata=fatcat");
         return new Response(OK.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String put(Request request) {
+    public Response put(Request request) {
         removePreviousData();
         content.add(0, "\ndata=heathcliff");
         return new Response(OK.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String delete(Request request) {
+    public Response delete(Request request) {
         removePreviousData();
         return new Response(OK.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     private void removePreviousData() {
         if (content.size() > 0) {
             content.removeAll(content);
-        }
-    }
-
-    public String getBody(List<String> content) {
-        if (content.size() > 0) {
-            return content.get(0);
-        } else {
-            return "";
         }
     }
 }

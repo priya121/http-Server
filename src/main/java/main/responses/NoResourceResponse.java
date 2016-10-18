@@ -24,24 +24,23 @@ public class NoResourceResponse extends DefaultResponse {
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(NOT_FOUND.get(),
                 headers,
-                getBody(content)).getResponse();
+                body(getBody(content)));
     }
 
     @Override
-    public String head(Request request) {
+    public Response head(Request request) {
         return new Response(NOT_FOUND.get(),
                 headers,
-                getBody(content)).getResponse();
+                body(getBody(content)));
     }
 
     @Override
-    public String delete(Request request) {
+    public Response delete(Request request) {
         return new Response(NOT_FOUND.get(),
-                            headers,
-                            getBody(content)).getResponse();
+                headers,
+                body(getBody(content)));
     }
-
 }

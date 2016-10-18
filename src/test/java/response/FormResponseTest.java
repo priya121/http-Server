@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.FormResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,21 +32,22 @@ public class FormResponseTest {
 
     @Test
     public void postFormResponse() {
-        String createdResponse = response.get(postFormRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
+        Response createdResponse = response.get(postFormRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void putFormResponse() {
-        String createdResponse = response.get(putFormRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
+        Response createdResponse = response.get(putFormRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void postFormAddsDataToContent() {
         FormResponse formResponse = new FormResponse(content);
         formResponse.post(putFormRequest);
-        assertThat(formResponse.get(getFormRequest), containsString("\ndata=fatcat"));
+        byte[] body = formResponse.get(getFormRequest).getBody();
+        assertThat(convertToString(body), containsString("\ndata=fatcat"));
     }
 
     @Test
@@ -53,8 +55,9 @@ public class FormResponseTest {
         content = new ArrayList<>(Collections.singletonList("data=fatcat"));
         FormResponse formResponse = new FormResponse(content);
         formResponse.put(putFormRequest);
-        assertFalse(formResponse.get(getFormRequest).contains("\ndata=fatcat"));
-        assertTrue(formResponse.get(getFormRequest).contains("\ndata=heathcliff"));
+        byte[] body = formResponse.get(getFormRequest).getBody();
+        assertFalse(convertToString(body).contains("\ndata=fatcat"));
+        assertTrue(convertToString(body).contains("\ndata=heathcliff"));
     }
 
     @Test
@@ -62,6 +65,10 @@ public class FormResponseTest {
         content = new ArrayList<>(Collections.singletonList("data=heathcliff"));
         FormResponse formResponse = new FormResponse(content);
         formResponse.delete(deleteFormRequest);
-        assertFalse(formResponse.get(getFormRequest).contains("\ndata=heathcliff"));
+        assertFalse(formResponse.get(getFormRequest).getBody().toString().contains("\ndata=heathcliff"));
+    }
+
+    private String convertToString(byte[] body) {
+        return new String(body);
     }
 }

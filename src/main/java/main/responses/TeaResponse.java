@@ -9,9 +9,11 @@ import static main.Status.OK;
 
 public class TeaResponse extends DefaultResponse {
     private final String defaultHeader;
+    private final List content;
 
     public TeaResponse(List content) {
         super(content);
+        this.content = content;
         this.defaultHeader = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                 "ETag: \n" +
@@ -22,9 +24,9 @@ public class TeaResponse extends DefaultResponse {
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(OK.get(),
                             defaultHeader,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 }

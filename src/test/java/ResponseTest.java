@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import static main.Status.METHOD_NOT_ALLOWED;
 import static main.Status.OK;
+import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 
 public class ResponseTest {
@@ -18,7 +19,7 @@ public class ResponseTest {
     public void canGetCreatedResponse() {
         Response response = new Response(OK.get(),
                                         headers,
-                                        "<h1> I'm a teapot </h1>");
+                                        "<h1> I'm a teapot </h1>".getBytes());
 
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
@@ -28,7 +29,7 @@ public class ResponseTest {
                      "Content-Length: \n" +
                      "Connection: close\n" +
                      "Content-Type: text/plain\n\n" +
-                     "<h1> I'm a teapot </h1>\n", response.getResponse());
+                     "<h1> I'm a teapot </h1>", response.getHeader() + new String(response.getBody()));
     }
 
     @Test
@@ -43,6 +44,13 @@ public class ResponseTest {
                 "Accept-Ranges: none\n" +
                 "Content-Length: \n" +
                 "Connection: close\n" +
-                "Content-Type: text/plain\n\n\n", response.getResponse());
+                "Content-Type: text/plain\n\n", response.getHeader());
+    }
+
+    @Test
+    public void canCreateAResponseWithDataInBody() {
+        byte[] data = "Hi".getBytes();
+        Response response = new Response(OK.get(), headers, data);
+        assertTrue(response.getBody().length != 0);
     }
 }

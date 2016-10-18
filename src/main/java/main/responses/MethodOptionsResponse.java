@@ -27,44 +27,44 @@ public class MethodOptionsResponse extends DefaultResponse{
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String head(Request request) {
+    public Response head(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String post(Request request) {
+    public Response post(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String put(Request request){
+    public Response put(Request request){
         return new Response(OK.get(),
                             defaultHeaders,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String options(Request request) {
+    public Response options(Request request) {
         return new Response(OK.get(),
                             defaultHeaders + methodOptionsHeader,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String delete(Request request) {
+    public Response delete(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 }

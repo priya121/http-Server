@@ -17,13 +17,15 @@ public class ActionChooser {
                                                                new Options(OPTIONS.get()),
                                                                new Delete(DELETE.get()));
 
-    public String determine(DefaultResponse response, Request request) {
+    public Response determine(DefaultResponse response, Request request) {
         String requestMethod = request.getRequestMethod();
         for (Action action : responseMethods) {
             if (action.getMethod().equals(requestMethod)) {
                 return action.getResponse(response, request);
             }
         }
-        return METHOD_NOT_ALLOWED.get() + "\n";
+        return new Response(METHOD_NOT_ALLOWED.get() + "\n",
+                            "",
+                            "".getBytes());
     }
 }

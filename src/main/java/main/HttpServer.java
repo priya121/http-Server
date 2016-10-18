@@ -1,6 +1,6 @@
 package main;
 
-import main.responses.*;
+import main.responses.DefaultResponse;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 import main.streams.RealOutputStreamWriter;
@@ -18,7 +18,7 @@ public class HttpServer {
     private final ServerSocketConnection serverSocket;
     private final ArrayList content;
 
-    public HttpServer(ServerSocketConnection serverSocket) {
+    public HttpServer(ServerSocketConnection serverSocket, String publicDirectory) {
         this.serverSocket = serverSocket;
         this.content = new ArrayList();
     }
@@ -47,12 +47,13 @@ public class HttpServer {
         ActionChooser action = new ActionChooser();
         ResponseFactory factory = new ResponseFactory(content);
         DefaultResponse relevantResponse = factory.findRelevantResponse(request);
-        String response = action.determine(relevantResponse, request);
+        Response response = action.determine(relevantResponse, request);
         writeToClient(stream, response);
     }
 
-    private void writeToClient(StreamWriter stream, String response) {
-        stream.write(response.getBytes());
+    private void writeToClient(StreamWriter stream, Response response) {
+        stream.write(response.getHeader().getBytes());
+        stream.write(response.getBody());
         stream.close();
     }
 
@@ -69,4 +70,5 @@ public class HttpServer {
     private StreamWriter createOutputStream(SocketConnection socket) {
         return new RealOutputStreamWriter(socket.getOutputStream());
     }
+
 }

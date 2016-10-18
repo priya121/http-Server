@@ -1,6 +1,7 @@
 package main.methodactions;
 
 import main.Request;
+import main.Response;
 import main.responses.DefaultResponse;
 
 public class Head implements Action {
@@ -11,7 +12,7 @@ public class Head implements Action {
     }
 
     @Override
-    public String getResponse(DefaultResponse response, Request request) {
+    public Response getResponse(DefaultResponse response, Request request) {
         return response.head(request);
     }
 

@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class NoResourceResponseTest {
 
     @Test
     public void getNonExistentResource() {
-        String createdResponse = response.get(getFoobar);
+        Response createdResponse = response.get(getFoobar);
         assertEquals("HTTP/1.1 404 Not Found\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -44,30 +45,30 @@ public class NoResourceResponseTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n\n", createdResponse);
+                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
         }
 
     @Test
     public void headNonExistentResource() {
-        String createdResponse = response.head(headFoobar);
-        assertThat(createdResponse, containsString("HTTP/1.1 404 Not Found"));
+        Response createdResponse = response.head(headFoobar);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void postNonExistentResource() {
-        String createdResponse = response.post(postFoobar);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.post(postFoobar);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void deleteNonExistentResource() {
-        String createdResponse = response.delete(deleteFoobar);
-        assertThat(createdResponse, containsString("HTTP/1.1 404 Not Found"));
+        Response createdResponse = response.delete(deleteFoobar);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void optionsNonExistentResource() {
-        String createdResponse = response.options(optionsFoobar);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.options(optionsFoobar);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 }

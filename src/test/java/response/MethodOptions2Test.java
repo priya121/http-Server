@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.MethodOptions2Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,15 +31,15 @@ public class MethodOptions2Test {
     @Test
     public void optionsMethodOptionsRequest2() {
         MethodOptions2Response response = new MethodOptions2Response(content);
-        String createdResponse = response.options(optionsMethodOptions2);
-        assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
-        assertThat(createdResponse, containsString("Allow: GET,OPTIONS\n"));
+        Response createdResponse = response.options(optionsMethodOptions2);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getHeader(), containsString("Allow: GET,OPTIONS\n"));
     }
 
     @Test
     public void getMethodOptions2() {
         MethodOptions2Response response = new MethodOptions2Response(content);
-        String createdResponse = response.get(getMethodOptions2);
+        Response createdResponse = response.get(getMethodOptions2);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -46,34 +47,34 @@ public class MethodOptions2Test {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n" +
-                     "Allow: GET,OPTIONS\n\n\n", createdResponse);
+                     "Content-Type: \n" +
+                     "Allow: GET,OPTIONS\n\n", createdResponse.getHeader());
     }
 
     @Test
     public void putMethodOptions2() {
-        String createdResponse = response.put(putMethodOptions2);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.put(putMethodOptions2);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void postMethodOptions2() {
         MethodOptions2Response response = new MethodOptions2Response(content);
-        String createdResponse = response.post(postMethodOptions2);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.post(postMethodOptions2);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void headMethodOptions2() {
         MethodOptions2Response response = new MethodOptions2Response(content);
-        String createdResponse = response.head(postMethodOptions2);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed"));
+        Response createdResponse = response.head(postMethodOptions2);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void deleteMethodOptions2() {
         MethodOptions2Response response = new MethodOptions2Response(content);
-        String createdResponse = response.delete(deleteMethodOptions2);
+        Response createdResponse = response.delete(deleteMethodOptions2);
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -81,7 +82,7 @@ public class MethodOptions2Test {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n\n", createdResponse);
+                     "Content-Type: \n\n", createdResponse.getHeader());
     }
 
 }

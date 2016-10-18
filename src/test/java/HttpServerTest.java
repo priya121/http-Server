@@ -26,9 +26,11 @@ public class HttpServerTest {
     private RealSocketConnection socket;
     private String getRequest;
     private String bogusRequest;
+    private String publicDirectory;
 
     @Before
     public void setUp() throws IOException {
+        publicDirectory = "/Users/priyapatil/cob_spec/public";
         socketMock = new SocketMock();
         serverSocketConnectionSpy = new ServerSocketSpy(socketMock);
         realServerSocket = new RealServerSocket(new ServerSocket(4444));
@@ -53,7 +55,7 @@ public class HttpServerTest {
 
     @Test
     public void makesConnection() throws IOException {
-        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        HttpServer server = new HttpServer(serverSocketConnectionSpy, publicDirectory);
         serverSocketConnectionSpy.connectionMade = false;
 
         server.respondToClient();
@@ -63,7 +65,7 @@ public class HttpServerTest {
 
     @Test
     public void writesContentToClient() throws IOException {
-        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        HttpServer server = new HttpServer(serverSocketConnectionSpy, publicDirectory);
         FakeOutputStream stream = new FakeOutputStream();
         BufferedReader reader = createBufferedReader(getRequest);
         Request request = new Request(reader);
@@ -75,7 +77,7 @@ public class HttpServerTest {
 
     @Test
     public void writesDifferentContentToClient() throws IOException {
-        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        HttpServer server = new HttpServer(serverSocketConnectionSpy, publicDirectory);
         FakeOutputStream stream = new FakeOutputStream();
         BufferedReader reader = createBufferedReader(bogusRequest);
         Request request = new Request(reader);
@@ -87,7 +89,7 @@ public class HttpServerTest {
 
     @Test
     public void socketClosedAfterResponseSent() {
-        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        HttpServer server = new HttpServer(serverSocketConnectionSpy, publicDirectory);
         FakeOutputStream stream = new FakeOutputStream();
         stream.closed = false;
         BufferedReader reader = createBufferedReader(getRequest);
@@ -98,10 +100,11 @@ public class HttpServerTest {
         assertTrue(stream.closed);
     }
 
+
     @Test
     public void canAcceptTwoClients() throws IOException {
         serverSocketConnectionSpy = new ServerSocketSpy(socketMock);
-        HttpServer server = new HttpServer(serverSocketConnectionSpy);
+        HttpServer server = new HttpServer(serverSocketConnectionSpy, publicDirectory);
 
         server.respondToClient();
         server.respondToClient();

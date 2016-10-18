@@ -1,6 +1,7 @@
 package main.methodactions;
 
 import main.Request;
+import main.Response;
 import main.responses.DefaultResponse;
 
 public class Get implements Action {
@@ -10,7 +11,7 @@ public class Get implements Action {
         this.method = method;
     }
 
-    public String getResponse(DefaultResponse response, Request request) {
+    public Response getResponse(DefaultResponse response, Request request) {
         return response.get(request);
     }
 

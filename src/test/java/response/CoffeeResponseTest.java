@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.CoffeeResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +29,14 @@ public class CoffeeResponseTest {
 
     @Test
     public void correctResponseForSimpleGet() {
-        String createdResponse = response.get(getCoffeeRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 418 I'm a teapot\n"));
+        Response createdResponse = response.get(getCoffeeRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 418 I'm a teapot\n"));
     }
 
     @Test
     public void methodNotAllowedForPostCoffee() {
-        String createdResponse = response.post(postCoffeeRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.post(postCoffeeRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
 }

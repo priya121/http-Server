@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.TeaResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,19 +26,19 @@ public class TeaResponseTest {
 
     @Test
     public void correctResponseForSimpleGet() {
-        String createdResponse = response.get(getTeaRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 200 OK\n"));
+        Response createdResponse = response.get(getTeaRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void postReturnsMethodNotAllowed() {
-        String createdResponse = response.post(getTeaRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.post(getTeaRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void putReturnsMethodNotAllowed() {
-        String createdResponse = response.put(getTeaRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.put(getTeaRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 }

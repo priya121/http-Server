@@ -25,24 +25,24 @@ public class EmptyPathResponse extends DefaultResponse {
     }
 
     @Override
-    public String get(Request request) {
+    public Response get(Request request) {
         return new Response(OK.get(),
                             headers,
-                            getBody(content)).getResponse();
+                            body(getBody(content)));
     }
 
     @Override
-    public String post(Request request) {
+    public Response post(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                 headers,
-                "").getResponse();
+                body(getBody(content)));
     }
 
     @Override
-    public String head(Request request) {
+    public Response head(Request request) {
         return new Response(OK.get(),
                             headers ,
-                            "").getResponse();
+                            body(getBody(content)));
     }
 
 }

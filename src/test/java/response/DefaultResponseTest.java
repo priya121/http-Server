@@ -1,6 +1,7 @@
 package response;
 
 import main.Request;
+import main.Response;
 import main.responses.DefaultResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,44 +36,44 @@ public class DefaultResponseTest {
 
     @Test
     public void getChocolateRequestNotAllowed() {
-        String createdResponse = response.get(getRandomRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n" +
+        Response createdResponse = response.get(getRandomRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n" +
                                                    "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                                                    "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                                                    "ETag: \n" +
                                                    "Accept-Ranges: none\n" +
                                                    "Content-Length: \n" +
                                                    "Connection: close\n" +
-                                                   "Content-Type: text/plain\n\n\n"));
+                                                   "Content-Type: \n\n"));
     }
 
     @Test
     public void putEmptyRequestNotAllowed() {
-        String createdResponse = response.put(putEmptyRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.put(putEmptyRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void postCoffeeRequestNotAllowed() {
-        String createdResponse = response.post(postCoffeeRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.post(postCoffeeRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void randomHeadRequestNotAllowed() {
-        String createdResponse = response.head(randomHeadRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.head(randomHeadRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void randomOptionsRequestNotAllowed() {
-        String createdResponse = response.options(randomOptionsRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.options(randomOptionsRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void randomDeleteRequestNotAllowed() {
-        String createdResponse = response.delete(randomDeleteRequest);
-        assertThat(createdResponse, containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        Response createdResponse = response.delete(randomDeleteRequest);
+        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
     }
 }
