@@ -70,9 +70,20 @@ public class ResourceResponseTest {
     }
 
     @Test
-    public void headerContainsMediaType() {
+    public void headerContainsGifMediaType() {
         Response response = resourceResponse.get(getImageGif);
-        assertThat(response.getHeader(), containsString("Content-Type: /image/gif\n"));
+        assertThat(response.getHeader(), containsString("Content-Type: image/gif\n"));
     }
 
+    @Test
+    public void headerContainsJpegMediaType() {
+        Response response = resourceResponse.get(getImageJPEG);
+        assertThat(response.getHeader(), containsString("Content-Type: image/jpeg\n"));
+    }
+
+    @Test
+    public void headerContainsPlainTextMediaType() {
+        Response response = resourceResponse.get(getTextFile);
+        assertThat(response.getHeader(), containsString("Content-Type: text/plain\n"));
+    }
 }

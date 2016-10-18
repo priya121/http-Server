@@ -30,7 +30,11 @@ public class ResourceResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        header += "Content-Type: /image/gif\n";
+        if (request.getPath().equals("/text-file.txt")) {
+            header += "Content-Type: text/plain\n";
+        } else {
+            header += "Content-Type: " + request.getPath().replace(".", "/").substring(1) + "\n";
+        }
         return new Response(OK.get(),
                             header,
                             requestBody(request));
