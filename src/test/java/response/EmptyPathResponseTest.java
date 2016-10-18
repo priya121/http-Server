@@ -72,4 +72,25 @@ public class EmptyPathResponseTest {
         Response createdResponse = response.delete(emptyDeleteRequest);
         assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
+
+    @Test
+    public void emptyGetDisplaysImageFile1Link() {
+        Response createdResponse = response.get(simpleGetRequest);
+        String bodyContents = new String(createdResponse.getBody());
+        assertThat(bodyContents, containsString("<a href=/file1>/file1</a>\n"));
+    }
+
+    @Test
+    public void emptyGetDisplaysFile2Link() {
+        Response createdResponse = response.get(simpleGetRequest);
+        String bodyContents = new String(createdResponse.getBody());
+        assertThat(bodyContents, containsString("<a href=/file2>/file2</a>\n"));
+    }
+
+    @Test
+    public void emptyGetDisplaysImageLink() {
+        Response createdResponse = response.get(simpleGetRequest);
+        String bodyContents = new String(createdResponse.getBody());
+        assertThat(bodyContents, containsString("<a href=/image.gif>/image.gif</a>\n"));
+    }
 }
