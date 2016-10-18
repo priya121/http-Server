@@ -8,9 +8,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.Status.OK;
+import static main.Status.PARTIAL;
 
 public class ResourceResponse extends DefaultResponse {
     private final String publicDirectory;
@@ -30,9 +32,24 @@ public class ResourceResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        return new Response(OK.get(),
-                            header += findMediaType(request),
-                            requestBody(request));
+        if (request.getPath().contains("partial")) {
+            String range = request.headerFields.get("Range");
+            return new Response(PARTIAL.get(), "", getRange(requestBody(request), range));
+        } else {
+            return new Response(OK.get(),
+                    header += findMediaType(request),
+                    requestBody(request));
+        }
+    }
+
+    public byte[] getRange(byte[] body, String byteRange) {
+        String bytes = byteRange.substring(byteRange.length() - 3, byteRange.length());
+        System.out.print(bytes + "\n");
+        if (bytes.startsWith("=-")) {
+            Integer endValue = Integer.valueOf(bytes.substring(bytes.length() - 1, bytes.length()));
+            return Arrays.copyOfRange(body, 0, endValue);
+        };
+        return Arrays.copyOfRange(body, 0, 6);
     }
 
     private String findMediaType(Request request) {

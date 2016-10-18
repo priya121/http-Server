@@ -8,7 +8,7 @@ import java.util.List;
 import static main.Status.METHOD_NOT_ALLOWED;
 
 public class DefaultResponse {
-    private List<String> content;
+    List<String> content;
     private final String defaultHeaders;
 
     public DefaultResponse(List content) {

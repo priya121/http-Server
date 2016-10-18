@@ -14,7 +14,7 @@ public class ResponseFactory {
 
     public ResponseFactory(List content) {
         this.responses = new HashMap<>();
-        responses.put("/", new EmptyPathResponse(content));
+        responses.put("/", new EmptyPathResponse(publicDirectory, content));
         responses.put("/form", new FormResponse(content));
         responses.put("/method_options", new MethodOptionsResponse(content));
         responses.put("/method_options2", new MethodOptions2Response(content));

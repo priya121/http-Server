@@ -20,6 +20,7 @@ public class ActionTest {
     private Request postFormRequest;
     private Request bogusRequest;
     private Request deleteFormRequest;
+    String publicDirectory = "/Users/priyapatil/cob_spec/public";
 
     @Before
     public void setUp() {
@@ -33,7 +34,7 @@ public class ActionTest {
     @Test
     public void createsSimpleGetResponse() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content);
+        DefaultResponse response = new EmptyPathResponse(publicDirectory, content);
         Response responseToSend = action.determine(response, emptyGetRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
@@ -64,7 +65,7 @@ public class ActionTest {
     @Test
     public void correctResponseForBogusRequest() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content);
+        DefaultResponse response = new EmptyPathResponse(publicDirectory, content);
         String responseToSend = action.determine(response, bogusRequest).getHeader();
         assertEquals("HTTP/1.1 405 Method Not Allowed\n\n\n", responseToSend);
     }

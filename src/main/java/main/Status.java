@@ -5,7 +5,8 @@ public enum Status {
     NOT_FOUND("404 Not Found"),
     METHOD_NOT_ALLOWED("405 Method Not Allowed"),
     REDIRECT("302 Redirect"),
-    COFFEE("418 I'm a teapot");
+    COFFEE("418 I'm a teapot"),
+    PARTIAL("206 Partial Content");
 
     private String status;
 

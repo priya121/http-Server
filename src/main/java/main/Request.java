@@ -8,7 +8,7 @@ import java.util.*;
 public class Request {
     private final BufferedReader reader;
     private final RequestLine requestLine;
-    private HashMap<String, String> headerFields = new HashMap<>();
+    public HashMap<String, String> headerFields = new HashMap<>();
 
     public Request(BufferedReader reader) {
         this.reader = reader;
@@ -52,15 +52,23 @@ public class Request {
 
     private HashMap<String, String> setHeaderFields() {
         try {
-        String[] headerFieldNames = {"Host", "Connection", "User-Agent", "Accept-Encoding"};
-            for (String headerFieldName : headerFieldNames) {
+            List<String> headers = Arrays.asList("Host", "Connection", "User-Agent", "Accept-Encoding");
+            for (String headerFieldName : headers) {
                 String line = reader.readLine();
+                addsRangeIfPresent(headers, line);
                 addHeader(headerFieldName, line);
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
         return headerFields;
+    }
+
+    private void addsRangeIfPresent(List<String> headers, String line) {
+        if (line.contains("Range")) {
+            headers.set(0, "Range");
+            addHeader("Range", line);
+        }
     }
 
     private void addHeader(String headerFieldName, String line) {

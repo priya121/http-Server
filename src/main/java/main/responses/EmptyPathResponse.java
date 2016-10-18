@@ -13,12 +13,13 @@ import static main.Status.OK;
 
 public class EmptyPathResponse extends DefaultResponse {
     private final List<String> content;
-    String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private final String headers;
+    private final String publicDirectory;
 
-    public EmptyPathResponse(List content) {
+    public EmptyPathResponse(String publicDirectory, List content) {
         super(content);
         this.content = content;
+        this.publicDirectory = publicDirectory;
         this.headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                        "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                        "ETag: \n" +

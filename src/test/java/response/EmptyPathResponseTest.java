@@ -24,10 +24,11 @@ public class EmptyPathResponseTest {
     private final Request emptyPutRequest = helper.create("PUT /");
     private final Request emptyOptionsRequest = helper.create("OPTIONS /");
     private final Request emptyDeleteRequest = helper.create("DELETE /");
+    String publicDirectory = "/Users/priyapatil/cob_spec/public";
 
     @Before
     public void setUp() {
-        response = new EmptyPathResponse(content);
+        response = new EmptyPathResponse(publicDirectory, content);
     }
 
     @Test
