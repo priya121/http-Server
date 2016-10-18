@@ -17,10 +17,12 @@ public class HttpServer {
     private static final boolean SERVER_LISTENING = true;
     private final ServerSocketConnection serverSocket;
     private final ArrayList content;
+    private final String publicDirectory;
 
     public HttpServer(ServerSocketConnection serverSocket, String publicDirectory) {
         this.serverSocket = serverSocket;
         this.content = new ArrayList();
+        this.publicDirectory = publicDirectory;
     }
 
     public void start() throws IOException {
@@ -45,7 +47,7 @@ public class HttpServer {
 
     public void sendResponse(StreamWriter stream, Request request) {
         ActionChooser action = new ActionChooser();
-        ResponseFactory factory = new ResponseFactory(content);
+        ResponseFactory factory = new ResponseFactory(content, publicDirectory);
         DefaultResponse relevantResponse = factory.findRelevantResponse(request);
         Response response = action.determine(relevantResponse, request);
         writeToClient(stream, response);

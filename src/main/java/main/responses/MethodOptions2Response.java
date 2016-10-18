@@ -29,13 +29,13 @@ public class MethodOptions2Response extends DefaultResponse {
     public Response get(Request request) {
         return new Response(OK.get(),
                             defaultHeaders + methodOptionsHeader,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response options(Request request) {
         return new Response(OK.get(),
                             defaultHeaders + methodOptionsHeader,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 }

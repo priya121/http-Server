@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class ResourceResponseTest {
 
-    String publicDirectory = "/Users/priyapatil/cob_spec/public";
+    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
     List content = new ArrayList<>();
     private final TestHelper helper = new TestHelper();
     private Request getImageGif;

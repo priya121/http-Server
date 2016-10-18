@@ -27,20 +27,20 @@ public class NoResourceResponse extends DefaultResponse {
     public Response get(Request request) {
         return new Response(NOT_FOUND.get(),
                 headers,
-                body(getBody(content)));
+                convertToBytes(getBody(content)));
     }
 
     @Override
     public Response head(Request request) {
         return new Response(NOT_FOUND.get(),
                 headers,
-                body(getBody(content)));
+                convertToBytes(getBody(content)));
     }
 
     @Override
     public Response delete(Request request) {
         return new Response(NOT_FOUND.get(),
                 headers,
-                body(getBody(content)));
+                convertToBytes(getBody(content)));
     }
 }

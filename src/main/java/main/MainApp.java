@@ -7,8 +7,10 @@ import java.net.ServerSocket;
 
 public class MainApp {
     public static void main(String[] args) throws IOException {
-        String publicDirectory = "/Users/priyapatil/cob_spec/public";
-        HttpServer server = new HttpServer(new RealServerSocket(new ServerSocket(5000)), publicDirectory);
+        ServerArguments arguments = new ServerArguments(args, System.out);
+        int port = arguments.getPort();
+        String directory = arguments.getDirectory();
+        HttpServer server = new HttpServer(new RealServerSocket(new ServerSocket(port)), directory);
         System.out.print("Starting server...\n");
         server.start();
     }

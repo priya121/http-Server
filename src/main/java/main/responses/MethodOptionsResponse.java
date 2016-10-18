@@ -30,41 +30,41 @@ public class MethodOptionsResponse extends DefaultResponse{
     public Response get(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response head(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response post(Request request) {
         return new Response(OK.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response put(Request request){
         return new Response(OK.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response options(Request request) {
         return new Response(OK.get(),
                             defaultHeaders + methodOptionsHeader,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response delete(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 }

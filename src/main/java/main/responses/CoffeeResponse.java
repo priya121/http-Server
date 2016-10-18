@@ -24,6 +24,6 @@ public class CoffeeResponse extends DefaultResponse {
     public Response get(Request request) {
         return new Response(Status.COFFEE.get(),
                             "\n" + defaultHeaders,
-                            body("\n\n<h1> I'm a teapot</h1>"));
+                            convertToBytes("\n\n<h1> I'm a teapot</h1>"));
     }
 }

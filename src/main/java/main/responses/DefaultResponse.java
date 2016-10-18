@@ -25,38 +25,38 @@ public class DefaultResponse {
     public Response get(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     public Response head(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     public Response delete(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
 
     }
 
     public Response post(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     public Response put(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     public Response options(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     public String getBody(List<String> content) {
@@ -67,7 +67,7 @@ public class DefaultResponse {
         }
     }
 
-    public byte[] body(String content) {
+    public byte[] convertToBytes(String content) {
         return content.getBytes();
     }
 }

@@ -15,6 +15,7 @@ import static org.junit.Assert.assertThat;
 
 public class EmptyPathResponseTest {
 
+    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private EmptyPathResponse response;
     private final List content = new ArrayList<>();
     private final TestHelper helper = new TestHelper();
@@ -27,7 +28,7 @@ public class EmptyPathResponseTest {
 
     @Before
     public void setUp() {
-        response = new EmptyPathResponse(content);
+        response = new EmptyPathResponse(content, publicDirectory);
     }
 
     @Test

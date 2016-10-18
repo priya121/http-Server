@@ -27,6 +27,6 @@ public class TeaResponse extends DefaultResponse {
     public Response get(Request request) {
         return new Response(OK.get(),
                             defaultHeader,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 }

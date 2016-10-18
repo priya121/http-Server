@@ -27,7 +27,7 @@ public class FormResponse extends DefaultResponse {
     public Response get(Request request) {
         return new Response(OK.get(),
                             headers,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class FormResponse extends DefaultResponse {
         content.add(0, "\ndata=fatcat");
         return new Response(OK.get(),
                             headers,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FormResponse extends DefaultResponse {
         content.add(0, "\ndata=heathcliff");
         return new Response(OK.get(),
                             headers,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FormResponse extends DefaultResponse {
         removePreviousData();
         return new Response(OK.get(),
                             headers,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 
     private void removePreviousData() {

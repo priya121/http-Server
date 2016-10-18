@@ -28,6 +28,6 @@ public class RedirectResponse extends DefaultResponse {
     public Response get(Request request) {
         return new Response(REDIRECT.get(),
                             headers,
-                            body(getBody(content)));
+                            convertToBytes(getBody(content)));
     }
 }

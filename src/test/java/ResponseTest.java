@@ -3,8 +3,8 @@ import org.junit.Test;
 
 import static main.Status.METHOD_NOT_ALLOWED;
 import static main.Status.OK;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.testng.Assert.assertEquals;
 
 public class ResponseTest {
         String headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +

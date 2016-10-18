@@ -10,11 +10,12 @@ import static main.Method.GET;
 
 public class ResponseFactory {
     private final HashMap<String, DefaultResponse> responses;
-    String publicDirectory = "/Users/priyapatil/cob_spec/public";
+    private final String publicDirectory;
 
-    public ResponseFactory(List content) {
+    public ResponseFactory(List content, String publicDirectory) {
+        this.publicDirectory = publicDirectory;
         this.responses = new HashMap<>();
-        responses.put("/", new EmptyPathResponse(content));
+        responses.put("/", new EmptyPathResponse(content, publicDirectory));
         responses.put("/form", new FormResponse(content));
         responses.put("/method_options", new MethodOptionsResponse(content));
         responses.put("/method_options2", new MethodOptions2Response(content));
