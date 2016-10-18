@@ -93,4 +93,13 @@ public class EmptyPathResponseTest {
         String bodyContents = new String(createdResponse.getBody());
         assertThat(bodyContents, containsString("<a href=/image.gif>/image.gif</a>\n"));
     }
+
+    @Test
+    public void emptyGetDisplaysAllFileLinks() {
+        Response createdResponse = response.get(simpleGetRequest);
+        String bodyContents = new String(createdResponse.getBody());
+        assertThat(bodyContents, containsString("<a href=/image.png>/image.png</a>\n"));
+        assertThat(bodyContents, containsString("<a href=/image.jpeg>/image.jpeg</a>\n"));
+        assertThat(bodyContents, containsString("<a href=/text-file.txt>/text-file.txt</a>\n"));
+    }
 }

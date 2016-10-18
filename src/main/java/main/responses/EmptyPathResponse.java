@@ -3,6 +3,9 @@ package main.responses;
 import main.Request;
 import main.Response;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.Status.METHOD_NOT_ALLOWED;
@@ -10,6 +13,7 @@ import static main.Status.OK;
 
 public class EmptyPathResponse extends DefaultResponse {
     private final List<String> content;
+    String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private final String headers;
 
     public EmptyPathResponse(List content) {
@@ -26,9 +30,7 @@ public class EmptyPathResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        content.add("<a href=/file1>/file1</a>\n" +
-                    "<a href=/file2>/file2</a>\n" +
-                    "<a href=/image.gif>/image.gif</a>\n");
+        content.add(allFileLinks());
         return new Response(OK.get(),
                             headers,
                             body(getBody(content)));
@@ -47,5 +49,21 @@ public class EmptyPathResponse extends DefaultResponse {
                             headers ,
                             body(getBody(content)));
     }
+
+
+    public String allFileLinks() {
+        String display = "";
+        for (File file : getFiles()) {
+            String fileName = file.getPath().substring(file.getPath().lastIndexOf("/"));
+            display += "<a href=" + fileName + ">" + fileName + "</a>\n" + "\n";
+        }
+        return display;
+    }
+
+    public List<File> getFiles() {
+        File[] files = new File(publicDirectory).listFiles();
+        return new ArrayList<>(Arrays.asList(files));
+    }
+
 
 }
