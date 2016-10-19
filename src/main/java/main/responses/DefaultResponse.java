@@ -59,6 +59,12 @@ public class DefaultResponse {
                             body(getBody(content)));
     }
 
+    public Response patch(Request request) {
+        return new Response(METHOD_NOT_ALLOWED.get(),
+                defaultHeaders,
+                body(getBody(content)));
+    }
+
     public String getBody(List<String> content) {
         if (content.size() > 0) {
             return content.get(0);

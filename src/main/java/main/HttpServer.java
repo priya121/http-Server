@@ -9,6 +9,7 @@ import main.streams.StreamWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,6 +45,7 @@ public class HttpServer {
     }
 
     public void sendResponse(StreamWriter stream, Request request) {
+        System.out.print(URLDecoder.decode("Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&"));
         ActionChooser action = new ActionChooser();
         ResponseFactory factory = new ResponseFactory(content);
         DefaultResponse relevantResponse = factory.findRelevantResponse(request);
