@@ -40,6 +40,10 @@ public class Request {
         return content;
     }
 
+    public Map<String, String> getHeaders() {
+        return headerFields;
+    }
+
     private RequestLine setRequestLine() {
         try {
             String requestLine = reader.readLine();

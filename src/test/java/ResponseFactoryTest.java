@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ResponseFactoryTest {
     private final TestHelper helper = new TestHelper();
-    private List content = new ArrayList<>();
+    private List content;
     private Request emptyGetRequest;
     private Request postFormRequest;
     private Request getCoffeeRequest;
