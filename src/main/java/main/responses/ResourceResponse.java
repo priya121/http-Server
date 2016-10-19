@@ -43,6 +43,7 @@ public class ResourceResponse extends DefaultResponse {
                     header += findMediaType(request),
                     range.getRange(requestBody(request), bytes));
         }
+
         return new Response(OK.get(),
                             header += findMediaType(request),
                             requestBody(request));
