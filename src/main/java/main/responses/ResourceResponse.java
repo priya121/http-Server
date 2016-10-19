@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 import static main.Status.OK;
@@ -34,10 +33,15 @@ public class ResourceResponse extends DefaultResponse {
     @Override
     public Response get(Request request) {
         if (request.getPath().contains("/partial_content.txt")) {
-            String range = request.getHeaders().get("Range");
+            String byteRange = request.getHeaders().get("Range");
+            int lastThree = 3;
+            String bytes = byteRange.substring(byteRange.length() - lastThree, byteRange.length());
+            Range range = new Range(bytes);
+            byte[] range1 = range.getRange(requestBody(request), bytes);
+
             return new Response(PARTIAL.get(),
                     header += findMediaType(request),
-                    getRange(requestBody(request), range));
+                    range1);
         }
         return new Response(OK.get(),
                             header += findMediaType(request),
@@ -52,22 +56,6 @@ public class ResourceResponse extends DefaultResponse {
                                               .replace(".", "/")
                                               .substring(1) + "\n";
         }
-    }
-
-    public byte[] getRange(byte[] body, String byteRange) {
-        String bytes = byteRange.substring(byteRange.length() - 3, byteRange.length());
-        Range ranges = new Range(bytes);
-        if (bytes.startsWith("=-")) return bytesFromEnd(body, ranges.getEndValue());
-        if (bytes.endsWith("-")) return bytesFromBeginning(body, ranges.getStartingValue());
-        return Arrays.copyOfRange(body, ranges.getStartingValue(), ranges.getEndValue()+ 1);
-    }
-
-    private byte[] bytesFromBeginning(byte[] body, int startingPoint) {
-        return Arrays.copyOfRange(body, startingPoint, body.length);
-    }
-
-    private byte[] bytesFromEnd(byte[] body, int endPoint) {
-        return Arrays.copyOfRange(body, body.length - endPoint, body.length);
     }
 
     public byte[] requestBody(Request request) {
