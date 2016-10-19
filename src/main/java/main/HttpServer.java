@@ -1,5 +1,6 @@
 package main;
 
+import main.request.Request;
 import main.responses.DefaultResponse;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;

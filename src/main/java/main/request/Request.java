@@ -1,4 +1,6 @@
-package main;
+package main.request;
+
+import main.Protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,16 +53,25 @@ public class Request {
     }
 
     private HashMap<String, String> setHeaderFields() {
+        List<String> headersFieldNames = Arrays.asList("Host", "Connection", "User-Agent", "Accept-Encoding");
         try {
-        String[] headerFieldNames = {"Host", "Connection", "User-Agent", "Accept-Encoding"};
-            for (String headerFieldName : headerFieldNames) {
+            for (String headerFieldName : headersFieldNames) {
                 String line = reader.readLine();
-                addHeader(headerFieldName, line);
+                addToHeader(headersFieldNames, headerFieldName, line);
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
         return headerFields;
+    }
+
+    private void addToHeader(List<String> headersFieldNames, String headerFieldName, String line) {
+        if (line.contains("Range")) {
+            headersFieldNames.set(0, "Range");
+            addHeader("Range", line);
+        } else {
+            addHeader(headerFieldName, line);
+        }
     }
 
     private void addHeader(String headerFieldName, String line) {

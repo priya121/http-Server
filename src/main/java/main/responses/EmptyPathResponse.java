@@ -1,6 +1,6 @@
 package main.responses;
 
-import main.Request;
+import main.request.Request;
 import main.Response;
 
 import java.io.File;

@@ -1,5 +1,5 @@
 import main.Protocol;
-import main.RequestLine;
+import main.request.RequestLine;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

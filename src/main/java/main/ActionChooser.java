@@ -1,6 +1,7 @@
 package main;
 
 import main.methodactions.*;
+import main.request.Request;
 import main.responses.DefaultResponse;
 
 import java.util.Arrays;

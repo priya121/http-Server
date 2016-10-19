@@ -1,6 +1,6 @@
 package main.methodactions;
 
-import main.Request;
+import main.request.Request;
 import main.Response;
 import main.responses.DefaultResponse;
 

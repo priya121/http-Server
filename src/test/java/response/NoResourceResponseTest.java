@@ -1,6 +1,6 @@
 package response;
 
-import main.Request;
+import main.request.Request;
 import main.Response;
 import main.responses.NoResourceResponse;
 import org.junit.Before;

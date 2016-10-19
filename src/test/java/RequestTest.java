@@ -1,4 +1,4 @@
-import main.Request;
+import main.request.Request;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -16,12 +17,14 @@ public class RequestTest {
     private String simpleGetRequest;
     private String getRequestWithFile1Path;
     private String getRequestWithFoobarPath;
+    private String getPartialRequest;
 
     @Before
     public void setUp() {
         simpleGetRequest = createRequestString("/");
         getRequestWithFile1Path = createRequestString("/file1");
         getRequestWithFoobarPath = createRequestString("/foobar");
+        getPartialRequest = createGetPartialRequest("/partial_content.txt");
     }
 
     @Test
@@ -73,9 +76,25 @@ public class RequestTest {
                      "Accept-Encoding: gzip,deflate\n", request.getHeaderFields());
     }
 
+    @Test
+    public void storesRangeForARequestWithARange() {
+        reader = createBufferedReader(getPartialRequest);
+        Request request = new Request(reader);
+        assertThat(request.getHeaderFields(), containsString("Range: bytes=0-4\n"));
+    }
+
     private String createRequestString(String path) {
         return  "GET "+ path + " HTTP/1.1\n" +
                 "Host: localhost:5000\n" +
+                "Connection: Keep-Alive\n" +
+                "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                "Accept-Encoding: gzip,deflate";
+    }
+
+    private String createGetPartialRequest(String path) {
+        return  "GET "+ path + " HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Range: bytes=0-4\n" +
                 "Connection: Keep-Alive\n" +
                 "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
                 "Accept-Encoding: gzip,deflate";

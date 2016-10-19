@@ -1,4 +1,4 @@
-import main.Request;
+import main.request.Request;
 import main.ResponseFactory;
 import main.responses.*;
 import org.junit.Before;

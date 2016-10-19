@@ -1,5 +1,5 @@
 import main.HttpServer;
-import main.Request;
+import main.request.Request;
 import main.serversocket.RealServerSocket;
 import main.serversocket.ServerSocketSpy;
 import main.socket.RealSocketConnection;

@@ -1,4 +1,6 @@
-package main;
+package main.request;
+
+import main.Protocol;
 
 public class RequestLine {
     private final String method;

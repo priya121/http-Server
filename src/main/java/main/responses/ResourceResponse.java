@@ -1,6 +1,6 @@
 package main.responses;
 
-import main.Request;
+import main.request.Request;
 import main.Response;
 
 import java.io.IOException;
@@ -20,12 +20,12 @@ public class ResourceResponse extends DefaultResponse {
         super(content);
         this.publicDirectory = publicDirectory;
         this.header = "Location: http://localhost:5000/\n" +
-                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                "Server: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                "ETag: \n" +
-                "Accept-Ranges: none\n" +
-                "Content-Length: \n" +
-                "Connection: close\n";
+                      "Date: \n" +
+                      "Server: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                      "ETag: \n" +
+                      "Accept-Ranges: none\n" +
+                      "Content-Length: \n" +
+                      "Connection: close\n";
     }
 
     @Override

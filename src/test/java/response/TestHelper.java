@@ -1,6 +1,6 @@
 package response;
 
-import main.Request;
+import main.request.Request;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

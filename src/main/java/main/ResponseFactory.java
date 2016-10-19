@@ -1,5 +1,6 @@
 package main;
 
+import main.request.Request;
 import main.responses.*;
 import main.responses.ResourceResponse;
 

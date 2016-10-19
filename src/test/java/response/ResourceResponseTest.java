@@ -1,6 +1,6 @@
 package response;
 
-import main.Request;
+import main.request.Request;
 import main.Response;
 import main.responses.ResourceResponse;
 import org.junit.Before;
@@ -86,4 +86,5 @@ public class ResourceResponseTest {
         Response response = resourceResponse.get(getTextFile);
         assertThat(response.getHeader(), containsString("Content-Type: text/plain\n"));
     }
+
 }
