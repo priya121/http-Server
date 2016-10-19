@@ -22,12 +22,15 @@ public class ResponseFactoryTest {
     private Request methodOptions2Request;
     private Request getFoobar;
     private String publicDirectory;
+    private Request getParameters;
+    private Request getFile1;
 
     @Before
     public void setUp() {
         content = new ArrayList<>();
         publicDirectory = "/Users/priyapatil/cob_spec/public";
         emptyGetRequest = helper.create("GET /");
+        getFile1 = helper.create("GET /file1");
         postFormRequest = helper.create("POST /form");
         getCoffeeRequest = helper.create("GET /coffee");
         getTeaRequest = helper.create("GET /tea");
@@ -35,6 +38,7 @@ public class ResponseFactoryTest {
         methodOptionsRequest = helper.create("GET /method_options");
         methodOptions2Request = helper.create("GET /method_options2");
         getFoobar = helper.create("GET /foobar");
+        getParameters = helper.create("GET /parameters?variable_1=Operators%20%3C%");
     }
 
     @Test
@@ -87,9 +91,23 @@ public class ResponseFactoryTest {
     }
 
     @Test
+    public void returnsResourceResponseIfFound() {
+        ResponseFactory responses = new ResponseFactory(content, publicDirectory);
+        DefaultResponse response = responses.findRelevantResponse(getFile1);
+        assertTrue(response instanceof ResourceResponse);
+    }
+
+    @Test
     public void returnsNoResourceResponseIfNoMatchFound() {
         ResponseFactory responses = new ResponseFactory(content, publicDirectory);
         DefaultResponse response = responses.findRelevantResponse(getFoobar);
         assertTrue(response instanceof NoResourceResponse);
+    }
+
+    @Test
+    public void getsParameterResponse() {
+        ResponseFactory responses = new ResponseFactory(content, publicDirectory);
+        DefaultResponse response = responses.findRelevantResponse(getParameters);
+        assertTrue(response instanceof ParameterResponse);
     }
 }

@@ -2,7 +2,6 @@ package main;
 
 import main.request.Request;
 import main.responses.*;
-import main.responses.ResourceResponse;
 
 import java.io.File;
 import java.util.*;
@@ -24,11 +23,14 @@ public class ResponseFactory {
         responses.put("/tea", new TeaResponse(content));
         responses.put("/redirect", new RedirectResponse(content));
         responses.put("resource", new ResourceResponse(publicDirectory, content));
+        responses.put("/parameters", new ParameterResponse(content));
         responses.put("no resource", new NoResourceResponse(content));
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
         if (resourceRequest(request)) return responses.get("resource");
+        if (request.getPath().contains("parameters")) return responses.get("/parameters");
+
         for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
             if (path.getKey().equals(request.getPath())) {
                return path.getValue();

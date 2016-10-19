@@ -34,14 +34,14 @@ public class ResourceResponse extends DefaultResponse {
     public Response get(Request request) {
         if (request.getPath().contains("/partial_content.txt")) {
             String byteRange = request.getHeaders().get("Range");
-            int lastThree = 3;
-            String bytes = byteRange.substring(byteRange.length() - lastThree, byteRange.length());
+
+            int beforeEquals = 3;
+            String bytes = byteRange.substring(byteRange.length() - beforeEquals, byteRange.length());
             Range range = new Range(bytes);
-            byte[] range1 = range.getRange(requestBody(request), bytes);
 
             return new Response(PARTIAL.get(),
                     header += findMediaType(request),
-                    range1);
+                    range.getRange(requestBody(request), bytes));
         }
         return new Response(OK.get(),
                             header += findMediaType(request),
