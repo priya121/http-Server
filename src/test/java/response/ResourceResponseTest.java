@@ -27,6 +27,8 @@ public class ResourceResponseTest {
     private Request getPartial;
     private Request getPartialTwo;
     private Request getPartialThree;
+    private Request getPartialFour;
+    private Request getPartialFive;
 
     @Before
     public void setUp() {
@@ -37,6 +39,8 @@ public class ResourceResponseTest {
         getPartial = helper.createPartial("GET /partial_content.txt", 7);
         getPartialTwo = helper.createPartial("GET /partial_content.txt", 9);
         getPartialThree = helper.createPartialEnd("GET /partial_content.txt", 3);
+        getPartialFour = helper.createPartialBeginning("GET /partial_content.txt", 3);
+        getPartialFive = helper.createPartialBeginning("GET /partial_content.txt", 5);
         resourceResponse = new ResourceResponse(publicDirectory, content);
     }
 
@@ -116,5 +120,17 @@ public class ResourceResponseTest {
     public void partialAskingForBytesFromEndOfFile() {
         Response response = resourceResponse.get(getPartialThree);
         assertTrue(response.getBody().length == 3);
+    }
+
+    @Test
+    public void partialAskingForBytesFromBeginning() {
+        Response response = resourceResponse.get(getPartialFour);
+        assertTrue(response.getBody().length == 74);
+    }
+
+    @Test
+    public void anotherPartialAskingForBytesFromBeginning() {
+        Response response = resourceResponse.get(getPartialFive);
+        assertTrue(response.getBody().length == 72);
     }
 }
