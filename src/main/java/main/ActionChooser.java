@@ -16,6 +16,7 @@ public class ActionChooser {
                                                                new Put(PUT.get()),
                                                                new Head(HEAD.get()),
                                                                new Options(OPTIONS.get()),
+                                                               new Patch(PATCH.get()),
                                                                new Delete(DELETE.get()));
 
     public Response determine(DefaultResponse response, Request request) {

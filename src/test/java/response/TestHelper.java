@@ -57,4 +57,17 @@ public class TestHelper {
         BufferedReader reader = createBufferedReader(requestContent);
         return new Request(reader);
     }
+
+    public Request requestWithEtag(String requestLine, String eTag) {
+        String requestContent = requestLine + " HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Connection: Keep-Alive\n" +
+                "Content-Length: 15\n" +
+                "If-Match: "+ eTag  +"\n" +
+                "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
+                "Accept-Encoding: gzip,deflate\n\n" +
+                "patched content";
+        BufferedReader reader = createBufferedReader(requestContent);
+        return new Request(reader);
+    }
 }

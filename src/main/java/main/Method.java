@@ -6,6 +6,7 @@ public enum Method {
     POST("POST"),
     HEAD("HEAD"),
     OPTIONS("OPTIONS"),
+    PATCH("PATCH"),
     DELETE("DELETE");
 
     private String method;

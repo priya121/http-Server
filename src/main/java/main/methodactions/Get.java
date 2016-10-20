@@ -5,6 +5,7 @@ import main.Response;
 import main.responses.DefaultResponse;
 
 public class Get implements Action {
+
     private final String method;
 
     public Get(String method) {

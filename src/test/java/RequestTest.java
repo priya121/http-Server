@@ -1,6 +1,7 @@
 import main.request.Request;
 import org.junit.Before;
 import org.junit.Test;
+import response.TestHelper;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -18,6 +19,8 @@ public class RequestTest {
     private String getRequestWithFile1Path;
     private String getRequestWithFoobarPath;
     private String getPartialRequest;
+    private Request getPatchRequest;
+    TestHelper helper = new TestHelper();
 
     @Before
     public void setUp() {
@@ -25,6 +28,7 @@ public class RequestTest {
         getRequestWithFile1Path = createRequestString("/file1");
         getRequestWithFoobarPath = createRequestString("/foobar");
         getPartialRequest = createGetPartialRequest("/partial_content.txt");
+        getPatchRequest = helper.requestWithEtag("GET /patch-context.txt", "e0023aa4e");
     }
 
     @Test
@@ -81,6 +85,39 @@ public class RequestTest {
         reader = createBufferedReader(getPartialRequest);
         Request request = new Request(reader);
         assertThat(request.getHeaderFields(), containsString("Range: bytes=0-4\n"));
+    }
+
+    @Test
+    public void canGetBytesFromHeader() {
+        reader = createBufferedReader(getPartialRequest);
+        Request request = new Request(reader);
+        assertThat(request.getHeaders().get("Range"), is("bytes=0-4"));
+    }
+
+    @Test
+    public void findsEtagIfPresent() {
+        Request request = getPatchRequest;
+        assertThat(request.getHeaderFields(), containsString("If-Match: e0023aa4e\n"));
+    }
+
+    @Test
+    public void getsContentLength() {
+        Request request = getPatchRequest;
+        assertThat(request.getHeaderFields(), containsString("Content-Length"));
+        assertThat(request.getHeaders().get("Content-Length"), containsString("15"));
+    }
+
+    @Test
+    public void getsBody() {
+        Request request = getPatchRequest;
+        assertThat(request.getHeaderFields(), containsString("Content-Length"));
+        assertThat(request.getBody(), is("patched content"));
+    }
+
+    @Test
+    public void getsEtag() {
+        Request request = getPatchRequest;
+        assertThat(request.getHeaders().get("If-Match"), containsString("e0023aa4e"));
     }
 
     private String createRequestString(String path) {

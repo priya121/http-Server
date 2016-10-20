@@ -34,7 +34,7 @@ public class Request {
 
     public String getHeaderFields() {
         String content = "";
-        for (Map.Entry<String, String> entry: headerFields.entrySet()) {
+        for (Map.Entry<String, String> entry : headerFields.entrySet()) {
             content += entry.getKey() + ": " + entry.getValue() + "\n";
         }
         return content;
@@ -49,38 +49,39 @@ public class Request {
             String requestLine = reader.readLine();
             String[] requestSpilt = requestLine.split(" ");
             return new RequestLine(requestSpilt[0],
-                                   requestSpilt[1],
-                                   new Protocol(requestSpilt[2]));
+                    requestSpilt[1],
+                    new Protocol(requestSpilt[2]));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
+
     private HashMap<String, String> setHeaderFields() {
-        List<String> headersFieldNames = Arrays.asList("Host", "Connection", "User-Agent", "Accept-Encoding");
+        String line;
         try {
-            for (String headerFieldName : headersFieldNames) {
-                String line = reader.readLine();
-                addToHeader(headersFieldNames, headerFieldName, line);
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                String[] split = line.split(":", 2);
+                headerFields.put(split[0], split[1].trim());
             }
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            e.printStackTrace();
         }
         return headerFields;
     }
 
-    private void addToHeader(List<String> headersFieldNames, String headerFieldName, String line) {
-        if (line.contains("Range")) {
-            headersFieldNames.set(0, "Range");
-            addHeader("Range", line);
-        } else {
-            addHeader(headerFieldName, line);
+    public String getBody() {
+        String body = "";
+        if (headerFields.containsKey("Content-Length")) {
+            int size = Integer.parseInt(headerFields.get("Content-Length"));
+            for (int i = 0; i < size; i++) {
+                try {
+                    body += ((char) reader.read());
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }
         }
-    }
-
-    private void addHeader(String headerFieldName, String line) {
-        int patternLimit = 2;
-        String[] headerFieldSplit = line.split(":", patternLimit);
-        headerFields.put(headerFieldName, headerFieldSplit[1].trim());
+        return body;
     }
 }

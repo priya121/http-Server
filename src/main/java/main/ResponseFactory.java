@@ -28,7 +28,9 @@ public class ResponseFactory {
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
-        if (resourceRequest(request)) return responses.get("resource");
+        if (resourceRequest(request)) {
+            return responses.get("resource");
+        }
         if (request.getPath().contains("parameters")) return responses.get("/parameters");
 
         for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
@@ -44,7 +46,7 @@ public class ResponseFactory {
     }
 
     private boolean requestPossible(Request request) {
-        return exists(request.getPath()) && (request.getRequestMethod().equals(GET.get()));
+        return exists(request.getPath()) && ((request.getRequestMethod().equals(GET.get()) || request.getRequestMethod().equals("PATCH")));
     }
 
     private boolean exists(String filePathToFind) {

@@ -5,6 +5,7 @@ import main.Response;
 
 import java.util.List;
 
+import static main.Method.PATCH;
 import static main.Status.METHOD_NOT_ALLOWED;
 
 public class DefaultResponse {
@@ -69,5 +70,9 @@ public class DefaultResponse {
 
     public byte[] convertToBytes(String content) {
         return content.getBytes();
+    }
+
+    public Response patch(Request request) {
+        return new Response(PATCH.get(), defaultHeaders, convertToBytes(getBody(content)));
     }
 }
