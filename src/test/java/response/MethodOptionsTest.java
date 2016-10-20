@@ -39,13 +39,9 @@ public class MethodOptionsTest {
     public void responseForGetMethodOptions() {
         Response createdResponse = response.get(getOptions);
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                     "Content-Type: \n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }
 
@@ -71,14 +67,10 @@ public class MethodOptionsTest {
     public void responseForDeleteMethodOptions() {
         Response createdResponse = response.delete(deleteOptions);
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Content-Type: \n\n", createdResponse.getStatusLine() +
+                                           createdResponse.getHeader());
     }
 
     @Test

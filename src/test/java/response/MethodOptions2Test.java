@@ -18,13 +18,13 @@ public class MethodOptions2Test {
 
     private final TestHelper helper = new TestHelper();
     private final List content = new ArrayList<>();
-    private MethodOptions2Response response;
 
     private Request getMethodOptions2 = helper.create("GET /method_options2");
     private Request putMethodOptions2 = helper.create("PUT /method_options2");
     private Request postMethodOptions2 = helper.create("POST /method_options2");
     private Request optionsMethodOptions2 = helper.create("OPTIONS /method_options2");
     private Request deleteMethodOptions2 = helper.create("DELETE /method_options2");
+    private MethodOptions2Response response;
 
     @Before
     public void setUp() {
@@ -44,12 +44,8 @@ public class MethodOptions2Test {
         MethodOptions2Response response = new MethodOptions2Response(content);
         Response createdResponse = response.get(getMethodOptions2);
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
                      "Content-Type: \n" +
                      "Allow: GET,OPTIONS\n\n", createdResponse.getStatusLine() +
                                                createdResponse.getHeader());
@@ -80,12 +76,8 @@ public class MethodOptions2Test {
         MethodOptions2Response response = new MethodOptions2Response(content);
         Response createdResponse = response.delete(deleteMethodOptions2);
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
                      "Content-Type: \n\n", createdResponse.getStatusLine() +
                                            createdResponse.getHeader());
     }

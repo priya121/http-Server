@@ -37,14 +37,10 @@ public class ActionTest {
         DefaultResponse response = new EmptyPathResponse(content, publicDirectory);
         Response responseToSend = action.determine(response, emptyGetRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", responseToSend.getStatusLine() +
-                                                     responseToSend.getHeader());
+                     "Content-Type: \n\n", responseToSend.getStatusLine() +
+                                           responseToSend.getHeader());
     }
 
     @Test
@@ -53,14 +49,10 @@ public class ActionTest {
         DefaultResponse response = new FormResponse(content);
         Response responseToSend = action.determine(response, postFormRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
-                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                "ETag: \n" +
-                "Accept-Ranges: none\n" +
-                "Content-Length: \n" +
-                "Connection: close\n" +
-                "Content-Type: text/plain\n\n\n" +
-                "data=fatcat", responseToSend.getStatusLine() +
+                     "Date: \n" +
+                     "Content-Length: \n" +
+                     "Content-Type: \n\n\n" +
+                     "data=fatcat", responseToSend.getStatusLine() +
                                responseToSend.getHeader() +
                                new String(responseToSend.getBody()));
     }

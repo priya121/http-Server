@@ -40,13 +40,9 @@ public class RedirectResponseTest {
         Response createdResponse = response.get(getRedirect);
         assertEquals("HTTP/1.1 302 Redirect\n" +
                      "Location: http://localhost:5000/\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "ETag: \n" +
-                     "Accept-Ranges: none\n" +
+                     "Date: \n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                     "Content-Type: \n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }
 

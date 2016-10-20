@@ -25,13 +25,8 @@ public class ResourceResponse extends DefaultResponse {
     public ResourceResponse(String publicDirectory, List content) {
         super(content);
         this.publicDirectory = publicDirectory;
-        this.header = "Location: http://localhost:5000/\n" +
-                      "Date: \n" +
-                      "Server: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                      "ETag: \n" +
-                      "Accept-Ranges: none\n" +
-                      "Content-Length: \n" +
-                      "Connection: close\n";
+        this.header = "Date: \n" +
+                      "Content-Length: \n";
     }
 
     @Override

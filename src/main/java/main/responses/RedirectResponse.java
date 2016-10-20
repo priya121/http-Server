@@ -1,5 +1,6 @@
 package main.responses;
 
+import main.DefaultHeaders;
 import main.request.Request;
 import main.Response;
 
@@ -15,13 +16,7 @@ public class RedirectResponse extends DefaultResponse {
         super(content);
         this.content = content;
         this.headers = "Location: http://localhost:5000/\n" +
-                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                "ETag: \n" +
-                "Accept-Ranges: none\n" +
-                "Content-Length: \n" +
-                "Connection: close\n" +
-                "Content-Type: text/plain\n";
+                        new DefaultHeaders().get();
     }
 
     @Override

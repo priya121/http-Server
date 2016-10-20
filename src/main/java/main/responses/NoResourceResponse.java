@@ -1,5 +1,6 @@
 package main.responses;
 
+import main.DefaultHeaders;
 import main.request.Request;
 import main.Response;
 
@@ -14,13 +15,7 @@ public class NoResourceResponse extends DefaultResponse {
     public NoResourceResponse(List content) {
         super(content);
         this.content = content;
-        this.headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                       "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                       "ETag: \n" +
-                       "Accept-Ranges: none\n" +
-                       "Content-Length: \n" +
-                       "Connection: close\n" +
-                       "Content-Type: text/plain\n";
+        this.headers = new DefaultHeaders().get();
     }
 
     @Override
