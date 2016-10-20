@@ -18,9 +18,13 @@ public class Response {
         this.bodyData = bodyData;
     }
 
+    public String getStatusLine() {
+        return statusLine + "\n";
+
+    }
+
     public String getHeader() {
-        return statusLine + "\n" +
-                headers + "\n";
+        return headers + "\n";
     }
 
     public byte[] getBody() {

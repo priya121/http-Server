@@ -27,6 +27,7 @@ public class MethodOptionsTest {
     @Before
     public void setUp() {
         response = new MethodOptionsResponse(content);
+
         getOptions = helper.create("GET /method_options");
         putOptions = helper.create("PUT /method_options");
         postOptions = helper.create("POST /method_options");
@@ -44,25 +45,26 @@ public class MethodOptionsTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
+                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                                                     createdResponse.getHeader());
     }
 
     @Test
     public void responseForPutMethodOptions() {
         Response createdResponse = response.put(putOptions);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void responseForPostMethodOptions() {
         Response createdResponse = response.post(postOptions);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void responseForHeadMethodOptions() {
         Response createdResponse = response.head(postOptions);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
@@ -75,13 +77,14 @@ public class MethodOptionsTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
+                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                                                     createdResponse.getHeader());
     }
 
     @Test
     public void allowIncludedInMethodOptionsRequest() {
         Response createdResponse = response.options(optionsOptions);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
         assertThat(createdResponse.getHeader(), containsString("Allow: GET,HEAD,POST,OPTIONS,PUT\n"));
     }
 }

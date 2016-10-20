@@ -32,14 +32,6 @@ public class Request {
         return requestLine.getPath();
     }
 
-    public String getHeaderFields() {
-        String content = "";
-        for (Map.Entry<String, String> entry : headerFields.entrySet()) {
-            content += entry.getKey() + ": " + entry.getValue() + "\n";
-        }
-        return content;
-    }
-
     public Map<String, String> getHeaders() {
         return headerFields;
     }

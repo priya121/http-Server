@@ -63,10 +63,7 @@ public class RequestTest {
     public void getsHeaderFields() {
         reader = createBufferedReader(simpleGetRequest);
         Request request = new Request(reader);
-        assertEquals("Connection: Keep-Alive\n" +
-                     "User-Agent: Apache-HttpClient/4.3.5 (java 1.5)\n" +
-                     "Host: localhost:5000\n" +
-                     "Accept-Encoding: gzip,deflate\n", request.getHeaderFields());
+        assertEquals(4, request.getHeaders().size());
     }
 
     @Test
@@ -74,17 +71,14 @@ public class RequestTest {
         String differentGetRequest = requestWithDifferentUserAgent("/");
         BufferedReader reader = createBufferedReader(differentGetRequest);
         Request request = new Request(reader);
-        assertEquals("Connection: Keep-Alive\n" +
-                     "User-Agent: Apache-HttpClient/4.3.5 (Win32)\n" +
-                     "Host: localhost:5000\n" +
-                     "Accept-Encoding: gzip,deflate\n", request.getHeaderFields());
+        assertEquals("Apache-HttpClient/4.3.5 (Win32)", request.getHeaders().get("User-Agent"));
     }
 
     @Test
     public void storesRangeForARequestWithARange() {
         reader = createBufferedReader(getPartialRequest);
         Request request = new Request(reader);
-        assertThat(request.getHeaderFields(), containsString("Range: bytes=0-4\n"));
+        assertThat(request.getHeaders().get("Range"), is("bytes=0-4"));
     }
 
     @Test
@@ -97,20 +91,18 @@ public class RequestTest {
     @Test
     public void findsEtagIfPresent() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaderFields(), containsString("If-Match: e0023aa4e\n"));
+        assertThat(request.getHeaders().get("If-Match"), is("e0023aa4e"));
     }
 
     @Test
     public void getsContentLength() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaderFields(), containsString("Content-Length"));
         assertThat(request.getHeaders().get("Content-Length"), containsString("15"));
     }
 
     @Test
     public void getsBody() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaderFields(), containsString("Content-Length"));
         assertThat(request.getBody(), is("patched content"));
     }
 

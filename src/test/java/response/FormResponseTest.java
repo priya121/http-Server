@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class FormResponseTest {
@@ -33,13 +34,13 @@ public class FormResponseTest {
     @Test
     public void postFormResponse() {
         Response createdResponse = response.get(postFormRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void putFormResponse() {
         Response createdResponse = response.get(putFormRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
@@ -65,7 +66,7 @@ public class FormResponseTest {
         content = new ArrayList<>(Collections.singletonList("data=heathcliff"));
         FormResponse formResponse = new FormResponse(content);
         formResponse.delete(deleteFormRequest);
-        assertFalse(formResponse.get(getFormRequest).getBody().toString().contains("\ndata=heathcliff"));
+        assertFalse(convertToString(formResponse.get(getFormRequest).getBody()).equals("\ndata=heathcliff"));
     }
 
     private String convertToString(byte[] body) {

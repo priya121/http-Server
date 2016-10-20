@@ -1,7 +1,7 @@
 package response;
 
-import main.request.Request;
 import main.Response;
+import main.request.Request;
 import main.responses.RedirectResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -46,30 +46,31 @@ public class RedirectResponseTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
+                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                                                     createdResponse.getHeader());
     }
 
     @Test
     public void redirectResponseNotAllowedForPost() {
         Response createdResponse = response.post(postRedirect);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForPut() {
         Response createdResponse = response.put(putRedirect);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForDelete() {
         Response createdResponse = response.delete(deleteRedirect);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForOptions() {
         Response createdResponse = response.options(optionsRedirect);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 }

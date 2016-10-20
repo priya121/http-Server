@@ -1,7 +1,7 @@
 package response;
 
-import main.request.Request;
 import main.Response;
+import main.request.Request;
 import main.responses.CoffeeResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CoffeeResponseTest {
@@ -30,13 +30,13 @@ public class CoffeeResponseTest {
     @Test
     public void correctResponseForSimpleGet() {
         Response createdResponse = response.get(getCoffeeRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 418 I'm a teapot\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 418 I'm a teapot\n"));
     }
 
     @Test
     public void methodNotAllowedForPostCoffee() {
         Response createdResponse = response.post(postCoffeeRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
 }

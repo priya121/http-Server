@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -34,7 +35,7 @@ public class EmptyPathResponseTest {
     @Test
     public void correctResponseForSimpleGet() {
         Response createdResponse = response.get(simpleGetRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 200 OK\n"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
@@ -47,31 +48,32 @@ public class EmptyPathResponseTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
+                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                                                     createdResponse.getHeader());
     }
 
     @Test
     public void methodNotAllowedForEmptyPost() {
         Response createdResponse = response.post(emptyPostRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyPut() {
         Response createdResponse = response.put(emptyPutRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyOptions() {
         Response createdResponse = response.options(emptyOptionsRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyDelete() {
         Response createdResponse = response.delete(emptyDeleteRequest);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test

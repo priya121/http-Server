@@ -43,7 +43,8 @@ public class ActionTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", responseToSend.getHeader());
+                     "Content-Type: text/plain\n\n", responseToSend.getStatusLine() +
+                                                     responseToSend.getHeader());
     }
 
     @Test
@@ -59,15 +60,17 @@ public class ActionTest {
                 "Content-Length: \n" +
                 "Connection: close\n" +
                 "Content-Type: text/plain\n\n\n" +
-                "data=fatcat", responseToSend.getHeader() + new String(responseToSend.getBody()));
+                "data=fatcat", responseToSend.getStatusLine() +
+                               responseToSend.getHeader() +
+                               new String(responseToSend.getBody()));
     }
 
     @Test
     public void correctResponseForBogusRequest() {
         ActionChooser action = new ActionChooser();
         DefaultResponse response = new EmptyPathResponse(content, publicDirectory);
-        String responseToSend = action.determine(response, bogusRequest).getHeader();
-        assertEquals("HTTP/1.1 405 Method Not Allowed\n\n\n", responseToSend);
+        String responseToSend = action.determine(response, bogusRequest).getStatusLine();
+        assertEquals("HTTP/1.1 405 Method Not Allowed\n\n", responseToSend);
     }
 
     @Test

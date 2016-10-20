@@ -45,30 +45,31 @@ public class NoResourceResponseTest {
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
                      "Connection: close\n" +
-                     "Content-Type: text/plain\n\n", createdResponse.getHeader());
+                     "Content-Type: text/plain\n\n", createdResponse.getStatusLine() +
+                                                     createdResponse.getHeader());
         }
 
     @Test
     public void headNonExistentResource() {
         Response createdResponse = response.head(headFoobar);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 404 Not Found"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void postNonExistentResource() {
         Response createdResponse = response.post(postFoobar);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void deleteNonExistentResource() {
         Response createdResponse = response.delete(deleteFoobar);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 404 Not Found"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void optionsNonExistentResource() {
         Response createdResponse = response.options(optionsFoobar);
-        assertThat(createdResponse.getHeader(), containsString("HTTP/1.1 405 Method Not Allowed"));
+        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 }

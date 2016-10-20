@@ -16,6 +16,7 @@ import java.util.List;
 
 import static main.Status.*;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class ResourceResponseTest {
@@ -70,7 +71,7 @@ public class ResourceResponseTest {
     @Test
     public void OKStatusForImageGifFile() {
         Response response = resourceResponse.get(getImageGif);
-        assertThat(response.getHeader(), containsString(OK.get()));
+        assertThat(response.getStatusLine(), containsString(OK.get()));
     }
 
     @Test
@@ -82,7 +83,7 @@ public class ResourceResponseTest {
     @Test
     public void OKStatusForTextFile() {
         Response response = resourceResponse.get(getTextFile);
-        assertThat(response.getHeader(), containsString(OK.get()));
+        assertThat(response.getStatusLine(), containsString("HTTP/1.1 200 OK"));
     }
 
     @Test
@@ -94,7 +95,7 @@ public class ResourceResponseTest {
     @Test
     public void OKStatusForJPEGFile() {
         Response response = resourceResponse.get(getImageJPEG);
-        assertThat(response.getHeader(), containsString(OK.get()));
+        assertThat(response.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
@@ -124,7 +125,7 @@ public class ResourceResponseTest {
     @Test
     public void partialRequestReturnsPartialStatus() {
         Response response = resourceResponse.get(getPartial);
-        assertThat(response.getHeader(), containsString(PARTIAL.get()));
+        assertThat(response.getStatusLine(), is("HTTP/1.1 206 Partial\n"));
     }
 
     @Test
@@ -161,7 +162,7 @@ public class ResourceResponseTest {
     public void patchRequestReturnsNoContentMessage() throws NoSuchAlgorithmException, IOException {
         resourceResponse = new ResourceResponse(publicDirectory, content);
         Response response = resourceResponse.patch(patchWithMatch);
-        assertThat(response.getHeader(), containsString(NO_CONTENT.get()));
+        assertThat(response.getStatusLine(), containsString("HTTP/1.1 204 No Content"));
     }
 
     @Test

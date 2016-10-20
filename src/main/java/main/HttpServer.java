@@ -55,6 +55,7 @@ public class HttpServer {
     }
 
     private void writeToClient(StreamWriter stream, Response response) {
+        stream.write(response.getStatusLine().getBytes());
         stream.write(response.getHeader().getBytes());
         stream.write(response.getBody());
         stream.close();
