@@ -10,7 +10,7 @@ import static main.Status.REDIRECT;
 
 public class RedirectResponse extends DefaultResponse {
     private final List content;
-    private String headers;
+    private final String headers;
 
     public RedirectResponse(List content) {
         super(content);

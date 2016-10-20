@@ -46,7 +46,7 @@ public class EmptyPathResponse extends DefaultResponse {
     }
 
 
-    public String allFileLinks() {
+    private String allFileLinks() {
         String display = "";
         for (File file : getFiles()) {
             String fileName = file.getPath().substring(file.getPath().lastIndexOf("/"));
@@ -55,7 +55,7 @@ public class EmptyPathResponse extends DefaultResponse {
         return display;
     }
 
-    public List<File> getFiles() {
+    private List<File> getFiles() {
         File[] files = new File(publicDirectory).listFiles();
         return Arrays.asList(files);
     }

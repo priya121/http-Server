@@ -55,7 +55,7 @@ public class ResponseTest {
     public void canGetAnotherCreatedResponse() {
         Response response = new Response(METHOD_NOT_ALLOWED.get(),
                                          headers,
-                                         "");
+                                         "".getBytes());
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
                 "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
@@ -78,6 +78,7 @@ public class ResponseTest {
     public void canCreateAnotherResponseWithDataInBody() {
         byte[] data = "Hi there".getBytes();
         Response response = new Response(OK.get(), headers, data);
+        System.out.print(response.getBody().length);
         assertTrue(response.getBody().length == 8);
     }
 }
