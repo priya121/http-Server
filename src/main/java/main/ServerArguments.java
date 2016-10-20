@@ -12,7 +12,7 @@ public class ServerArguments {
     public ServerArguments(String[] args, PrintStream output) {
         this.args = args;
         this.output = output;
-        this.defaultDirectory = "public";
+        this.defaultDirectory = "../public";
     }
 
     public int getPort() {
