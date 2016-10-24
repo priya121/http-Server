@@ -1,7 +1,9 @@
 package response;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.RedirectResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +29,8 @@ public class RedirectResponseTest {
 
     @Before
     public void setUp() {
-        response = new RedirectResponse(content);
+        Date testDate = new TestDate();
+        response = new RedirectResponse(content, testDate);
         getRedirect = helper.create("GET /redirect");
         putRedirect = helper.create("PUT /redirect");
         postRedirect = helper.create("POST /redirect");
@@ -39,9 +42,8 @@ public class RedirectResponseTest {
     public void redirectResponse() {
         Response createdResponse = response.get(getRedirect);
         assertEquals("HTTP/1.1 302 Redirect\n" +
-                     "Date: \n" +
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Content-Length: \n" +
-                     "Content-Type: \n" +
                      "Location: http://localhost:5000/\n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }

@@ -1,8 +1,9 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
-import main.response.Response;
+import main.date.Date;
 import main.request.Request;
+import main.response.DefaultHeaders;
+import main.response.Response;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,10 +24,10 @@ public class LogsResponse extends DefaultResponse {
     private final List content;
     private final String WWWAuthenticate = "WWW-Authenticate: Basic realm=\"My Server\"";
 
-    public LogsResponse(String publicDirectory, List content) {
-        super(content);
+    public LogsResponse(String publicDirectory, List content, Date date) {
+        super(content, date);
         this.content = content;
-        this.headers = new DefaultHeaders().get();
+        this.headers = new DefaultHeaders(date).get();
         this.publicDirectory = publicDirectory;
     }
 

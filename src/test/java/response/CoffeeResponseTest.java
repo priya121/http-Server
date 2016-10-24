@@ -1,7 +1,9 @@
 package response;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.CoffeeResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +24,8 @@ public class CoffeeResponseTest {
 
     @Before
     public void setUp() {
-        response = new CoffeeResponse(content);
+        Date testDate = new TestDate();
+        response = new CoffeeResponse(content, testDate);
         getCoffeeRequest = helper.create("GET /coffee");
         postCoffeeRequest = helper.create("POST /coffee");
     }

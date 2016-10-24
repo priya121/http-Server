@@ -1,5 +1,7 @@
 package response;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.NoResourceResponse;
@@ -22,10 +24,12 @@ public class NoResourceResponseTest {
     private Request postFoobar;
     private Request optionsFoobar;
     private Request deleteFoobar;
+    private Date testDate;
 
     @Before
     public void setUp() {
-        response = new NoResourceResponse(content);
+        testDate = new TestDate();
+        response = new NoResourceResponse(content, testDate);
         getFoobar = helper.create("GET /foobar");
         headFoobar = helper.create("HEAD /foobar");
         postFoobar = helper.create("POST /foobar");
@@ -37,10 +41,9 @@ public class NoResourceResponseTest {
     public void getNonExistentResource() {
         Response createdResponse = response.get(getFoobar);
         assertEquals("HTTP/1.1 404 Not Found\n" +
-                     "Date: \n" +
-                     "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Content-Length: \n\n", createdResponse.getStatusLine() +
+                                           createdResponse.getHeader());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.request.Request;
 import main.response.Response;
 
@@ -13,10 +14,10 @@ public class RedirectResponse extends DefaultResponse {
     private String headers;
     private String redirectLocation = "Location: http://localhost:5000/\n";
 
-    public RedirectResponse(List content) {
-        super(content);
+    public RedirectResponse(List content, Date date) {
+        super(content, date);
         this.content = content;
-        this.headers = new DefaultHeaders().get();
+        this.headers = new DefaultHeaders(date).get();
     }
 
     @Override

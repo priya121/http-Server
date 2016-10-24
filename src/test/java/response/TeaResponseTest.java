@@ -1,7 +1,9 @@
 package response;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.TeaResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,8 @@ public class TeaResponseTest {
 
     @Before
     public void setUp() {
-       response = new TeaResponse(content);
+        Date testDate = new TestDate();
+       response = new TeaResponse(content, testDate);
         getTeaRequest = helper.create("GET /tea");
     }
 

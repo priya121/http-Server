@@ -1,5 +1,7 @@
 package response;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.responsetypes.ParameterResponse;
 import org.junit.Before;
@@ -17,9 +19,11 @@ public class ParameterResponseTest {
     private Request getParameters;
     private Request getOtherParameters;
     private Request getAllParameters;
+    private Date testDate;
 
     @Before
     public void setUp() {
+        testDate = new TestDate();
         getParameters = helper.create("GET /parameters?variable_1=Operators%20%3C%2C%20%3E%2C");
         getOtherParameters= helper.create("GET /parameters?variable_1%3DOperators%20%40%2C%20%23%2C%20%24&variable_2%3Dstuff");
         getAllParameters = helper.create("GET //parameters?variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C" +
@@ -30,14 +34,14 @@ public class ParameterResponseTest {
     @Test
     public void canTellIfThereAreParametersPresent() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content);
+        ParameterResponse response = new ParameterResponse(content, testDate);
         assertThat(new String(response.get(getParameters).getBody()), containsString("variable_1 = Operators <, >,"));
     }
 
     @Test
     public void canFindOtherParameters() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content);
+        ParameterResponse response = new ParameterResponse(content, testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_1 = Operators @, #, $" +
                                                                                           "variable_2 = stuff"));
     }
@@ -45,21 +49,21 @@ public class ParameterResponseTest {
     @Test
     public void getFirstVariable() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content);
+        ParameterResponse response = new ParameterResponse(content, testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_1 = Operators @, #, $"));
     }
 
     @Test
     public void getsSecondVariable() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content);
+        ParameterResponse response = new ParameterResponse(content, testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_2 = stuff"));
     }
 
     @Test
     public void getsAllParameters() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content);
+        ParameterResponse response = new ParameterResponse(content, testDate);
         String bodyString = new String(response.get(getAllParameters).getBody());
         assertThat(bodyString, containsString("variable_1 = Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?"));
         assertThat(bodyString, containsString("variable_2 = stuff"));

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ResponseTest {
-        String headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+        String headers = "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                          "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                          "ETag: \n" +
                          "Accept-Ranges: none\n" +
@@ -38,7 +38,7 @@ public class ResponseTest {
                                         "<h1> I'm a teapot </h1>".getBytes());
 
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                      "ETag: \n" +
                      "Accept-Ranges: none\n" +
@@ -55,7 +55,7 @@ public class ResponseTest {
                                          headers,
                                          "".getBytes());
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
-                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                 "ETag: \n" +
                 "Accept-Ranges: none\n" +

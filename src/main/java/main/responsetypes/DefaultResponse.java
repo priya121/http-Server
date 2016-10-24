@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.response.Response;
 import main.request.Request;
 
@@ -13,9 +14,9 @@ public class DefaultResponse {
     private List<String> content;
     private final String defaultHeaders;
 
-    public DefaultResponse(List content) {
+    public DefaultResponse(List content, Date date) {
         this.content = content;
-        this.defaultHeaders = new DefaultHeaders().get();
+        this.defaultHeaders = new DefaultHeaders(date).get();
     }
 
     public Response get(Request request) {

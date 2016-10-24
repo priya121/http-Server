@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.request.Request;
 import main.response.Response;
 
@@ -13,10 +14,10 @@ public class GetCookieResponse extends DefaultResponse {
     private final String headers;
     private List content;
 
-    public GetCookieResponse(List content) {
-        super(content);
+    public GetCookieResponse(List content, Date date) {
+        super(content, date);
         this.content = content;
-        this.headers = new DefaultHeaders().get();
+        this.headers = new DefaultHeaders(date).get();
     }
 
     @Override

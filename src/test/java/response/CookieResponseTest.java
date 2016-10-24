@@ -1,7 +1,9 @@
 package response;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.CookieResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +21,15 @@ public class CookieResponseTest {
     private Request getCookieRequest;
     TestHelper helper = new TestHelper();
     private Request getOatmealCookieRequest;
+    private Date testDate;
 
     @Before
     public void setUp() {
         List content = new ArrayList();
-        cookieResponse = new CookieResponse(content);
-
+        testDate = new TestDate();
+        cookieResponse = new CookieResponse(content, testDate);
         getCookieRequest = helper.create("GET /cookie?type=chocolate");
         getOatmealCookieRequest = helper.create("GET /cookie?type=oatmeal");
-        cookieResponse = new CookieResponse(content);
     }
 
     @Test

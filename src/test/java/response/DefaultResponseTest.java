@@ -1,5 +1,7 @@
 package response;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.DefaultResponse;
@@ -26,7 +28,8 @@ public class DefaultResponseTest {
 
     @Before
     public void setUp() {
-        response = new DefaultResponse(content);
+        Date testDate = new TestDate();
+        response = new DefaultResponse(content, testDate);
 
         getRandomRequest = helper.create("GET /chocolate");
         putEmptyRequest = helper.create("PUT /");
@@ -40,9 +43,8 @@ public class DefaultResponseTest {
     public void getChocolateRequestNotAllowed() {
         Response createdResponse = response.get(getRandomRequest);
         assertThat(createdResponse.getStatusLine() +
-                   createdResponse.getHeader(), containsString("Date: \n" +
-                                                               "Content-Length: \n" +
-                                                               "Content-Type: \n"));
+                   createdResponse.getHeader(), containsString("Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                                                               "Content-Length: \n\n"));
     }
 
     @Test

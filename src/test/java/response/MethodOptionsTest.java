@@ -1,5 +1,7 @@
 package response;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.MethodOptionsResponse;
@@ -7,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -23,10 +26,12 @@ public class MethodOptionsTest {
     private Request postOptions;
     private Request optionsOptions;
     private Request deleteOptions;
+    private Date testDate;
 
     @Before
     public void setUp() {
-        response = new MethodOptionsResponse(content);
+        testDate = new TestDate();
+        response = new MethodOptionsResponse(content, testDate);
 
         getOptions = helper.create("GET /method_options");
         putOptions = helper.create("PUT /method_options");
@@ -39,9 +44,8 @@ public class MethodOptionsTest {
     public void responseForGetMethodOptions() {
         Response createdResponse = response.get(getOptions);
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: \n" +
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Content-Length: \n" +
-                     "Content-Type: \n" +
                      "Allow: GET,HEAD,POST,OPTIONS,PUT\n\n", createdResponse.getStatusLine() +
                                                              createdResponse.getHeader());
     }

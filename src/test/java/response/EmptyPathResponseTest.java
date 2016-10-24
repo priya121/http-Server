@@ -1,5 +1,7 @@
 package response;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.EmptyPathResponse;
@@ -29,7 +31,8 @@ public class EmptyPathResponseTest {
 
     @Before
     public void setUp() {
-        response = new EmptyPathResponse(content, publicDirectory);
+        Date testDate = new TestDate();
+        response = new EmptyPathResponse(content, publicDirectory, testDate);
     }
 
     @Test
@@ -42,9 +45,8 @@ public class EmptyPathResponseTest {
     public void correctResponseForSimpleHead() {
         Response createdResponse = response.head(simpleHeadRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "Date: \n" +
-                     "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Content-Length: \n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }
 

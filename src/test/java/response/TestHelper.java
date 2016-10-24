@@ -76,6 +76,13 @@ public class TestHelper {
         return new Request(reader);
     }
 
+    public Request createRequestWithCookie(String requestLine, String cookieType) {
+        String requestContent = requestLine + " HTTP/1.1\n" +
+                header + "\nCookie: type=" + cookieType + "\n";
+        BufferedReader reader = createBufferedReader(requestContent);
+        return new Request(reader);
+    }
+
     private BufferedReader createBufferedReader(String request) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getBytes());
         return new BufferedReader(new InputStreamReader(inputStream));

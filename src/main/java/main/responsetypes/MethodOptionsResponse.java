@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.request.Request;
 import main.response.Response;
 
@@ -13,10 +14,10 @@ public class MethodOptionsResponse extends DefaultResponse{
     private final String methodOptionsHeader;
     private final String defaultHeaders;
 
-    public MethodOptionsResponse(List content) {
-        super(content);
+    public MethodOptionsResponse(List content, Date date) {
+        super(content, date);
         this.content = content;
-        this.defaultHeaders = new DefaultHeaders().get();
+        this.defaultHeaders = new DefaultHeaders(date).get();
         this.methodOptionsHeader = "Allow: GET,HEAD,POST,OPTIONS,PUT\n";
     }
 

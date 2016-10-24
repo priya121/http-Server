@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.request.Request;
 import main.response.Response;
 
@@ -12,10 +13,10 @@ public class FormResponse extends DefaultResponse {
     private final List<String> content;
     private final String headers;
 
-    public FormResponse(List<String> content) {
-        super(content);
+    public FormResponse(List<String> content, Date date) {
+        super(content, date);
         this.content = content;
-        this.headers = new DefaultHeaders().get();
+        this.headers = new DefaultHeaders(date).get();
     }
 
     @Override

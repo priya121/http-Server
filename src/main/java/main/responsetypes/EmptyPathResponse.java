@@ -1,8 +1,9 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
-import main.response.Response;
+import main.date.Date;
 import main.request.Request;
+import main.response.DefaultHeaders;
+import main.response.Response;
 
 import java.io.File;
 import java.util.Arrays;
@@ -16,11 +17,11 @@ public class EmptyPathResponse extends DefaultResponse {
     private final String headers;
     private final String publicDirectory;
 
-    public EmptyPathResponse(List content, String publicDirectory) {
-        super(content);
+    public EmptyPathResponse(List content, String publicDirectory, Date date) {
+        super(content, date);
         this.content = content;
         this.publicDirectory = publicDirectory;
-        this.headers = new DefaultHeaders().get();
+        this.headers = new DefaultHeaders(date).get();
     }
 
     @Override

@@ -1,7 +1,8 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
 import main.request.Request;
+import main.response.DefaultHeaders;
 import main.response.Response;
 
 import java.util.List;
@@ -12,10 +13,10 @@ public class TeaResponse extends DefaultResponse {
     private final String defaultHeader;
     private final List content;
 
-    public TeaResponse(List content) {
-        super(content);
+    public TeaResponse(List content, Date date) {
+        super(content, date);
         this.content = content;
-        this.defaultHeader = new DefaultHeaders().get();
+        this.defaultHeader = new DefaultHeaders(date).get();
     }
 
     @Override

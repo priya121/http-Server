@@ -1,5 +1,6 @@
 package main;
 
+import main.date.RealDate;
 import main.request.Request;
 import main.responsetypes.*;
 
@@ -12,23 +13,25 @@ import static main.Method.PATCH;
 public class ResponseFactory {
     private final HashMap<String, DefaultResponse> responses;
     private final String publicDirectory;
+    private final RealDate date;
 
     public ResponseFactory(List content, String publicDirectory) {
         this.publicDirectory = publicDirectory;
+        this.date = new RealDate();
         this.responses = new HashMap<>();
-        responses.put("/", new EmptyPathResponse(content, publicDirectory));
-        responses.put("/form", new FormResponse(content));
-        responses.put("/method_options", new MethodOptionsResponse(content));
-        responses.put("/method_options2", new MethodOptions2Response(content));
-        responses.put("/logs", new LogsResponse(publicDirectory, content));
-        responses.put("/coffee", new CoffeeResponse(content));
-        responses.put("/tea", new TeaResponse(content));
-        responses.put("/redirect", new RedirectResponse(content));
-        responses.put("resource", new ResourceResponse(publicDirectory, content));
-        responses.put("/parameters", new ParameterResponse(content));
-        responses.put("/cookie?type=chocolate", new CookieResponse(content));
-        responses.put("/eat_cookie", new GetCookieResponse(content));
-        responses.put("no resource", new NoResourceResponse(content));
+        responses.put("/", new EmptyPathResponse(content, publicDirectory, date));
+        responses.put("/form", new FormResponse(content, date));
+        responses.put("/method_options", new MethodOptionsResponse(content, date));
+        responses.put("/method_options2", new MethodOptions2Response(content, date));
+        responses.put("/logs", new LogsResponse(publicDirectory, content, date));
+        responses.put("/coffee", new CoffeeResponse(content, date));
+        responses.put("/tea", new TeaResponse(content, date));
+        responses.put("/redirect", new RedirectResponse(content, date));
+        responses.put("resource", new ResourceResponse(publicDirectory, content, date));
+        responses.put("/parameters", new ParameterResponse(content, date));
+        responses.put("/cookie?type=chocolate", new CookieResponse(content, date));
+        responses.put("/eat_cookie", new GetCookieResponse(content, date));
+        responses.put("no resource", new NoResourceResponse(content, date));
     }
 
     public DefaultResponse findRelevantResponse(Request request) {

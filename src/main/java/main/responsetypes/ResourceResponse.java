@@ -1,6 +1,7 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
+import main.response.DefaultHeaders;
 import main.Range;
 import main.response.Response;
 import main.request.Request;
@@ -24,10 +25,10 @@ public class ResourceResponse extends DefaultResponse {
     private final String publicDirectory;
     private String header;
 
-    public ResourceResponse(String publicDirectory, List content) {
-        super(content);
+    public ResourceResponse(String publicDirectory, List content, Date date) {
+        super(content, date);
         this.publicDirectory = publicDirectory;
-        this.header =  new DefaultHeaders().get();
+        this.header =  new DefaultHeaders(date).get();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ResourceResponse extends DefaultResponse {
             Range range = new Range(getByteRange(request));
 
             return new Response(PARTIAL.get(),
-                                header = findMediaType(request),
+                                header += findMediaType(request),
                                 range.get(requestBody(request)));
         }
         return new Response(OK.get(),
