@@ -1,8 +1,8 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.CoffeeResponse;
+import main.responsetypes.CoffeeResponse;
 import org.junit.Before;
 import org.junit.Test;
 

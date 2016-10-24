@@ -1,6 +1,6 @@
 import main.request.Request;
 import main.ResponseFactory;
-import main.responses.*;
+import main.responsetypes.*;
 import org.junit.Before;
 import org.junit.Test;
 import response.TestHelper;
@@ -24,6 +24,8 @@ public class ResponseFactoryTest {
     private String publicDirectory;
     private Request getParameters;
     private Request getFile1;
+    private Request getEatCookie;
+    private Request getCookie;
 
     @Before
     public void setUp() {
@@ -38,6 +40,8 @@ public class ResponseFactoryTest {
         methodOptionsRequest = helper.create("GET /method_options");
         methodOptions2Request = helper.create("GET /method_options2");
         getFoobar = helper.create("GET /foobar");
+        getCookie = helper.create("GET /cookie?type=chocolate");
+        getEatCookie = helper.create("GET /eat_cookie");
         getParameters = helper.create("GET /parameters?variable_1=Operators%20%3C%");
     }
 
@@ -109,5 +113,26 @@ public class ResponseFactoryTest {
         ResponseFactory responses = new ResponseFactory(content, publicDirectory);
         DefaultResponse response = responses.findRelevantResponse(getParameters);
         assertTrue(response instanceof ParameterResponse);
+    }
+
+    @Test
+    public void getsLogs() {
+        ResponseFactory responses = new ResponseFactory(content, publicDirectory);
+        DefaultResponse response = responses.findRelevantResponse(getCookie);
+        assertTrue(response instanceof CookieResponse);
+    }
+
+    @Test
+    public void getsCookieResponse() {
+        ResponseFactory responses = new ResponseFactory(content, publicDirectory);
+        DefaultResponse response = responses.findRelevantResponse(getCookie);
+        assertTrue(response instanceof CookieResponse);
+    }
+
+    @Test
+    public void getsEatCookieResponse() {
+        ResponseFactory responses = new ResponseFactory(content, publicDirectory);
+        DefaultResponse response = responses.findRelevantResponse(getEatCookie);
+        assertTrue(response instanceof GetCookieResponse);
     }
 }

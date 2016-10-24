@@ -1,8 +1,8 @@
-package main.responses;
+package main.responsetypes;
 
 import main.DefaultHeaders;
 import main.request.Request;
-import main.Response;
+import main.response.Response;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package main.responses;
+package main.responsetypes;
 
 import main.DefaultHeaders;
-import main.Response;
+import main.response.Response;
 import main.request.Request;
 
 import java.net.URLDecoder;
@@ -20,7 +20,9 @@ public class ParameterResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        return new Response(OK.get(), headers, convertToBytes(decode(request)));
+        return new Response(OK.get(),
+                            headers,
+                            convertToBytes(decode(request)));
     }
 
     public String decode(Request request) {

@@ -1,8 +1,8 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.MethodOptions2Response;
+import main.responsetypes.MethodOptions2Response;
 import org.junit.Before;
 import org.junit.Test;
 

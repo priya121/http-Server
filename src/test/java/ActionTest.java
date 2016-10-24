@@ -1,9 +1,9 @@
 import main.ActionChooser;
 import main.request.Request;
-import main.Response;
-import main.responses.DefaultResponse;
-import main.responses.EmptyPathResponse;
-import main.responses.FormResponse;
+import main.response.Response;
+import main.responsetypes.DefaultResponse;
+import main.responsetypes.EmptyPathResponse;
+import main.responsetypes.FormResponse;
 import org.junit.Before;
 import org.junit.Test;
 import response.TestHelper;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ActionTest {
     private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
@@ -21,6 +22,7 @@ public class ActionTest {
     private Request postFormRequest;
     private Request bogusRequest;
     private Request deleteFormRequest;
+    private Request emptyHeadRequest;
 
     @Before
     public void setUp() {
@@ -28,6 +30,7 @@ public class ActionTest {
         emptyGetRequest = helper.create("GET /");
         postFormRequest = helper.create("POST /form");
         deleteFormRequest = helper.create("DELETE /form");
+        emptyHeadRequest = helper.create("HEAD /");
         bogusRequest = helper.create("BOGUS /");
     }
 
@@ -55,6 +58,24 @@ public class ActionTest {
                      "data=fatcat", responseToSend.getStatusLine() +
                                responseToSend.getHeader() +
                                new String(responseToSend.getBody()));
+    }
+
+    @Test
+    public void headResponseHasHeaders() {
+        ActionChooser action = new ActionChooser();
+        DefaultResponse response = new EmptyPathResponse(content, publicDirectory);
+        Response responseToSend = action.determine(response, emptyHeadRequest);
+        assertEquals("Date: \n" +
+                     "Content-Length: \n" +
+                     "Content-Type: \n\n", responseToSend.getHeader());
+    }
+
+    @Test
+    public void createsHeadReponse() {
+        ActionChooser action = new ActionChooser();
+        DefaultResponse response = new EmptyPathResponse(content, publicDirectory);
+        Response responseToSend = action.determine(response, emptyHeadRequest);
+        assertTrue(new String(responseToSend.getBody()).isEmpty());
     }
 
     @Test

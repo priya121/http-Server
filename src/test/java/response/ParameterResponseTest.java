@@ -1,7 +1,7 @@
 package response;
 
 import main.request.Request;
-import main.responses.ParameterResponse;
+import main.responsetypes.ParameterResponse;
 import org.junit.Before;
 import org.junit.Test;
 

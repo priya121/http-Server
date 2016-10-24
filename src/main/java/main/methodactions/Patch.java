@@ -1,8 +1,8 @@
 package main.methodactions;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.DefaultResponse;
+import main.responsetypes.DefaultResponse;
 
 public class Patch implements Action{
 

@@ -22,9 +22,9 @@ public class Range {
         String[] numbers = range.split("-");
         return Integer.parseInt(numbers[1]);
     }
-    public byte[] getRange(byte[] body, String bytes) {
-        if (bytes.startsWith("=-")) return bytesFromEnd(body, getEndValue());
-        if (bytes.endsWith("-")) return bytesFromBeginning(body, getStartingValue());
+    public byte[] get(byte[] body) {
+        if (range.startsWith("=-")) return bytesFromEnd(body, getEndValue());
+        if (range.endsWith("-")) return bytesFromBeginning(body, getStartingValue());
         return Arrays.copyOfRange(body, getStartingValue(), getEndValue()+ 1);
     }
 

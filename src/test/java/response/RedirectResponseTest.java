@@ -1,8 +1,8 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.RedirectResponse;
+import main.responsetypes.RedirectResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,10 +39,10 @@ public class RedirectResponseTest {
     public void redirectResponse() {
         Response createdResponse = response.get(getRedirect);
         assertEquals("HTTP/1.1 302 Redirect\n" +
-                     "Location: http://localhost:5000/\n" +
                      "Date: \n" +
                      "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
+                     "Content-Type: \n" +
+                     "Location: http://localhost:5000/\n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }
 

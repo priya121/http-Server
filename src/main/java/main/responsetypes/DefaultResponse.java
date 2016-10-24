@@ -1,8 +1,8 @@
-package main.responses;
+package main.responsetypes;
 
 import main.DefaultHeaders;
+import main.response.Response;
 import main.request.Request;
-import main.Response;
 
 import java.util.List;
 
@@ -34,7 +34,6 @@ public class DefaultResponse {
         return new Response(METHOD_NOT_ALLOWED.get(),
                             defaultHeaders,
                             convertToBytes(getBody(content)));
-
     }
 
     public Response post(Request request) {
@@ -55,23 +54,22 @@ public class DefaultResponse {
                             convertToBytes(getBody(content)));
     }
 
+    public Response patch(Request request) {
+        return new Response(PATCH.get(),
+                            defaultHeaders,
+                            convertToBytes(getBody(content)));
+    }
+
     public String getBody(List<String> content) {
-        if (content.size() > 0) {
-            return content.get(0);
-        } else {
-            return "";
+        String body = "";
+        for (String item : content) {
+            body += item;
         }
+        return body;
     }
 
     public byte[] convertToBytes(String content) {
         return content.getBytes();
     }
 
-    public Response patch(Request request) {
-        return new Response(PATCH.get(), defaultHeaders, convertToBytes(getBody(content)));
-    }
-
-    public Response get_cookie(Request request) {
-        return new Response(PATCH.get(), defaultHeaders, convertToBytes(getBody(content)));
-    }
 }

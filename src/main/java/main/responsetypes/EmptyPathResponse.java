@@ -1,12 +1,11 @@
-package main.responses;
+package main.responsetypes;
 
 import main.DefaultHeaders;
+import main.response.Response;
 import main.request.Request;
-import main.Response;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static main.Status.METHOD_NOT_ALLOWED;
@@ -26,17 +25,17 @@ public class EmptyPathResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        List bodyWithLinks = Collections.singletonList(allFileLinks());
+        content.add(allFileLinks());
         return new Response(OK.get(),
                             headers,
-                            convertToBytes(getBody(bodyWithLinks)));
+                            convertToBytes(getBody(content)));
     }
 
     @Override
     public Response post(Request request) {
         return new Response(METHOD_NOT_ALLOWED.get(),
-                headers,
-                convertToBytes(getBody(content)));
+                            headers,
+                            convertToBytes(getBody(content)));
     }
 
     @Override
@@ -45,7 +44,6 @@ public class EmptyPathResponse extends DefaultResponse {
                             headers ,
                             convertToBytes(getBody(content)));
     }
-
 
     private String allFileLinks() {
         String display = "";

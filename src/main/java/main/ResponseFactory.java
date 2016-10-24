@@ -1,7 +1,7 @@
 package main;
 
 import main.request.Request;
-import main.responses.*;
+import main.responsetypes.*;
 
 import java.io.File;
 import java.util.*;
@@ -26,8 +26,8 @@ public class ResponseFactory {
         responses.put("/redirect", new RedirectResponse(content));
         responses.put("resource", new ResourceResponse(publicDirectory, content));
         responses.put("/parameters", new ParameterResponse(content));
-        responses.put("cookie", new CookieResponse(content));
-        responses.put("get_cookie", new GetCookieResponse(content));
+        responses.put("/cookie?type=chocolate", new CookieResponse(content));
+        responses.put("/eat_cookie", new GetCookieResponse(content));
         responses.put("no resource", new NoResourceResponse(content));
     }
 
@@ -35,14 +35,9 @@ public class ResponseFactory {
         if (resourceRequest(request) && !request.getPath().equals("/logs")) {
             return responses.get("resource");
         }
-        if (request.getPath().contains("type=chocolate")) {
-            return responses.get("cookie");
+        if (request.getPath().contains("parameters")) {
+            return responses.get("/parameters");
         }
-        if (request.getPath().contains("eat_cookie")) {
-            return responses.get("get_cookie");
-        }
-        if (request.getPath().contains("parameters")) return responses.get("/parameters");
-
         for (Map.Entry<String, DefaultResponse> path : responses.entrySet()) {
             if (path.getKey().equals(request.getPath())) {
                return path.getValue();
@@ -60,7 +55,7 @@ public class ResponseFactory {
     }
 
     private boolean isGetOrPatch(Request request) {
-        return request.getRequestMethod().equals(GET.get()) || request.getRequestMethod().equals(PATCH.get());
+        return request.getMethod().equals(GET.get()) || request.getMethod().equals(PATCH.get());
     }
 
     private boolean exists(String filePathToFind) {

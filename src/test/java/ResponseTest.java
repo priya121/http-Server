@@ -1,4 +1,4 @@
-import main.Response;
+import main.response.Response;
 import org.junit.Test;
 
 import static main.Status.METHOD_NOT_ALLOWED;

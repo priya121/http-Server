@@ -1,8 +1,8 @@
 package response;
 
 import main.request.Request;
-import main.Response;
-import main.responses.NoResourceResponse;
+import main.response.Response;
+import main.responsetypes.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
 

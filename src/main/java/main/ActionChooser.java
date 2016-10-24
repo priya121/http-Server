@@ -2,7 +2,8 @@ package main;
 
 import main.methodactions.*;
 import main.request.Request;
-import main.responses.DefaultResponse;
+import main.response.Response;
+import main.responsetypes.DefaultResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ActionChooser {
                                                                new Delete(DELETE.get()));
 
     public Response determine(DefaultResponse response, Request request) {
-        String requestMethod = request.getRequestMethod();
+        String requestMethod = request.getMethod();
         for (Action action : responseMethods) {
             if (action.getMethod().equals(requestMethod)) {
                 return action.getResponse(response, request);

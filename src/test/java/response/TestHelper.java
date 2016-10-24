@@ -31,11 +31,6 @@ public class TestHelper {
         return new Request(reader);
     }
 
-    private BufferedReader createBufferedReader(String request) {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getBytes());
-        return new BufferedReader(new InputStreamReader(inputStream));
-    }
-
     public Request createPartialEnd(String requestLine, int size) {
         String requestContent = requestLine + " HTTP/1.1\n" +
                 "Host: localhost:5000\n" +
@@ -79,5 +74,10 @@ public class TestHelper {
                 "patched content";
         BufferedReader reader = createBufferedReader(requestContent);
         return new Request(reader);
+    }
+
+    private BufferedReader createBufferedReader(String request) {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getBytes());
+        return new BufferedReader(new InputStreamReader(inputStream));
     }
 }

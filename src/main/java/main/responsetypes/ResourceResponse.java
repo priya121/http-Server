@@ -1,7 +1,8 @@
-package main.responses;
+package main.responsetypes;
 
+import main.DefaultHeaders;
 import main.Range;
-import main.Response;
+import main.response.Response;
 import main.request.Request;
 
 import javax.xml.bind.DatatypeConverter;
@@ -19,41 +20,35 @@ import java.util.List;
 import static main.Status.*;
 
 public class ResourceResponse extends DefaultResponse {
+
     private final String publicDirectory;
     private String header;
 
     public ResourceResponse(String publicDirectory, List content) {
         super(content);
         this.publicDirectory = publicDirectory;
-        this.header =  "";
+        this.header =  new DefaultHeaders().get();
     }
 
     @Override
     public Response get(Request request) {
-        if (request.getPath().contains("/partial_content.txt")) {
-            String byteRange = request.getHeaders().get("Range");
-            String bytes = byteRange.substring(byteRange.length() - 3, byteRange.length());
-            Range range = new Range(bytes);
+        if (request.getPath().equals("/partial_content.txt")) {
+            Range range = new Range(getByteRange(request));
 
             return new Response(PARTIAL.get(),
-                    header += findMediaType(request),
-                    range.getRange(requestBody(request), bytes));
+                                header = findMediaType(request),
+                                range.get(requestBody(request)));
         }
-
         return new Response(OK.get(),
-                            header += findMediaType(request),
+                            header = findMediaType(request),
                             requestBody(request));
     }
 
     @Override
     public Response patch(Request request) {
-
-        File fileToPatch = new File(publicDirectory + request.getPath());
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
-            messageDigest.update(Files.readAllBytes(Paths.get(publicDirectory + request.getPath())));
-            byte[] digest = messageDigest.digest();
-            String hex = DatatypeConverter.printHexBinary(digest).toLowerCase();
+            File fileToPatch = new File(publicDirectory + request.getPath());
+            String hex = createHex(request);
             updateIfMatch(fileToPatch, request, hex);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -61,18 +56,27 @@ public class ResourceResponse extends DefaultResponse {
             e.printStackTrace();
         }
         return new Response(NO_CONTENT.get(),
-                            header + "Etag: " + request.getHeaders().get("If-Match") + "\n",
+                            header + "Etag: " + request.getHeader("If-Match") + "\n",
                             requestBody(request));
     }
 
-    private void updateIfMatch(File fileToPatch, Request request, String hex) {
+
+    private String getByteRange(Request request) {
+        String byteRange = request.getHeader("Range");
+        return byteRange.substring(byteRange.length() - 3, byteRange.length());
+    }
+
+    private void updateIfMatch(File fileToPatch, Request request, String hex) throws IOException {
         if (request.getHeaders().get("If-Match").equals(hex)) {
-            try {
-                overWriteFileContents(fileToPatch, request);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            overWriteFileContents(fileToPatch, request);
         }
+    }
+
+    private String createHex(Request request) throws NoSuchAlgorithmException, IOException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+        messageDigest.update(Files.readAllBytes(Paths.get(publicDirectory + request.getPath())));
+        byte[] digest = messageDigest.digest();
+        return DatatypeConverter.printHexBinary(digest).toLowerCase();
     }
 
     private String findMediaType(Request request) {
@@ -96,7 +100,7 @@ public class ResourceResponse extends DefaultResponse {
 
     private void overWriteFileContents(File file, Request request) throws IOException {
         FileWriter writer = new FileWriter(file, false);
-        writer.write(request.getBody());
+        writer.write(request.setBody().get());
         writer.close();
     }
 }

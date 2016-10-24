@@ -6,17 +6,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Request {
     private final BufferedReader reader;
     private final RequestLine requestLine;
-    private HashMap<String, String> headerFields = new HashMap<>();
+    private final RequestHeader requestHeader;
+    private final HashMap headers = new HashMap<String, String>();
 
     public Request(BufferedReader reader) {
         this.reader = reader;
         this.requestLine = setRequestLine();
-        this.headerFields = setHeaderFields();
+        this.requestHeader = setHeaderFields();
     }
 
     public String getRequestLine() {
@@ -25,7 +25,7 @@ public class Request {
                 " " + requestLine.getProtocol();
     }
 
-    public String getRequestMethod() {
+    public String getMethod() {
         return requestLine.getMethodType();
     }
 
@@ -33,8 +33,27 @@ public class Request {
         return requestLine.getPath();
     }
 
-    public Map<String, String> getHeaders() {
-        return headerFields;
+    public HashMap getHeaders() {
+        return requestHeader.getHeaders();
+    }
+
+    public String getHeader(String header) {
+        return requestHeader.getHeader(header);
+    }
+
+    public RequestBody setBody() {
+        String body = "";
+        if (requestHeader.getHeaders().containsKey("Content-Length")) {
+            int size = Integer.parseInt(requestHeader.getHeader("Content-Length"));
+            for (int i = 0; i < size; i++) {
+                try {
+                    body += ((char) reader.read());
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }
+        }
+        return new RequestBody(body);
     }
 
     private RequestLine setRequestLine() {
@@ -49,31 +68,16 @@ public class Request {
         }
     }
 
-    private HashMap<String, String> setHeaderFields() {
-        String line;
+    private RequestHeader setHeaderFields() {
         try {
+            String line;
             while ((line = reader.readLine()) != null && !line.isEmpty()) {
                 String[] split = line.split(":", 2);
-                headerFields.put(split[0], split[1].trim());
+                headers.put(split[0], split[1].trim());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
-        return headerFields;
-    }
-
-    public String getBody() {
-        String body = "";
-        if (headerFields.containsKey("Content-Length")) {
-            int size = Integer.parseInt(headerFields.get("Content-Length"));
-            for (int i = 0; i < size; i++) {
-                try {
-                    body += ((char) reader.read());
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            }
-        }
-        return body;
+        return new RequestHeader(headers);
     }
 }

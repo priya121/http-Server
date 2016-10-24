@@ -71,45 +71,45 @@ public class RequestTest {
         String differentGetRequest = requestWithDifferentUserAgent("/");
         BufferedReader reader = createBufferedReader(differentGetRequest);
         Request request = new Request(reader);
-        assertEquals("Apache-HttpClient/4.3.5 (Win32)", request.getHeaders().get("User-Agent"));
+        assertEquals("Apache-HttpClient/4.3.5 (Win32)", request.getHeader("User-Agent"));
     }
 
     @Test
     public void storesRangeForARequestWithARange() {
         reader = createBufferedReader(getPartialRequest);
         Request request = new Request(reader);
-        assertThat(request.getHeaders().get("Range"), is("bytes=0-4"));
+        assertThat(request.getHeader("Range"), is("bytes=0-4"));
     }
 
     @Test
     public void canGetBytesFromHeader() {
         reader = createBufferedReader(getPartialRequest);
         Request request = new Request(reader);
-        assertThat(request.getHeaders().get("Range"), is("bytes=0-4"));
+        assertThat(request.getHeader("Range"), is("bytes=0-4"));
     }
 
     @Test
     public void findsEtagIfPresent() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaders().get("If-Match"), is("e0023aa4e"));
+        assertThat(request.getHeader("If-Match"), is("e0023aa4e"));
     }
 
     @Test
     public void getsContentLength() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaders().get("Content-Length"), containsString("15"));
+        assertThat(request.getHeader("Content-Length"), containsString("15"));
     }
 
     @Test
     public void getsBody() {
         Request request = getPatchRequest;
-        assertThat(request.getBody(), is("patched content"));
+        assertThat(request.setBody().get(), is("patched content"));
     }
 
     @Test
     public void getsEtag() {
         Request request = getPatchRequest;
-        assertThat(request.getHeaders().get("If-Match"), containsString("e0023aa4e"));
+        assertThat(request.getHeader("If-Match"), containsString("e0023aa4e"));
     }
 
     private String createRequestString(String path) {

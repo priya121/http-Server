@@ -1,8 +1,8 @@
 package response;
 
 import main.request.Request;
-import main.Response;
-import main.responses.DefaultResponse;
+import main.response.Response;
+import main.responsetypes.DefaultResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +27,7 @@ public class DefaultResponseTest {
     @Before
     public void setUp() {
         response = new DefaultResponse(content);
+
         getRandomRequest = helper.create("GET /chocolate");
         putEmptyRequest = helper.create("PUT /");
         postCoffeeRequest = helper.create("POST /coffee");

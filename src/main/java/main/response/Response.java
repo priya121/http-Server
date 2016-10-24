@@ -1,4 +1,4 @@
-package main;
+package main.response;
 
 public class Response {
     private byte[] bodyData;

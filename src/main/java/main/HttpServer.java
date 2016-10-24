@@ -1,7 +1,8 @@
 package main;
 
 import main.request.Request;
-import main.responses.DefaultResponse;
+import main.response.Response;
+import main.responsetypes.DefaultResponse;
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 import main.streams.RealOutputStreamWriter;

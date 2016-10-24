@@ -1,8 +1,8 @@
 package main.methodactions;
 
 import main.request.Request;
-import main.Response;
-import main.responses.DefaultResponse;
+import main.response.Response;
+import main.responsetypes.DefaultResponse;
 
 public interface Action {
     Response getResponse(DefaultResponse response, Request request);

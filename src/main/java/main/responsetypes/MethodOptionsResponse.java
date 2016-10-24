@@ -1,12 +1,11 @@
-package main.responses;
+package main.responsetypes;
 
 import main.DefaultHeaders;
 import main.request.Request;
-import main.Response;
+import main.response.Response;
 
 import java.util.List;
 
-import static main.Status.METHOD_NOT_ALLOWED;
 import static main.Status.OK;
 
 public class MethodOptionsResponse extends DefaultResponse{
@@ -24,7 +23,7 @@ public class MethodOptionsResponse extends DefaultResponse{
     @Override
     public Response get(Request request) {
         return new Response(OK.get(),
-                            defaultHeaders,
+                            defaultHeaders + methodOptionsHeader,
                             convertToBytes(getBody(content)));
     }
 
@@ -38,14 +37,14 @@ public class MethodOptionsResponse extends DefaultResponse{
     @Override
     public Response post(Request request) {
         return new Response(OK.get(),
-                            defaultHeaders,
+                            defaultHeaders + methodOptionsHeader,
                             convertToBytes(getBody(content)));
     }
 
     @Override
     public Response put(Request request){
         return new Response(OK.get(),
-                            defaultHeaders,
+                            defaultHeaders + methodOptionsHeader,
                             convertToBytes(getBody(content)));
     }
 
@@ -53,13 +52,6 @@ public class MethodOptionsResponse extends DefaultResponse{
     public Response options(Request request) {
         return new Response(OK.get(),
                             defaultHeaders + methodOptionsHeader,
-                            convertToBytes(getBody(content)));
-    }
-
-    @Override
-    public Response delete(Request request) {
-        return new Response(METHOD_NOT_ALLOWED.get(),
-                            defaultHeaders,
                             convertToBytes(getBody(content)));
     }
 }

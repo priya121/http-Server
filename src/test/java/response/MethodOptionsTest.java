@@ -1,8 +1,8 @@
 package response;
 
 import main.request.Request;
-import main.Response;
-import main.responses.MethodOptionsResponse;
+import main.response.Response;
+import main.responsetypes.MethodOptionsResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +41,9 @@ public class MethodOptionsTest {
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: \n" +
                      "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Content-Type: \n" +
+                     "Allow: GET,HEAD,POST,OPTIONS,PUT\n\n", createdResponse.getStatusLine() +
+                                                             createdResponse.getHeader());
     }
 
     @Test
@@ -61,16 +62,6 @@ public class MethodOptionsTest {
     public void responseForHeadMethodOptions() {
         Response createdResponse = response.head(postOptions);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
-    }
-
-    @Test
-    public void responseForDeleteMethodOptions() {
-        Response createdResponse = response.delete(deleteOptions);
-        assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
-                     "Date: \n" +
-                     "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
-                                           createdResponse.getHeader());
     }
 
     @Test

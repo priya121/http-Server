@@ -1,9 +1,9 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.DefaultResponse;
-import main.responses.GetCookieResponse;
+import main.responsetypes.DefaultResponse;
+import main.responsetypes.GetCookieResponse;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -35,7 +35,6 @@ public class GetCookieResponseTest {
         Request getCookieRequest = create("GET /eat_cookie", "chocolate");
         List content = new ArrayList();
         DefaultResponse getCookieResponse = new GetCookieResponse(content);
-        System.out.print(getCookieRequest.getHeaders().get("Cookie"));
         Response response = getCookieResponse.get(getCookieRequest);
         assertThat(response.getBody(), is("mmmm chocolate".getBytes()));
     }

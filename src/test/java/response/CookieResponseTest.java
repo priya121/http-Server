@@ -1,8 +1,8 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.CookieResponse;
+import main.responsetypes.CookieResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CookieResponseTest {
 
-
     private CookieResponse cookieResponse;
     private Request getCookieRequest;
     TestHelper helper = new TestHelper();
@@ -25,6 +24,7 @@ public class CookieResponseTest {
     public void setUp() {
         List content = new ArrayList();
         cookieResponse = new CookieResponse(content);
+
         getCookieRequest = helper.create("GET /cookie?type=chocolate");
         getOatmealCookieRequest = helper.create("GET /cookie?type=oatmeal");
         cookieResponse = new CookieResponse(content);

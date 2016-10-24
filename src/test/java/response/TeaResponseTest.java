@@ -1,8 +1,8 @@
 package response;
 
-import main.Response;
+import main.response.Response;
 import main.request.Request;
-import main.responses.TeaResponse;
+import main.responsetypes.TeaResponse;
 import org.junit.Before;
 import org.junit.Test;
 
