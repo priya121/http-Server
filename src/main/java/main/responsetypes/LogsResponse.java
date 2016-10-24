@@ -35,7 +35,7 @@ public class LogsResponse extends DefaultResponse {
         if (hasAuthorization(request)) {
             try {
                 File file = new File(publicDirectory + "/logs");
-                overWriteFileContents(file, request);
+                logRequest(file, request);
                 return new Response(OK.get(),
                                     headers,
                                     requestBody(request));
@@ -66,7 +66,7 @@ public class LogsResponse extends DefaultResponse {
         return Files.readAllBytes(path);
     }
 
-    private void overWriteFileContents(File file, Request request) throws IOException {
+    private void logRequest(File file, Request request) throws IOException {
         FileWriter writer = new FileWriter(file, true);
         writer.write(request.getRequestLine());
         writer.close();
