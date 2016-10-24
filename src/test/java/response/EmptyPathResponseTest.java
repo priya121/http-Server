@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class EmptyPathResponseTest {
 
     private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
-    private EmptyPathResponse response;
+    private EmptyPathResponse emptyPathResponse;
     private final List content = new ArrayList<>();
     private final TestHelper helper = new TestHelper();
     private final Request simpleGetRequest = helper.create("GET /");
@@ -32,18 +32,18 @@ public class EmptyPathResponseTest {
     @Before
     public void setUp() {
         Date testDate = new TestDate();
-        response = new EmptyPathResponse(content, publicDirectory, testDate);
+        emptyPathResponse = new EmptyPathResponse(content, publicDirectory, testDate);
     }
 
     @Test
     public void correctResponseForSimpleGet() {
-        Response createdResponse = response.get(simpleGetRequest);
+        Response createdResponse = emptyPathResponse.get(simpleGetRequest);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void correctResponseForSimpleHead() {
-        Response createdResponse = response.head(simpleHeadRequest);
+        Response createdResponse = emptyPathResponse.head(simpleHeadRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Content-Length: \n\n", createdResponse.getStatusLine() +
@@ -52,52 +52,52 @@ public class EmptyPathResponseTest {
 
     @Test
     public void methodNotAllowedForEmptyPost() {
-        Response createdResponse = response.post(emptyPostRequest);
+        Response createdResponse = emptyPathResponse.post(emptyPostRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyPut() {
-        Response createdResponse = response.put(emptyPutRequest);
+        Response createdResponse = emptyPathResponse.put(emptyPutRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyOptions() {
-        Response createdResponse = response.options(emptyOptionsRequest);
+        Response createdResponse = emptyPathResponse.options(emptyOptionsRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void methodNotAllowedForEmptyDelete() {
-        Response createdResponse = response.delete(emptyDeleteRequest);
+        Response createdResponse = emptyPathResponse.delete(emptyDeleteRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void emptyGetDisplaysImageFile1Link() {
-        Response createdResponse = response.get(simpleGetRequest);
+        Response createdResponse = emptyPathResponse.get(simpleGetRequest);
         String bodyContents = new String(createdResponse.getBody());
         assertThat(bodyContents, containsString("<a href=/file1>/file1</a>\n"));
     }
 
     @Test
     public void emptyGetDisplaysFile2Link() {
-        Response createdResponse = response.get(simpleGetRequest);
+        Response createdResponse = emptyPathResponse.get(simpleGetRequest);
         String bodyContents = new String(createdResponse.getBody());
         assertThat(bodyContents, containsString("<a href=/file2>/file2</a>\n"));
     }
 
     @Test
     public void emptyGetDisplaysImageLink() {
-        Response createdResponse = response.get(simpleGetRequest);
+        Response createdResponse = emptyPathResponse.get(simpleGetRequest);
         String bodyContents = new String(createdResponse.getBody());
         assertThat(bodyContents, containsString("<a href=/image.gif>/image.gif</a>\n"));
     }
 
     @Test
     public void emptyGetDisplaysAllFileLinks() {
-        Response createdResponse = response.get(simpleGetRequest);
+        Response createdResponse = emptyPathResponse.get(simpleGetRequest);
         String bodyContents = new String(createdResponse.getBody());
         assertThat(bodyContents, containsString("<a href=/image.png>/image.png</a>\n"));
         assertThat(bodyContents, containsString("<a href=/image.jpeg>/image.jpeg</a>\n"));

@@ -24,11 +24,13 @@ public class LogsResponseTest {
     private final Request authRequest = helper.authorizedRequest("GET /logs HTTP/1.1");
     private Date testDate;
     private ArrayList<String> content;
+    private LogsResponse logsResponse;
 
     @Before
     public void setUp() throws IOException {
         testDate = new TestDate();
-        content = new ArrayList<String>();
+        content = new ArrayList<>();
+        logsResponse = new LogsResponse(publicDirectory, content, testDate);
     }
 
     @After
@@ -38,29 +40,25 @@ public class LogsResponseTest {
 
     @Test
     public void sendsUnauthResponseFor() {
-        LogsResponse response = new LogsResponse(publicDirectory, content, testDate);
-        Response responseToSend = response.get(unauthRequest);
+        Response responseToSend = logsResponse.get(unauthRequest);
         assertThat(responseToSend.getStatusLine(), is("HTTP/1.1 401 Not Authorized\n"));
     }
 
     @Test
     public void sendsOKForAuthorizedRequest() {
-        LogsResponse response = new LogsResponse(publicDirectory, content, testDate);
-        Response responseToSend = response.get(authRequest);
+        Response responseToSend = logsResponse.get(authRequest);
         assertThat(responseToSend.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void updatesContentWhenAuthCode() {
-        LogsResponse response = new LogsResponse(publicDirectory, content, testDate);
-        Response responseToSend = response.get(authRequest);
+        Response responseToSend = logsResponse.get(authRequest);
         assertThat(new String(responseToSend.getBody()), is("GET /logs HTTP/1.1"));
     }
 
     @Test
     public void doesNotUpdateIfNotAuthorized() {
-        LogsResponse response = new LogsResponse(publicDirectory, content, testDate);
-        Response responseToSend = response.get(unauthRequest);
+        Response responseToSend = logsResponse.get(unauthRequest);
         assertThat(new String(responseToSend.getBody()), is(""));
     }
 

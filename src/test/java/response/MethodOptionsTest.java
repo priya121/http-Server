@@ -20,7 +20,7 @@ public class MethodOptionsTest {
 
     private final TestHelper helper = new TestHelper();
     private final List content = new ArrayList<>();
-    private MethodOptionsResponse response;
+    private MethodOptionsResponse methodOptionsResponse;
     private Request getOptions;
     private Request putOptions;
     private Request postOptions;
@@ -31,7 +31,7 @@ public class MethodOptionsTest {
     @Before
     public void setUp() {
         testDate = new TestDate();
-        response = new MethodOptionsResponse(content, testDate);
+        methodOptionsResponse = new MethodOptionsResponse(content, testDate);
 
         getOptions = helper.create("GET /method_options");
         putOptions = helper.create("PUT /method_options");
@@ -42,7 +42,7 @@ public class MethodOptionsTest {
 
     @Test
     public void responseForGetMethodOptions() {
-        Response createdResponse = response.get(getOptions);
+        Response createdResponse = methodOptionsResponse.get(getOptions);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Content-Length: \n" +
@@ -52,25 +52,25 @@ public class MethodOptionsTest {
 
     @Test
     public void responseForPutMethodOptions() {
-        Response createdResponse = response.put(putOptions);
+        Response createdResponse = methodOptionsResponse.put(putOptions);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void responseForPostMethodOptions() {
-        Response createdResponse = response.post(postOptions);
+        Response createdResponse = methodOptionsResponse.post(postOptions);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void responseForHeadMethodOptions() {
-        Response createdResponse = response.head(postOptions);
+        Response createdResponse = methodOptionsResponse.head(postOptions);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void allowIncludedInMethodOptionsRequest() {
-        Response createdResponse = response.options(optionsOptions);
+        Response createdResponse = methodOptionsResponse.options(optionsOptions);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
         assertThat(createdResponse.getHeader(), containsString("Allow: GET,HEAD,POST,OPTIONS,PUT\n"));
     }

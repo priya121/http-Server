@@ -22,7 +22,7 @@ public class FormResponseTest {
     private Request postFormRequest;
     private Request putFormRequest;
     private Request deleteFormRequest;
-    private FormResponse response;
+    private FormResponse formResponse;
 
     @Before
     public void setUp() {
@@ -31,33 +31,33 @@ public class FormResponseTest {
         postFormRequest = helper.create("POST /form");
         putFormRequest= helper.create("PUT /form");
         deleteFormRequest = helper.create("DELETE /form");
-        response = new FormResponse(content, testDate);
+        formResponse = new FormResponse(content, testDate);
     }
 
     @Test
     public void postFormResponse() {
-        Response createdResponse = response.get(postFormRequest);
+        Response createdResponse = formResponse.get(postFormRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void putFormResponse() {
-        Response createdResponse = response.get(putFormRequest);
+        Response createdResponse = formResponse.get(putFormRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void postFormAddsDataToContent() {
-        response.post(putFormRequest);
-        byte[] body = response.get(getFormRequest).getBody();
+        formResponse.post(putFormRequest);
+        byte[] body = formResponse.get(getFormRequest).getBody();
         assertThat(convertToString(body), containsString("\ndata=fatcat"));
     }
 
     @Test
     public void putFormOverwritesPreviousData() {
         content = new ArrayList<>(Collections.singletonList("data=fatcat"));
-        response.put(putFormRequest);
-        byte[] body = response.get(getFormRequest).getBody();
+        formResponse.put(putFormRequest);
+        byte[] body = formResponse.get(getFormRequest).getBody();
         assertFalse(convertToString(body).contains("\ndata=fatcat"));
         assertTrue(convertToString(body).contains("\ndata=heathcliff"));
     }
@@ -65,8 +65,8 @@ public class FormResponseTest {
     @Test
     public void deleteRemovesData() {
         content = new ArrayList<>(Collections.singletonList("data=heathcliff"));
-        response.delete(deleteFormRequest);
-        assertFalse(convertToString(response.get(getFormRequest).getBody()).equals("\ndata=heathcliff"));
+        formResponse.delete(deleteFormRequest);
+        assertFalse(convertToString(formResponse.get(getFormRequest).getBody()).equals("\ndata=heathcliff"));
     }
 
     private String convertToString(byte[] body) {

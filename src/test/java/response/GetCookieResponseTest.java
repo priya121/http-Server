@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class GetCookieResponseTest {
-    private GetCookieResponse response;
+    private GetCookieResponse getCookieResponse;
     TestHelper helper = new TestHelper();
     private Request getCookieRequest;
     private Request getOatmealCookie;
@@ -24,20 +24,20 @@ public class GetCookieResponseTest {
     public void setUp() {
         Date testDate = new TestDate();
         ArrayList<String> content = new ArrayList<>();
-        response = new GetCookieResponse(content, testDate);
+        getCookieResponse = new GetCookieResponse(content, testDate);
         getCookieRequest = helper.createRequestWithCookie("GET /eat_cookie", "chocolate");
         getOatmealCookie = helper.createRequestWithCookie("GET /eat_cookie", "oatmeal");
     }
 
     @Test
     public void getWithCookieRespondsWithCorrectBody() {
-        Response responseToSend = response.get(getCookieRequest);
+        Response responseToSend = getCookieResponse.get(getCookieRequest);
         assertThat(responseToSend.getBody(), is("mmmm chocolate".getBytes()));
     }
 
     @Test
     public void getWithAnotherCookieRespondsAccordingly() {
-        Response responseToSend = response.get(getOatmealCookie);
+        Response responseToSend = getCookieResponse.get(getOatmealCookie);
         assertThat(responseToSend.getBody(), is("".getBytes()));
     }
 }

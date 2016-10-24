@@ -66,12 +66,6 @@ public class ResourceResponseTest {
         }
     }
 
-    private void overWriteFileContents(File file) throws IOException {
-        FileWriter writer = new FileWriter(file, false);
-        writer.write("default content");
-        writer.close();
-    }
-
     @Test
     public void OKStatusForImageGifFile() {
         Response response = resourceResponse.get(getImageGif);
@@ -191,4 +185,11 @@ public class ResourceResponseTest {
         Response getResponse = resourceResponse.patch(misMatchedPatch);
         assertEquals("default content", new String(getResponse.getBody()));
     }
+
+    private void overWriteFileContents(File file) throws IOException {
+        FileWriter writer = new FileWriter(file, false);
+        writer.write("default content");
+        writer.close();
+    }
+
 }
