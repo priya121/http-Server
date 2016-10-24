@@ -70,4 +70,14 @@ public class TestHelper {
         BufferedReader reader = createBufferedReader(requestContent);
         return new Request(reader);
     }
+
+    public Request authorizedRequest(String requestLine) {
+        String requestContent = requestLine + " HTTP/1.1\n" +
+                "Host: localhost:5000\n" +
+                "Authorization: = YWRtaW46aHVudGVyMg==\n" +
+                "Accept-Encoding: gzip,deflate\n\n" +
+                "patched content";
+        BufferedReader reader = createBufferedReader(requestContent);
+        return new Request(reader);
+    }
 }

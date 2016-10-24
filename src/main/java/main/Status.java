@@ -7,6 +7,7 @@ public enum Status {
     REDIRECT("302 Redirect"),
     PARTIAL("206 Partial"),
     NO_CONTENT("204 No Content"),
+    NOT_AUTHORIZED("401 Not Authorized"),
     COFFEE("418 I'm a teapot");
 
     private String status;

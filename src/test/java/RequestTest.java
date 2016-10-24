@@ -20,7 +20,7 @@ public class RequestTest {
     private String getRequestWithFoobarPath;
     private String getPartialRequest;
     private Request getPatchRequest;
-    TestHelper helper = new TestHelper();
+    private TestHelper helper = new TestHelper();
 
     @Before
     public void setUp() {

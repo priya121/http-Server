@@ -70,4 +70,8 @@ public class DefaultResponse {
     public Response patch(Request request) {
         return new Response(PATCH.get(), defaultHeaders, convertToBytes(getBody(content)));
     }
+
+    public Response get_cookie(Request request) {
+        return new Response(PATCH.get(), defaultHeaders, convertToBytes(getBody(content)));
+    }
 }

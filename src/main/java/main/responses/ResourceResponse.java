@@ -25,17 +25,14 @@ public class ResourceResponse extends DefaultResponse {
     public ResourceResponse(String publicDirectory, List content) {
         super(content);
         this.publicDirectory = publicDirectory;
-        this.header = "Date: \n" +
-                      "Content-Length: \n";
+        this.header =  "";
     }
 
     @Override
     public Response get(Request request) {
         if (request.getPath().contains("/partial_content.txt")) {
             String byteRange = request.getHeaders().get("Range");
-
-            int beforeEquals = 3;
-            String bytes = byteRange.substring(byteRange.length() - beforeEquals, byteRange.length());
+            String bytes = byteRange.substring(byteRange.length() - 3, byteRange.length());
             Range range = new Range(bytes);
 
             return new Response(PARTIAL.get(),
@@ -61,6 +58,7 @@ public class ResourceResponse extends DefaultResponse {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         return new Response(NO_CONTENT.get(),
                             header + "Etag: " + request.getHeaders().get("If-Match") + "\n",
@@ -87,9 +85,9 @@ public class ResourceResponse extends DefaultResponse {
         }
     }
 
-    public byte[] requestBody(Request request) {
-        Path path = Paths.get(publicDirectory + request.getPath());
+    private byte[] requestBody(Request request) {
         try {
+            Path path = Paths.get(publicDirectory + request.getPath());
             return Files.readAllBytes(path);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

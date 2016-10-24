@@ -59,7 +59,7 @@ public class ServerArgumentsTest {
     public void returnsDefaultDirectoryGivenNoArguments() {
         String[] args = {};
         ServerArguments arguments = new ServerArguments(args, output);
-        assertEquals("../public", arguments.getDirectory());
+        assertEquals("/Users/priyapatil/cob_spec/public", arguments.getDirectory());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ServerArgumentsTest {
     public void doesNotAllowIncorrectArguments() {
         String[] args = {"ljahsfda"};
         ServerArguments arguments = new ServerArguments(args, output);
-        assertEquals("../public", arguments.getDirectory());
+        assertEquals("/Users/priyapatil/cob_spec/public", arguments.getDirectory());
     }
 
     @Test
@@ -111,6 +111,6 @@ public class ServerArgumentsTest {
         ServerArguments arguments = new ServerArguments(args, output);
         arguments.getDirectory();
         assertEquals("Invalid or Blank Directory,\nUsing Directory " +
-                    ": ../public\n\n", recordedOutput.toString());
+                    ": /Users/priyapatil/cob_spec/public\n\n", recordedOutput.toString());
     }
 }

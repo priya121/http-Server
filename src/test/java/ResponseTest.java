@@ -13,8 +13,7 @@ public class ResponseTest {
                          "ETag: \n" +
                          "Accept-Ranges: none\n" +
                          "Content-Length: \n" +
-                         "Connection: close\n" +
-                         "Content-Type: text/plain\n";
+                         "Connection: close\n";
 
     @Test
     public void canGetStatusLine() {
@@ -44,8 +43,7 @@ public class ResponseTest {
                      "ETag: \n" +
                      "Accept-Ranges: none\n" +
                      "Content-Length: \n" +
-                     "Connection: close\n" +
-                     "Content-Type: text/plain\n\n" +
+                     "Connection: close\n\n" +
                      "<h1> I'm a teapot </h1>", response.getStatusLine() +
                                                 response.getHeader() +
                                                 new String(response.getBody()));
@@ -62,8 +60,7 @@ public class ResponseTest {
                 "ETag: \n" +
                 "Accept-Ranges: none\n" +
                 "Content-Length: \n" +
-                "Connection: close\n" +
-                "Content-Type: text/plain\n\n", response.getStatusLine() +
+                "Connection: close\n\n", response.getStatusLine() +
                                                 response.getHeader());
     }
 
@@ -78,7 +75,6 @@ public class ResponseTest {
     public void canCreateAnotherResponseWithDataInBody() {
         byte[] data = "Hi there".getBytes();
         Response response = new Response(OK.get(), headers, data);
-        System.out.print(response.getBody().length);
         assertTrue(response.getBody().length == 8);
     }
 }

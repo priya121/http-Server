@@ -22,14 +22,12 @@ public class NoResourceResponseTest {
     private Request postFoobar;
     private Request optionsFoobar;
     private Request deleteFoobar;
-    private Request putFoobar;
 
     @Before
     public void setUp() {
         response = new NoResourceResponse(content);
         getFoobar = helper.create("GET /foobar");
         headFoobar = helper.create("HEAD /foobar");
-        putFoobar = helper.create("PUT /foobar");
         postFoobar = helper.create("POST /foobar");
         optionsFoobar = helper.create("OPTIONS /foobar");
         deleteFoobar = helper.create("DELETE /foobar");
@@ -43,7 +41,7 @@ public class NoResourceResponseTest {
                      "Content-Length: \n" +
                      "Content-Type: \n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
-        }
+    }
 
     @Test
     public void headNonExistentResource() {

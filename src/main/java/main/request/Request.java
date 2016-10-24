@@ -5,7 +5,8 @@ import main.Protocol;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Request {
     private final BufferedReader reader;
@@ -47,7 +48,6 @@ public class Request {
             throw new UncheckedIOException(e);
         }
     }
-
 
     private HashMap<String, String> setHeaderFields() {
         String line;

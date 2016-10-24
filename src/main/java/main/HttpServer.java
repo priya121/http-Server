@@ -8,6 +8,7 @@ import main.streams.RealOutputStreamWriter;
 import main.streams.StreamWriter;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class HttpServer {
 
         Runnable runnable = () -> {
                 sendResponse(outputStream, request);
+                logRequest(request);
         };
             executeTask(runnable);
     }
@@ -54,6 +56,11 @@ public class HttpServer {
         writeToClient(stream, response);
     }
 
+    private void logRequest(Request request) {
+        Logger logger = new Logger(new File(publicDirectory + "/logs"));
+        logger.log(request.getRequestLine());
+    }
+
     private void writeToClient(StreamWriter stream, Response response) {
         stream.write(response.getStatusLine().getBytes());
         stream.write(response.getHeader().getBytes());
@@ -62,7 +69,7 @@ public class HttpServer {
     }
 
     private void executeTask(Runnable runnable) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(4096);
         executorService.submit(runnable);
         executorService.shutdown();
     }

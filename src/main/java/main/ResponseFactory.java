@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.*;
 
 import static main.Method.GET;
+import static main.Method.PATCH;
 
 public class ResponseFactory {
     private final HashMap<String, DefaultResponse> responses;
@@ -19,17 +20,26 @@ public class ResponseFactory {
         responses.put("/form", new FormResponse(content));
         responses.put("/method_options", new MethodOptionsResponse(content));
         responses.put("/method_options2", new MethodOptions2Response(content));
+        responses.put("/logs", new LogsResponse(publicDirectory, content));
         responses.put("/coffee", new CoffeeResponse(content));
         responses.put("/tea", new TeaResponse(content));
         responses.put("/redirect", new RedirectResponse(content));
         responses.put("resource", new ResourceResponse(publicDirectory, content));
         responses.put("/parameters", new ParameterResponse(content));
+        responses.put("cookie", new CookieResponse(content));
+        responses.put("get_cookie", new GetCookieResponse(content));
         responses.put("no resource", new NoResourceResponse(content));
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
-        if (resourceRequest(request)) {
+        if (resourceRequest(request) && !request.getPath().equals("/logs")) {
             return responses.get("resource");
+        }
+        if (request.getPath().contains("type=chocolate")) {
+            return responses.get("cookie");
+        }
+        if (request.getPath().contains("eat_cookie")) {
+            return responses.get("get_cookie");
         }
         if (request.getPath().contains("parameters")) return responses.get("/parameters");
 
@@ -46,7 +56,11 @@ public class ResponseFactory {
     }
 
     private boolean requestPossible(Request request) {
-        return exists(request.getPath()) && ((request.getRequestMethod().equals(GET.get()) || request.getRequestMethod().equals("PATCH")));
+        return exists(request.getPath()) && isGetOrPatch(request);
+    }
+
+    private boolean isGetOrPatch(Request request) {
+        return request.getRequestMethod().equals(GET.get()) || request.getRequestMethod().equals(PATCH.get());
     }
 
     private boolean exists(String filePathToFind) {
@@ -57,7 +71,7 @@ public class ResponseFactory {
                 .isPresent();
     }
 
-    public List<File> getFiles() {
+    private List<File> getFiles() {
         File[] files = new File(publicDirectory).listFiles();
         return new ArrayList<>(Arrays.asList(files));
     }

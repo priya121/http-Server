@@ -6,6 +6,7 @@ import main.Response;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static main.Status.METHOD_NOT_ALLOWED;
@@ -25,7 +26,7 @@ public class EmptyPathResponse extends DefaultResponse {
 
     @Override
     public Response get(Request request) {
-        List bodyWithLinks = Arrays.asList(allFileLinks());
+        List bodyWithLinks = Collections.singletonList(allFileLinks());
         return new Response(OK.get(),
                             headers,
                             convertToBytes(getBody(bodyWithLinks)));
