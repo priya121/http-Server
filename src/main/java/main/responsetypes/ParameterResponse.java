@@ -1,11 +1,11 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
-import main.response.Response;
+import main.date.Date;
 import main.request.Request;
+import main.response.DateHeader;
+import main.response.Response;
 
 import java.net.URLDecoder;
-import java.util.List;
 
 import static main.Status.OK;
 
@@ -13,9 +13,9 @@ public class ParameterResponse extends DefaultResponse {
 
     private final String headers;
 
-    public ParameterResponse(List content) {
-        super(content);
-        this.headers = new DefaultHeaders().get();
+    public ParameterResponse(Date date) {
+        super(date);
+        this.headers = new DateHeader(date).get();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ParameterResponse extends DefaultResponse {
                             convertToBytes(decode(request)));
     }
 
-    public String decode(Request request) {
+    private String decode(Request request) {
         String[] parameters = getParameters(request);
 
         String variableDecoded = getFirstVariable(parameters[0]);

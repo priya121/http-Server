@@ -1,7 +1,9 @@
+package request;
+
 import main.request.Request;
 import org.junit.Before;
 import org.junit.Test;
-import response.TestHelper;
+import responsetypes.TestHelper;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

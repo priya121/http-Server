@@ -1,7 +1,9 @@
-package response;
+package responsetypes;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.ResourceResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -11,10 +13,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static main.Status.*;
+import static main.Status.OK;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 public class ResourceResponseTest {
 
     private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
-    List content = new ArrayList<>();
     private final TestHelper helper = new TestHelper();
     private Request getImageGif;
     private Request getTextFile;
@@ -35,10 +34,11 @@ public class ResourceResponseTest {
     private Request getPartialFour;
     private Request getPartialFive;
     private Request patchWithMatch;
-    private Request misMatchedPatch;
+    private Date testDate;
 
     @Before
     public void setUp() throws IOException {
+        testDate = new TestDate();
         getImageGif = helper.create("GET /image.gif");
         getTextFile = helper.create("GET /text-file.txt");
         getImageJPEG = helper.create("GET /image.jpeg");
@@ -49,7 +49,7 @@ public class ResourceResponseTest {
         getPartialFour = helper.createPartialBeginning("GET /partial_content.txt", 3);
         getPartialFive = helper.createPartialBeginning("GET /partial_content.txt", 5);
         patchWithMatch = helper.requestWithEtag("PATCH /patch-content.txt", "5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0");
-        resourceResponse = new ResourceResponse(publicDirectory, content);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
     }
 
     @After
@@ -60,12 +60,6 @@ public class ResourceResponseTest {
                 overWriteFileContents(file);
             }
         }
-    }
-
-    private void overWriteFileContents(File file) throws IOException {
-        FileWriter writer = new FileWriter(file, false);
-        writer.write("default content");
-        writer.close();
     }
 
     @Test
@@ -160,21 +154,21 @@ public class ResourceResponseTest {
 
     @Test
     public void patchRequestReturnsNoContentMessage() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
         Response response = resourceResponse.patch(patchWithMatch);
         assertThat(response.getStatusLine(), containsString("HTTP/1.1 204 No Content"));
     }
 
     @Test
     public void setsETagHeader() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content);
+        resourceResponse = new ResourceResponse(publicDirectory,  testDate);
         Response response = resourceResponse.patch(patchWithMatch);
         assertThat(response.getHeader(), containsString("Etag: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0"));
     }
 
     @Test
     public void updatesFileIfETagsMatch() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
         patchWithMatch = helper.requestWithEtag("PATCH /patch-content.txt", "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec");
         Response getResponse = resourceResponse.patch(patchWithMatch);
         assertEquals("patched content", new String(getResponse.getBody()));
@@ -182,9 +176,16 @@ public class ResourceResponseTest {
 
     @Test
     public void eTagsDoNotMatchNoUpdate() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content);
-        misMatchedPatch = helper.requestWithEtag("PATCH /patch-content.txt", "kjsdljsbdlj");
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
+        Request misMatchedPatch = helper.requestWithEtag("PATCH /patch-content.txt", "kjsdljsbdlj");
         Response getResponse = resourceResponse.patch(misMatchedPatch);
         assertEquals("default content", new String(getResponse.getBody()));
     }
+
+    private void overWriteFileContents(File file) throws IOException {
+        FileWriter writer = new FileWriter(file, false);
+        writer.write("default content");
+        writer.close();
+    }
+
 }

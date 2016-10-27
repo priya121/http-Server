@@ -1,35 +1,31 @@
 package main.responsetypes;
 
-import main.DefaultHeaders;
+import main.date.Date;
 import main.request.Request;
+import main.response.DateHeader;
 import main.response.Response;
-
-import java.util.List;
 
 import static main.Status.OK;
 
 public class GetCookieResponse extends DefaultResponse {
 
     private final String headers;
-    private List content;
 
-    public GetCookieResponse(List content) {
-        super(content);
-        this.content = content;
-        this.headers = new DefaultHeaders().get();
+    public GetCookieResponse(Date date) {
+        super(date);
+        this.headers = new DateHeader(date).get();
     }
 
     @Override
     public Response get(Request request) {
         if (request.getHeaders().get("Cookie").equals("type=chocolate")) {
-            content.add("mmmm chocolate");
             return new Response(OK.get(),
-                                headers,
-                                convertToBytes(getBody(content)));
+                    headers,
+                    convertToBytes("mmmm chocolate"));
         } else {
             return new Response(OK.get(),
-                                headers,
-                                convertToBytes(getBody(content)));
+                    headers,
+                    convertToBytes(""));
         }
     }
 }

@@ -1,11 +1,16 @@
-package response;
+package responsetypes;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.FormResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,32 +25,41 @@ public class FormResponseTest {
     private Request postFormRequest;
     private Request putFormRequest;
     private Request deleteFormRequest;
-    private FormResponse response;
+    private FormResponse formResponse;
+    private String publicDirectory;
 
     @Before
     public void setUp() {
+        publicDirectory = "/Users/priyapatil/cob_spec/public";
+        Date testDate = new TestDate();
         getFormRequest = helper.create("GET /form");
         postFormRequest = helper.create("POST /form");
         putFormRequest= helper.create("PUT /form");
         deleteFormRequest = helper.create("DELETE /form");
-        response = new FormResponse(content);
+        formResponse = new FormResponse(publicDirectory, testDate);
+    }
+
+    @After
+    public void tearDown() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(publicDirectory + "/form");
+        writer.print("");
+        writer.close();
     }
 
     @Test
     public void postFormResponse() {
-        Response createdResponse = response.get(postFormRequest);
+        Response createdResponse = formResponse.get(postFormRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void putFormResponse() {
-        Response createdResponse = response.get(putFormRequest);
+        Response createdResponse = formResponse.get(putFormRequest);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 200 OK\n"));
     }
 
     @Test
     public void postFormAddsDataToContent() {
-        FormResponse formResponse = new FormResponse(content);
         formResponse.post(putFormRequest);
         byte[] body = formResponse.get(getFormRequest).getBody();
         assertThat(convertToString(body), containsString("\ndata=fatcat"));
@@ -54,7 +68,6 @@ public class FormResponseTest {
     @Test
     public void putFormOverwritesPreviousData() {
         content = new ArrayList<>(Collections.singletonList("data=fatcat"));
-        FormResponse formResponse = new FormResponse(content);
         formResponse.put(putFormRequest);
         byte[] body = formResponse.get(getFormRequest).getBody();
         assertFalse(convertToString(body).contains("\ndata=fatcat"));
@@ -64,7 +77,6 @@ public class FormResponseTest {
     @Test
     public void deleteRemovesData() {
         content = new ArrayList<>(Collections.singletonList("data=heathcliff"));
-        FormResponse formResponse = new FormResponse(content);
         formResponse.delete(deleteFormRequest);
         assertFalse(convertToString(formResponse.get(getFormRequest).getBody()).equals("\ndata=heathcliff"));
     }

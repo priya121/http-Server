@@ -1,3 +1,5 @@
+package response;
+
 import main.response.Response;
 import org.junit.Test;
 
@@ -12,7 +14,6 @@ public class ResponseTest {
                          "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                          "ETag: \n" +
                          "Accept-Ranges: none\n" +
-                         "Content-Length: \n" +
                          "Connection: close\n";
 
     @Test
@@ -42,8 +43,8 @@ public class ResponseTest {
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                      "ETag: \n" +
                      "Accept-Ranges: none\n" +
-                     "Content-Length: \n" +
-                     "Connection: close\n\n" +
+                     "Connection: close\n" +
+                     "Content-Length: 23\n\n" +
                      "<h1> I'm a teapot </h1>", response.getStatusLine() +
                                                 response.getHeader() +
                                                 new String(response.getBody()));
@@ -59,8 +60,7 @@ public class ResponseTest {
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                 "ETag: \n" +
                 "Accept-Ranges: none\n" +
-                "Content-Length: \n" +
-                "Connection: close\n\n", response.getStatusLine() +
+                "Connection: close\nContent-Length: 0\n\n", response.getStatusLine() +
                                                 response.getHeader());
     }
 

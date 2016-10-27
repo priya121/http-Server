@@ -1,13 +1,12 @@
-package response;
+package responsetypes;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
-import main.responsetypes.CoffeeResponse;
+import main.response.Response;
+import main.responsetypes.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,14 +14,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CoffeeResponseTest {
 
     private final TestHelper helper = new TestHelper();
-    private final List content = new ArrayList<>();
-    private CoffeeResponse response;
+    private NoResourceResponse response;
     private Request getCoffeeRequest;
     private Request postCoffeeRequest;
 
     @Before
     public void setUp() {
-        response = new CoffeeResponse(content);
+        Date testDate = new TestDate();
+        String publicDirectory = "/Users/priyapatil/cob_spec/public";
+        response = new NoResourceResponse(publicDirectory, testDate);
         getCoffeeRequest = helper.create("GET /coffee");
         postCoffeeRequest = helper.create("POST /coffee");
     }

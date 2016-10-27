@@ -1,5 +1,7 @@
-package response;
+package responsetypes;
 
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.NoResourceResponse;
@@ -14,18 +16,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class NoResourceResponseTest {
+    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private final TestHelper helper = new TestHelper();
     private final List content = new ArrayList<>();
-    private NoResourceResponse response;
+    private NoResourceResponse noResourceResponse;
     private Request getFoobar;
     private Request headFoobar;
     private Request postFoobar;
     private Request optionsFoobar;
     private Request deleteFoobar;
+    private Date testDate;
 
     @Before
     public void setUp() {
-        response = new NoResourceResponse(content);
+        testDate = new TestDate();
+        noResourceResponse = new NoResourceResponse(publicDirectory, testDate);
         getFoobar = helper.create("GET /foobar");
         headFoobar = helper.create("HEAD /foobar");
         postFoobar = helper.create("POST /foobar");
@@ -35,35 +40,34 @@ public class NoResourceResponseTest {
 
     @Test
     public void getNonExistentResource() {
-        Response createdResponse = response.get(getFoobar);
+        Response createdResponse = noResourceResponse.get(getFoobar);
         assertEquals("HTTP/1.1 404 Not Found\n" +
-                     "Date: \n" +
-                     "Content-Length: \n" +
-                     "Content-Type: \n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
+                                           createdResponse.getHeader());
     }
 
     @Test
     public void headNonExistentResource() {
-        Response createdResponse = response.head(headFoobar);
+        Response createdResponse = noResourceResponse.head(headFoobar);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void postNonExistentResource() {
-        Response createdResponse = response.post(postFoobar);
+        Response createdResponse = noResourceResponse.post(postFoobar);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void deleteNonExistentResource() {
-        Response createdResponse = response.delete(deleteFoobar);
+        Response createdResponse = noResourceResponse.delete(deleteFoobar);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void optionsNonExistentResource() {
-        Response createdResponse = response.options(optionsFoobar);
+        Response createdResponse = noResourceResponse.options(optionsFoobar);
         assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 405 Method Not Allowed"));
     }
 }

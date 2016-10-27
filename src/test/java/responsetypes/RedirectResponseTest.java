@@ -1,13 +1,12 @@
-package response;
+package responsetypes;
 
-import main.response.Response;
+import main.date.Date;
+import main.date.TestDate;
 import main.request.Request;
+import main.response.Response;
 import main.responsetypes.RedirectResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -17,8 +16,7 @@ import static org.junit.Assert.assertThat;
 public class RedirectResponseTest {
 
     private final TestHelper helper = new TestHelper();
-    private final List content = new ArrayList<>();
-    private RedirectResponse response;
+    private RedirectResponse redirectResponse;
     private Request optionsRedirect;
     private Request putRedirect;
     private Request deleteRedirect;
@@ -27,7 +25,8 @@ public class RedirectResponseTest {
 
     @Before
     public void setUp() {
-        response = new RedirectResponse(content);
+        Date testDate = new TestDate();
+        redirectResponse = new RedirectResponse(testDate);
         getRedirect = helper.create("GET /redirect");
         putRedirect = helper.create("PUT /redirect");
         postRedirect = helper.create("POST /redirect");
@@ -37,36 +36,35 @@ public class RedirectResponseTest {
 
     @Test
     public void redirectResponse() {
-        Response createdResponse = response.get(getRedirect);
+        Response createdResponse = redirectResponse.get(getRedirect);
         assertEquals("HTTP/1.1 302 Redirect\n" +
-                     "Date: \n" +
-                     "Content-Length: \n" +
-                     "Content-Type: \n" +
-                     "Location: http://localhost:5000/\n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Location: http://localhost:5000/\n" +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
+                                              createdResponse.getHeader());
     }
 
     @Test
     public void redirectResponseNotAllowedForPost() {
-        Response createdResponse = response.post(postRedirect);
+        Response createdResponse = redirectResponse.post(postRedirect);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForPut() {
-        Response createdResponse = response.put(putRedirect);
+        Response createdResponse = redirectResponse.put(putRedirect);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForDelete() {
-        Response createdResponse = response.delete(deleteRedirect);
+        Response createdResponse = redirectResponse.delete(deleteRedirect);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 
     @Test
     public void redirectResponseNotAllowedForOptions() {
-        Response createdResponse = response.options(optionsRedirect);
+        Response createdResponse = redirectResponse.options(optionsRedirect);
         assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
     }
 }

@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.request.Request;
 
@@ -72,6 +72,13 @@ public class TestHelper {
                 "Authorization: = YWRtaW46aHVudGVyMg==\n" +
                 "Accept-Encoding: gzip,deflate\n\n" +
                 "patched content";
+        BufferedReader reader = createBufferedReader(requestContent);
+        return new Request(reader);
+    }
+
+    public Request createRequestWithCookie(String requestLine, String cookieType) {
+        String requestContent = requestLine + " HTTP/1.1\n" +
+                header + "\nCookie: type=" + cookieType + "\n";
         BufferedReader reader = createBufferedReader(requestContent);
         return new Request(reader);
     }
