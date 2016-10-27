@@ -2,16 +2,16 @@ package main.response;
 
 import main.date.Date;
 
-public class DefaultHeaders {
+public class DateHeader {
 
     private final Date date;
 
-    public DefaultHeaders(Date date) {
+    public DateHeader(Date date) {
         this.date = date;
     }
 
     public String get() {
-        return date.getDate() + "\n" +
-               "Content-Length: \n";
+        return date.getDate() + "\n";
+
     }
 }

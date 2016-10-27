@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -8,9 +8,6 @@ import main.responsetypes.RedirectResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -19,7 +16,6 @@ import static org.junit.Assert.assertThat;
 public class RedirectResponseTest {
 
     private final TestHelper helper = new TestHelper();
-    private final List content = new ArrayList<>();
     private RedirectResponse redirectResponse;
     private Request optionsRedirect;
     private Request putRedirect;
@@ -30,7 +26,7 @@ public class RedirectResponseTest {
     @Before
     public void setUp() {
         Date testDate = new TestDate();
-        redirectResponse = new RedirectResponse(content, testDate);
+        redirectResponse = new RedirectResponse(testDate);
         getRedirect = helper.create("GET /redirect");
         putRedirect = helper.create("PUT /redirect");
         postRedirect = helper.create("POST /redirect");
@@ -43,9 +39,9 @@ public class RedirectResponseTest {
         Response createdResponse = redirectResponse.get(getRedirect);
         assertEquals("HTTP/1.1 302 Redirect\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n" +
-                     "Location: http://localhost:5000/\n\n", createdResponse.getStatusLine() +
-                                                     createdResponse.getHeader());
+                     "Location: http://localhost:5000/\n" +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
+                                              createdResponse.getHeader());
     }
 
     @Test

@@ -1,10 +1,10 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
-import main.responsetypes.TeaResponse;
+import main.responsetypes.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,16 +15,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class TeaResponseTest {
+    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private final TestHelper helper = new TestHelper();
     private final List content = new ArrayList<>();
-    private TeaResponse teaResponse;
+    private NoResourceResponse teaResponse;
     private Request getTeaRequest;
 
     @Before
     public void setUp() {
         Date testDate = new TestDate();
-       teaResponse = new TeaResponse(content, testDate);
-       getTeaRequest = helper.create("GET /tea");
+        teaResponse = new NoResourceResponse(publicDirectory, testDate);
+        getTeaRequest = helper.create("GET /tea");
     }
 
     @Test

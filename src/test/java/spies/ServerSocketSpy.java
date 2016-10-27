@@ -1,6 +1,6 @@
-package main.serversocket;
+package spies;
 
-
+import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;
 
 public class ServerSocketSpy implements ServerSocketConnection {

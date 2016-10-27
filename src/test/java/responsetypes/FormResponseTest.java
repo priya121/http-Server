@@ -1,13 +1,16 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.FormResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,15 +26,24 @@ public class FormResponseTest {
     private Request putFormRequest;
     private Request deleteFormRequest;
     private FormResponse formResponse;
+    private String publicDirectory;
 
     @Before
     public void setUp() {
+        publicDirectory = "/Users/priyapatil/cob_spec/public";
         Date testDate = new TestDate();
         getFormRequest = helper.create("GET /form");
         postFormRequest = helper.create("POST /form");
         putFormRequest= helper.create("PUT /form");
         deleteFormRequest = helper.create("DELETE /form");
-        formResponse = new FormResponse(content, testDate);
+        formResponse = new FormResponse(publicDirectory, testDate);
+    }
+
+    @After
+    public void tearDown() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(publicDirectory + "/form");
+        writer.print("");
+        writer.close();
     }
 
     @Test

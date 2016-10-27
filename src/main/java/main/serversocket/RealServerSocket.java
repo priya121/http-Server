@@ -10,8 +10,12 @@ import java.net.ServerSocket;
 public class RealServerSocket implements ServerSocketConnection {
     private final ServerSocket serverSocket;
 
-    public RealServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
+    public RealServerSocket(int port) {
+        try {
+            this.serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public SocketConnection accept() throws UncheckedIOException {

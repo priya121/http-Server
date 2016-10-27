@@ -1,15 +1,12 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
-import main.responsetypes.EmptyPathResponse;
+import main.responsetypes.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,9 +15,7 @@ import static org.junit.Assert.assertThat;
 
 public class EmptyPathResponseTest {
 
-    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
-    private EmptyPathResponse emptyPathResponse;
-    private final List content = new ArrayList<>();
+    private NoResourceResponse emptyPathResponse;
     private final TestHelper helper = new TestHelper();
     private final Request simpleGetRequest = helper.create("GET /");
     private final Request simpleHeadRequest = helper.create("HEAD /");
@@ -32,7 +27,8 @@ public class EmptyPathResponseTest {
     @Before
     public void setUp() {
         Date testDate = new TestDate();
-        emptyPathResponse = new EmptyPathResponse(content, publicDirectory, testDate);
+        String publicDirectory = "/Users/priyapatil/cob_spec/public";
+        emptyPathResponse = new NoResourceResponse(publicDirectory, testDate);
     }
 
     @Test
@@ -46,7 +42,7 @@ public class EmptyPathResponseTest {
         Response createdResponse = emptyPathResponse.head(simpleHeadRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n\n", createdResponse.getStatusLine() +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
                                                      createdResponse.getHeader());
     }
 
@@ -71,7 +67,7 @@ public class EmptyPathResponseTest {
     @Test
     public void methodNotAllowedForEmptyDelete() {
         Response createdResponse = emptyPathResponse.delete(emptyDeleteRequest);
-        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 405 Method Not Allowed\n"));
+        assertThat(createdResponse.getStatusLine(), is("HTTP/1.1 404 Not Found\n"));
     }
 
     @Test

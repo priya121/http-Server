@@ -4,12 +4,15 @@ import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.DefaultResponse;
-import main.responsetypes.EmptyPathResponse;
 import main.responsetypes.FormResponse;
+import main.responsetypes.NoResourceResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import response.TestHelper;
+import responsetypes.TestHelper;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -36,25 +39,32 @@ public class ActionTest {
         bogusRequest = helper.create("BOGUS /");
     }
 
+    @After
+    public void tearDown() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(publicDirectory + "/form");
+        writer.print("");
+        writer.close();
+    }
+
     @Test
     public void createsSimpleGetResponse() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content, publicDirectory, testDate);
+        DefaultResponse response = new NoResourceResponse(publicDirectory, testDate);
         Response responseToSend = action.determine(response, emptyGetRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n\n", responseToSend.getStatusLine() +
+                     "Content-Length: 360\n\n", responseToSend.getStatusLine() +
                                             responseToSend.getHeader());
     }
 
     @Test
     public void createsPutForm() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new FormResponse(content, testDate);
+        DefaultResponse response = new FormResponse(publicDirectory, testDate);
         Response responseToSend = action.determine(response, postFormRequest);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n\n\n" +
+                     "Content-Length: 12\n\n\n" +
                      "data=fatcat", responseToSend.getStatusLine() +
                                     responseToSend.getHeader() +
                                     new String(responseToSend.getBody()));
@@ -63,16 +73,16 @@ public class ActionTest {
     @Test
     public void headResponseHasHeaders() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content, publicDirectory, testDate);
+        DefaultResponse response = new NoResourceResponse(publicDirectory, testDate);
         Response responseToSend = action.determine(response, emptyHeadRequest);
         assertEquals("Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n\n", responseToSend.getHeader());
+                     "Content-Length: 0\n\n", responseToSend.getHeader());
     }
 
     @Test
     public void createsHeadReponse() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content, publicDirectory, testDate);
+        DefaultResponse response = new NoResourceResponse(publicDirectory, testDate);
         Response responseToSend = action.determine(response, emptyHeadRequest);
         assertTrue(new String(responseToSend.getBody()).isEmpty());
     }
@@ -80,7 +90,7 @@ public class ActionTest {
     @Test
     public void correctResponseForBogusRequest() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse response = new EmptyPathResponse(content, publicDirectory, testDate);
+        DefaultResponse response = new NoResourceResponse(publicDirectory, testDate);
         String responseToSend = action.determine(response, bogusRequest).getStatusLine();
         assertEquals("HTTP/1.1 405 Method Not Allowed\n\n", responseToSend);
     }
@@ -88,9 +98,9 @@ public class ActionTest {
     @Test
     public void deleteFormRequestReturnsEmptyBody() {
         ActionChooser action = new ActionChooser();
-        DefaultResponse defaultResponse = new FormResponse(content, testDate);
+        DefaultResponse defaultResponse = new FormResponse(publicDirectory, testDate);
         action.determine(defaultResponse, postFormRequest);
-        DefaultResponse response = new FormResponse(content, testDate);
+        DefaultResponse response = new FormResponse(publicDirectory, testDate);
         Response responseToSend = action.determine(response, deleteFormRequest);
         assertFalse(new String(responseToSend.getBody()).contains("data=fatcat"));
     }

@@ -13,11 +13,11 @@ public class Response {
 
     public String getStatusLine() {
         return statusLine + "\n";
-
     }
 
     public String getHeader() {
-        return headers + "\n";
+        return headers +
+               new ContentLengthHeader(bodyData).get() +"\n\n";
     }
 
     public byte[] getBody() {

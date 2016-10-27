@@ -1,10 +1,10 @@
 package main.responsetypes;
 
-import main.date.Date;
-import main.response.DefaultHeaders;
 import main.Range;
-import main.response.Response;
+import main.date.Date;
 import main.request.Request;
+import main.response.DateHeader;
+import main.response.Response;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
@@ -16,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import static main.Status.*;
 
@@ -25,10 +24,10 @@ public class ResourceResponse extends DefaultResponse {
     private final String publicDirectory;
     private String header;
 
-    public ResourceResponse(String publicDirectory, List content, Date date) {
-        super(content, date);
+    public ResourceResponse(String publicDirectory, Date date) {
+        super(date);
         this.publicDirectory = publicDirectory;
-        this.header =  new DefaultHeaders(date).get();
+        this.header =  new DateHeader(date).get();
     }
 
     @Override
@@ -41,7 +40,7 @@ public class ResourceResponse extends DefaultResponse {
                                 range.get(requestBody(request)));
         }
         return new Response(OK.get(),
-                            header = findMediaType(request),
+                            header += findMediaType(request),
                             requestBody(request));
     }
 
@@ -57,19 +56,19 @@ public class ResourceResponse extends DefaultResponse {
             e.printStackTrace();
         }
         return new Response(NO_CONTENT.get(),
-                            header + "Etag: " + request.getHeader("If-Match") + "\n",
-                            requestBody(request));
+                header + "Etag: " + request.getHeader("If-Match") + "\n",
+                requestBody(request));
     }
-
 
     private String getByteRange(Request request) {
         String byteRange = request.getHeader("Range");
-        return byteRange.substring(byteRange.length() - 3, byteRange.length());
+        String[] split = byteRange.split("=");
+        return split[1];
     }
 
-    private void updateIfMatch(File fileToPatch, Request request, String hex) throws IOException {
+    private void updateIfMatch(File file, Request request, String hex) throws IOException {
         if (request.getHeaders().get("If-Match").equals(hex)) {
-            overWriteFileContents(fileToPatch, request);
+            overWriteFileContents(file, request);
         }
     }
 

@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static main.Status.OK;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -24,7 +22,6 @@ import static org.junit.Assert.*;
 public class ResourceResponseTest {
 
     private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
-    List content = new ArrayList<>();
     private final TestHelper helper = new TestHelper();
     private Request getImageGif;
     private Request getTextFile;
@@ -37,7 +34,6 @@ public class ResourceResponseTest {
     private Request getPartialFour;
     private Request getPartialFive;
     private Request patchWithMatch;
-    private Request misMatchedPatch;
     private Date testDate;
 
     @Before
@@ -53,7 +49,7 @@ public class ResourceResponseTest {
         getPartialFour = helper.createPartialBeginning("GET /partial_content.txt", 3);
         getPartialFive = helper.createPartialBeginning("GET /partial_content.txt", 5);
         patchWithMatch = helper.requestWithEtag("PATCH /patch-content.txt", "5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0");
-        resourceResponse = new ResourceResponse(publicDirectory, content, testDate);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
     }
 
     @After
@@ -158,21 +154,21 @@ public class ResourceResponseTest {
 
     @Test
     public void patchRequestReturnsNoContentMessage() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content, testDate);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
         Response response = resourceResponse.patch(patchWithMatch);
         assertThat(response.getStatusLine(), containsString("HTTP/1.1 204 No Content"));
     }
 
     @Test
     public void setsETagHeader() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content, testDate);
+        resourceResponse = new ResourceResponse(publicDirectory,  testDate);
         Response response = resourceResponse.patch(patchWithMatch);
         assertThat(response.getHeader(), containsString("Etag: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0"));
     }
 
     @Test
     public void updatesFileIfETagsMatch() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content, testDate);
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
         patchWithMatch = helper.requestWithEtag("PATCH /patch-content.txt", "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec");
         Response getResponse = resourceResponse.patch(patchWithMatch);
         assertEquals("patched content", new String(getResponse.getBody()));
@@ -180,8 +176,8 @@ public class ResourceResponseTest {
 
     @Test
     public void eTagsDoNotMatchNoUpdate() throws NoSuchAlgorithmException, IOException {
-        resourceResponse = new ResourceResponse(publicDirectory, content, testDate);
-        misMatchedPatch = helper.requestWithEtag("PATCH /patch-content.txt", "kjsdljsbdlj");
+        resourceResponse = new ResourceResponse(publicDirectory, testDate);
+        Request misMatchedPatch = helper.requestWithEtag("PATCH /patch-content.txt", "kjsdljsbdlj");
         Response getResponse = resourceResponse.patch(misMatchedPatch);
         assertEquals("default content", new String(getResponse.getBody()));
     }

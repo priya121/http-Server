@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -7,8 +7,6 @@ import main.response.Response;
 import main.responsetypes.GetCookieResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,8 +21,7 @@ public class GetCookieResponseTest {
     @Before
     public void setUp() {
         Date testDate = new TestDate();
-        ArrayList<String> content = new ArrayList<>();
-        getCookieResponse = new GetCookieResponse(content, testDate);
+        getCookieResponse = new GetCookieResponse(testDate);
         getCookieRequest = helper.createRequestWithCookie("GET /eat_cookie", "chocolate");
         getOatmealCookie = helper.createRequestWithCookie("GET /eat_cookie", "oatmeal");
     }

@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -33,15 +33,13 @@ public class ParameterResponseTest {
 
     @Test
     public void canTellIfThereAreParametersPresent() {
-        List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content, testDate);
+        ParameterResponse response = new ParameterResponse(testDate);
         assertThat(new String(response.get(getParameters).getBody()), containsString("variable_1 = Operators <, >,"));
     }
 
     @Test
     public void canFindOtherParameters() {
-        List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content, testDate);
+        ParameterResponse response = new ParameterResponse(testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_1 = Operators @, #, $" +
                                                                                           "variable_2 = stuff"));
     }
@@ -49,21 +47,19 @@ public class ParameterResponseTest {
     @Test
     public void getFirstVariable() {
         List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content, testDate);
+        ParameterResponse response = new ParameterResponse( testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_1 = Operators @, #, $"));
     }
 
     @Test
     public void getsSecondVariable() {
-        List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content, testDate);
+        ParameterResponse response = new ParameterResponse(testDate);
         assertThat(new String(response.get(getOtherParameters).getBody()), containsString("variable_2 = stuff"));
     }
 
     @Test
     public void getsAllParameters() {
-        List<String> content = new ArrayList<>();
-        ParameterResponse response = new ParameterResponse(content, testDate);
+        ParameterResponse response = new ParameterResponse(testDate);
         String bodyString = new String(response.get(getAllParameters).getBody());
         assertThat(bodyString, containsString("variable_1 = Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?"));
         assertThat(bodyString, containsString("variable_2 = stuff"));

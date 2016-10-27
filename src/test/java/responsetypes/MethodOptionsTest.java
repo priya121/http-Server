@@ -1,16 +1,12 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
-import main.responsetypes.MethodOptionsResponse;
+import main.responsetypes.NoResourceResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
@@ -19,25 +15,20 @@ import static org.junit.Assert.assertThat;
 public class MethodOptionsTest {
 
     private final TestHelper helper = new TestHelper();
-    private final List content = new ArrayList<>();
-    private MethodOptionsResponse methodOptionsResponse;
+    private NoResourceResponse methodOptionsResponse;
     private Request getOptions;
-    private Request putOptions;
     private Request postOptions;
     private Request optionsOptions;
-    private Request deleteOptions;
-    private Date testDate;
 
     @Before
     public void setUp() {
-        testDate = new TestDate();
-        methodOptionsResponse = new MethodOptionsResponse(content, testDate);
+        Date testDate = new TestDate();
+        String publicDirectory = "/Users/priyapatil/cob_spec/public";
+        methodOptionsResponse = new NoResourceResponse(publicDirectory, testDate);
 
         getOptions = helper.create("GET /method_options");
-        putOptions = helper.create("PUT /method_options");
         postOptions = helper.create("POST /method_options");
         optionsOptions = helper.create("OPTIONS /method_options");
-        deleteOptions = helper.create("DELETE /method_options");
     }
 
     @Test
@@ -45,21 +36,9 @@ public class MethodOptionsTest {
         Response createdResponse = methodOptionsResponse.get(getOptions);
         assertEquals("HTTP/1.1 200 OK\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n" +
-                     "Allow: GET,HEAD,POST,OPTIONS,PUT\n\n", createdResponse.getStatusLine() +
-                                                             createdResponse.getHeader());
-    }
-
-    @Test
-    public void responseForPutMethodOptions() {
-        Response createdResponse = methodOptionsResponse.put(putOptions);
-        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
-    }
-
-    @Test
-    public void responseForPostMethodOptions() {
-        Response createdResponse = methodOptionsResponse.post(postOptions);
-        assertThat(createdResponse.getStatusLine(), containsString("HTTP/1.1 200 OK\n"));
+                     "Allow: GET,HEAD,POST,OPTIONS,PUT\n" +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
+                                              createdResponse.getHeader());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class NoResourceResponseTest {
+    private final String publicDirectory = "/Users/priyapatil/cob_spec/public";
     private final TestHelper helper = new TestHelper();
     private final List content = new ArrayList<>();
     private NoResourceResponse noResourceResponse;
@@ -29,7 +30,7 @@ public class NoResourceResponseTest {
     @Before
     public void setUp() {
         testDate = new TestDate();
-        noResourceResponse = new NoResourceResponse(content, testDate);
+        noResourceResponse = new NoResourceResponse(publicDirectory, testDate);
         getFoobar = helper.create("GET /foobar");
         headFoobar = helper.create("HEAD /foobar");
         postFoobar = helper.create("POST /foobar");
@@ -42,7 +43,7 @@ public class NoResourceResponseTest {
         Response createdResponse = noResourceResponse.get(getFoobar);
         assertEquals("HTTP/1.1 404 Not Found\n" +
                      "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
-                     "Content-Length: \n\n", createdResponse.getStatusLine() +
+                     "Content-Length: 0\n\n", createdResponse.getStatusLine() +
                                            createdResponse.getHeader());
     }
 

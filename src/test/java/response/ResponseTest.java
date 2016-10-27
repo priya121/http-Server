@@ -1,3 +1,5 @@
+package response;
+
 import main.response.Response;
 import org.junit.Test;
 
@@ -8,11 +10,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ResponseTest {
-        String headers = "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+        String headers = "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                          "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                          "ETag: \n" +
                          "Accept-Ranges: none\n" +
-                         "Content-Length: \n" +
                          "Connection: close\n";
 
     @Test
@@ -38,12 +39,12 @@ public class ResponseTest {
                                         "<h1> I'm a teapot </h1>".getBytes());
 
         assertEquals("HTTP/1.1 200 OK\n" +
-                     "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                     "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                      "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                      "ETag: \n" +
                      "Accept-Ranges: none\n" +
-                     "Content-Length: \n" +
-                     "Connection: close\n\n" +
+                     "Connection: close\n" +
+                     "Content-Length: 23\n\n" +
                      "<h1> I'm a teapot </h1>", response.getStatusLine() +
                                                 response.getHeader() +
                                                 new String(response.getBody()));
@@ -55,12 +56,11 @@ public class ResponseTest {
                                          headers,
                                          "".getBytes());
         assertEquals("HTTP/1.1 405 Method Not Allowed\n" +
-                "main.date.Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
+                "Date: Sun, 18 Oct 2009 08:56:53 GMT\n" +
                 "Server:Apache-HttpClient/4.3.5 (java 1.5)\n" +
                 "ETag: \n" +
                 "Accept-Ranges: none\n" +
-                "Content-Length: \n" +
-                "Connection: close\n\n", response.getStatusLine() +
+                "Connection: close\nContent-Length: 0\n\n", response.getStatusLine() +
                                                 response.getHeader());
     }
 

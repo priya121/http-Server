@@ -2,11 +2,10 @@ package main.responsetypes;
 
 import main.date.Date;
 import main.request.Request;
-import main.response.DefaultHeaders;
+import main.response.DateHeader;
 import main.response.Response;
 
 import java.net.URLDecoder;
-import java.util.List;
 
 import static main.Status.OK;
 
@@ -14,9 +13,9 @@ public class ParameterResponse extends DefaultResponse {
 
     private final String headers;
 
-    public ParameterResponse(List content, Date date) {
-        super(content, date);
-        this.headers = new DefaultHeaders(date).get();
+    public ParameterResponse(Date date) {
+        super(date);
+        this.headers = new DateHeader(date).get();
     }
 
     @Override

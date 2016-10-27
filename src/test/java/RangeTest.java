@@ -48,13 +48,13 @@ public class RangeTest {
 
     @Test
     public void getsBeginningValueForMinusSix() {
-        Range range = new Range("=-6");
+        Range range = new Range("-6");
         assertEquals(6, range.getEndValue());
     }
 
     @Test
     public void getsEndValueForMinusSix() {
-        Range range = new Range("=6-");
+        Range range = new Range("6-");
         assertEquals(6, range.getStartingValue());
     }
 }

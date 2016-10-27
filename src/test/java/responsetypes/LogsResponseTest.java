@@ -1,4 +1,4 @@
-package response;
+package responsetypes;
 
 import main.date.Date;
 import main.date.TestDate;
@@ -30,7 +30,7 @@ public class LogsResponseTest {
     public void setUp() throws IOException {
         testDate = new TestDate();
         content = new ArrayList<>();
-        logsResponse = new LogsResponse(publicDirectory, content, testDate);
+        logsResponse = new LogsResponse(publicDirectory, testDate);
     }
 
     @After

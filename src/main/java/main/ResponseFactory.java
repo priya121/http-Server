@@ -15,23 +15,23 @@ public class ResponseFactory {
     private final String publicDirectory;
     private final RealDate date;
 
-    public ResponseFactory(List content, String publicDirectory) {
+    public ResponseFactory(String publicDirectory) {
         this.publicDirectory = publicDirectory;
         this.date = new RealDate();
-        this.responses = new HashMap<>();
-        responses.put("/", new EmptyPathResponse(content, publicDirectory, date));
-        responses.put("/form", new FormResponse(content, date));
-        responses.put("/method_options", new MethodOptionsResponse(content, date));
-        responses.put("/method_options2", new MethodOptions2Response(content, date));
-        responses.put("/logs", new LogsResponse(publicDirectory, content, date));
-        responses.put("/coffee", new CoffeeResponse(content, date));
-        responses.put("/tea", new TeaResponse(content, date));
-        responses.put("/redirect", new RedirectResponse(content, date));
-        responses.put("resource", new ResourceResponse(publicDirectory, content, date));
-        responses.put("/parameters", new ParameterResponse(content, date));
-        responses.put("/cookie?type=chocolate", new CookieResponse(content, date));
-        responses.put("/eat_cookie", new GetCookieResponse(content, date));
-        responses.put("no resource", new NoResourceResponse(content, date));
+        this.responses = createResponses(publicDirectory);
+    }
+
+    private HashMap createResponses(String publicDirectory) {
+        HashMap responses = new HashMap<>();
+        responses.put("/form", new FormResponse(publicDirectory, date));
+        responses.put("/logs", new LogsResponse(publicDirectory, date));
+        responses.put("/redirect", new RedirectResponse(date));
+        responses.put("/parameters", new ParameterResponse(date));
+        responses.put("/cookie?type=chocolate", new CookieResponse(date));
+        responses.put("/eat_cookie", new GetCookieResponse(date));
+        responses.put("resource", new ResourceResponse(publicDirectory, date));
+        responses.put("no resource", new NoResourceResponse(publicDirectory, date));
+        return responses;
     }
 
     public DefaultResponse findRelevantResponse(Request request) {
@@ -58,7 +58,7 @@ public class ResponseFactory {
     }
 
     private boolean isGetOrPatch(Request request) {
-        return request.getMethod().equals(GET.get()) || request.getMethod().equals(PATCH.get());
+       return request.getMethod().equals(GET.get()) || request.getMethod().equals(PATCH.get());
     }
 
     private boolean exists(String filePathToFind) {
