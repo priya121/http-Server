@@ -1,4 +1,4 @@
-package spies;
+package serversocket;
 
 import main.serversocket.ServerSocketConnection;
 import main.socket.SocketConnection;

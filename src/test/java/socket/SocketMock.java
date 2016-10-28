@@ -1,3 +1,5 @@
+package socket;
+
 import main.socket.SocketConnection;
 
 import java.io.*;

@@ -1,4 +1,4 @@
-package spies;
+package streams;
 
 import main.streams.StreamWriter;
 

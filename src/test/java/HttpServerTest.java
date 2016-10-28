@@ -5,8 +5,10 @@ import main.socket.RealSocketConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import socket.SocketMock;
 import spies.ExecutorSpy;
-import spies.ServerSocketSpy;
+import serversocket.ServerSocketSpy;
+import streams.OutputStreamSpyMock;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -66,7 +68,7 @@ public class HttpServerTest {
 
     @Test
     public void writesContentToClient() throws IOException {
-        FakeOutputStream stream = new FakeOutputStream();
+        OutputStreamSpyMock stream = new OutputStreamSpyMock();
 
         server().sendResponse(stream, sampleRequest());
 
@@ -75,7 +77,7 @@ public class HttpServerTest {
 
     @Test
     public void writesDifferentContentToClient() throws IOException {
-        FakeOutputStream stream = new FakeOutputStream();
+        OutputStreamSpyMock stream = new OutputStreamSpyMock();
         BufferedReader reader = createBufferedReader(bogusRequest);
 
         server().sendResponse(stream, new Request(reader));
@@ -85,7 +87,7 @@ public class HttpServerTest {
 
     @Test
     public void socketClosedAfterResponseSent() {
-        FakeOutputStream stream = new FakeOutputStream();
+        OutputStreamSpyMock stream = new OutputStreamSpyMock();
         stream.closed = false;
 
         server().sendResponse(stream, sampleRequest());
@@ -116,6 +118,11 @@ public class HttpServerTest {
         assertEquals(3, spy.timesCalled());
     }
 
+    private Request sampleRequest() {
+        BufferedReader reader = createBufferedReader(getRequest);
+        return new Request(reader);
+    }
+
     private BufferedReader createBufferedReader(String request) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getBytes());
         return new BufferedReader(new InputStreamReader(inputStream));
@@ -124,11 +131,4 @@ public class HttpServerTest {
     private HttpServer server() {
         return new HttpServer(spy, serverSocketConnectionSpy, publicDirectory);
     }
-
-    private Request sampleRequest() {
-        BufferedReader reader = createBufferedReader(getRequest);
-        return new Request(reader);
-    }
-
-
 }
