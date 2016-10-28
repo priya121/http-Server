@@ -1,7 +1,7 @@
 package response;
 
 import main.date.Date;
-import main.date.TestDate;
+import responsetypes.TestDate;
 import main.response.DateHeader;
 import org.junit.Test;
 

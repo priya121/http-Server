@@ -1,6 +1,5 @@
 import main.ActionChooser;
 import main.date.Date;
-import main.date.TestDate;
 import main.request.Request;
 import main.response.Response;
 import main.responsetypes.DefaultResponse;
@@ -9,6 +8,7 @@ import main.responsetypes.NoResourceResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import responsetypes.TestDate;
 import responsetypes.TestHelper;
 
 import java.io.FileNotFoundException;

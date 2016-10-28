@@ -2,7 +2,6 @@ import main.HttpServer;
 import main.request.Request;
 import main.serversocket.RealServerSocket;
 import main.socket.RealSocketConnection;
-import main.streams.FakeOutputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

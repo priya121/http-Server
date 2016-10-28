@@ -1,7 +1,6 @@
 package responsetypes;
 
 import main.date.Date;
-import main.date.TestDate;
 import main.request.Request;
 import main.responsetypes.ParameterResponse;
 import org.junit.Before;

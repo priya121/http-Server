@@ -1,6 +1,8 @@
-package main.streams;
+package spies;
 
-public class FakeOutputStream implements StreamWriter {
+import main.streams.StreamWriter;
+
+public class OutputStreamSpyMock implements StreamWriter {
     public String response;
     public boolean closed = false;
 

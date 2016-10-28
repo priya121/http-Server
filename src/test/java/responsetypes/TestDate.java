@@ -1,4 +1,6 @@
-package main.date;
+package responsetypes;
+
+import main.date.Date;
 
 public class TestDate implements Date {
 
