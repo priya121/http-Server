@@ -7,6 +7,7 @@ import main.response.Response;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static main.Status.*;
 
@@ -92,25 +93,28 @@ public class NoResourceResponse extends DefaultResponse {
         }};
     }
 
-    private String allFileLinks() {
-        String display = "";
-        for (File file : getFiles()) {
-            String fileName = file.getPath().substring(file.getPath().lastIndexOf("/"));
-            display += "<a href=" + fileName + ">" + fileName + "</a>\n" + "\n";
-        }
-        return display;
-    }
-
     private List<File> getFiles() {
         File[] files = new File(publicDirectory).listFiles();
         return Arrays.asList(files);
     }
 
-    private String getBody(List<String> content) {
-        String body = "";
-        for (String item : content) {
-            body += item;
+    private String allFileLinks() {
+        String display = "";
+        for (File file : getFiles()) {
+            display = addFileLink(display, file);
         }
-        return body;
+        return display;
+    }
+
+    private String addFileLink(String display, File file) {
+        String fileName = file.getPath().substring(file.getPath().lastIndexOf("/"));
+        display += "<a href=" + fileName + ">" + fileName + "</a>\n" + "\n";
+        return display;
+    }
+
+    private String getBody(List<String> content) {
+        return content.stream()
+                      .map(item -> item.toString())
+                      .collect(Collectors.joining());
     }
 }
