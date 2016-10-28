@@ -12,7 +12,7 @@ public class ServerArguments {
     public ServerArguments(String[] args, PrintStream output) {
         this.args = args;
         this.output = output;
-        this.defaultDirectory = "/Users/priyapatil/cob_spec/public";
+        this.defaultDirectory = "../public";
     }
 
     public int getPort() {
